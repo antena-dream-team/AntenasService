@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="AS-1" author="danielly">
+        <createTable tableName="possible_date">
+            <column name="id" type="BIGINT"/>
+            <column name="date" type="DATE"/>
+            <column name="time" type="TIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-2" author="danielly">
+        <createTable tableName="teacher">
+            <column name="id" type="BIGINT"/>
+            <column name="email" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-3" author="danielly">
+        <createTable tableName="businessman">
+            <column name="id" type="BIGINT"/>
+            <column name="email" type="VARCHAR(50)"/>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="company" type="VARCHAR(100)"/>
+            <column name="cpf" type="VARCHAR(100)"/>
+            <column name="password" type="VARCHAR(100)"/>
+            <column name="phone" type="VARCHAR(100)"/>
+            <column name="active" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-4" author="danielly">
+        <createTable tableName="project_status">
+            <column name="id" type="BIGINT"/>
+            <column name="denied" type="BOOLEAN"/>
+            <column name="reason" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="AS-5" author="danielly">
+        <createTable tableName="student">
+            <column name="id" type="BIGINT"/>
+            <column name="email" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-6" author="danielly">
+        <createTable tableName="meeting">
+            <column name="id" type="BIGINT"/>
+            <column name="time" type="TIME"/>
+            <column name="place" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-7" author="danielly" >
+        <createTable tableName="project">
+            <column name="id" type="BIGINT"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="short_description" type="VARCHAR(255)"/>
+            <column name="external_link_1" type="VARCHAR(255)"/>
+            <column name="external_link_2" type="VARCHAR(255)"/>
+            <column name="complete_description" type="VARCHAR(255)"/>
+            <column name="tecnology_description" type="VARCHAR(255)"/>
+            <column name="fase" type="VARCHAR(255)"/>
+            <column name="meeting_id" type="BIGINT"/>
+            <column name="cadi_id" type="BIGINT"/>
+            <column name="teacher_id" type="BIGINT"/>
+            <column name="businessman_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-8" author="danielly">
+        <createTable tableName="project_deliver">
+            <column name="id" type="BIGINT"/>
+            <column name="project_id" type="BIGINT"/>
+            <column name="deliver_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-9" author="danielly">
+        <createTable tableName="meeting_possible_date">
+            <column name="id" type="BIGINT"/>
+            <column name="meeting_id" type="BIGINT"/>
+            <column name="possible_date_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-10" author="danielly">
+        <createTable tableName="deliver">
+            <column name="id" type="BIGINT"/>
+            <column name="repository_link" type="varchar(100)"/>
+            <column name="cloud_link" type="VARCHAR(100)"/>
+            <column name="comment" type="VARCHAR(100)"/>
+            <column name="student_responsible_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="AS-11" author="danielly">
+        <createTable tableName="deliver_team">
+            <column name="id" type="BIGINT"/>
+            <column name="deliver_id" type="BIGINT"/>
+            <column name="student_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+
+    <!-- POSSIBLE_DATE -->
+
+    <changeSet author="danielly" id="AS-12">
+        <addPrimaryKey columnNames="id" tableName="possible_date" constraintName="possible_date_id"/>
+    </changeSet>
+
+
+    <!-- TEACHER -->
+
+    <changeSet author="danielly" id="AS-13">
+        <addPrimaryKey columnNames="id" tableName="teacher" constraintName="teacher_id"/>
+    </changeSet>
+
+
+    <!--  BUSINESSMAN -->
+
+    <changeSet author="danielly" id="AS-14">
+        <addPrimaryKey columnNames="id" tableName="businessman" constraintName="businessman_id"/>
+    </changeSet>
+
+    <!-- PROJECT_STATUS -->
+
+    <changeSet author="danielly" id="AS-15">
+        <addPrimaryKey columnNames="id" tableName="project_status" constraintName="project_status_id"/>
+    </changeSet>
+
+
+    <!-- STUDENT -->
+
+    <changeSet author="danielly" id="AS-16">
+        <addPrimaryKey columnNames="id" tableName="student" constraintName="student_id"/>
+    </changeSet>
+
+
+    <!-- MEETING -->
+
+    <changeSet author="danielly" id="AS-17">
+        <addPrimaryKey columnNames="id" tableName="meeting" constraintName="meeting_id"/>
+    </changeSet>
+
+    <!-- PROJECT -->
+
+    <changeSet author="danielly" id="AS-18">
+        <addPrimaryKey columnNames="id" tableName="project" constraintName="project_id"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-19">
+        <addForeignKeyConstraint baseColumnNames="meeting_id" baseTableName="project" constraintName="project_meeting_fk"
+                                 referencedColumnNames="id" referencedTableName="meeting"/>
+    </changeSet>
+
+    <!-- TODO: FALTA O CADI - ADICIONAR FK  -->
+
+    <changeSet author="danielly" id="AS-20">
+        <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="project" constraintName="project_teacher_fk"
+                                 referencedColumnNames="id" referencedTableName="teacher"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-21">
+        <addForeignKeyConstraint baseColumnNames="businessman_id" baseTableName="project" constraintName="project_businessman_fk"
+                                 referencedColumnNames="id" referencedTableName="businessman"/>
+    </changeSet>
+
+
+    <!-- DELIVER -->
+
+    <changeSet author="danielly" id="AS-22">
+        <addPrimaryKey columnNames="id" tableName="deliver" constraintName="deliver_id"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-23">
+        <addForeignKeyConstraint baseColumnNames="student_responsible_id" baseTableName="deliver" constraintName="student_responsible_id_fk"
+                                 referencedColumnNames="id" referencedTableName="student"/>
+    </changeSet>
+
+
+    <!-- DELIVER_TEAM -->
+
+    <changeSet author="danielly" id="AS-24">
+        <addPrimaryKey columnNames="id" tableName="deliver_team" constraintName="deliver_team_id"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-25">
+        <addForeignKeyConstraint baseTableName="deliver_team" baseColumnNames="deliver_id" constraintName="relation_student_deliver_fk"
+                                 referencedColumnNames="id" referencedTableName="deliver"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-26">
+        <addForeignKeyConstraint baseTableName="deliver_team" baseColumnNames="student_id" constraintName="relation_deliver_student_fk"
+                                 referencedColumnNames="id" referencedTableName="student"/>
+    </changeSet>
+
+
+    <!-- PROJECT_DELIVER -->
+
+    <changeSet author="danielly" id="AS-27">
+        <addPrimaryKey columnNames="id" tableName="project_deliver" constraintName="project_deliver_id"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-28">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="project_deliver" constraintName="relation_deliver_project_fk"
+                                 referencedColumnNames="id" referencedTableName="deliver"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-29">
+        <addForeignKeyConstraint baseColumnNames="deliver_id" baseTableName="project_deliver" constraintName="relation_project_deliver_fk"
+                                 referencedColumnNames="id" referencedTableName="project"/>
+    </changeSet>
+
+
+    <!-- MEETING_POSSIBLE_DATE -->
+
+    <changeSet author="danielly" id="AS-30">
+        <addPrimaryKey columnNames="id" tableName="meeting_possible_date" constraintName="meeting_possible_date_id"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-31">
+        <addForeignKeyConstraint baseTableName="meeting_possible_date" baseColumnNames="meeting_id" constraintName="relation_possible_date_meeting_fk"
+                                 referencedColumnNames="id" referencedTableName="meeting"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-32">
+        <addForeignKeyConstraint baseTableName="meeting_possible_date" baseColumnNames="possible_date_id" constraintName="relation_meeting_possible_date_fk"
+                                 referencedColumnNames="id" referencedTableName="possible_date"/>
+    </changeSet>
+
+</databaseChangeLog>
