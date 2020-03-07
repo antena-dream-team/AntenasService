@@ -11,4 +11,7 @@ public class TeacherDTO {
     private Long id;
     private String email;
     private String password;
+    private String name;
+//    private String position;
+    private Boolean active;
 }

@@ -18,9 +18,9 @@ public class ProjectDTO {
     private String externalLink1;
     private String externalLink2;
     private String phase;
-    private MeetingDTO meeting_id;
-    private TeacherDTO teacher_id;
-    private EntrepreneurDTO entrepreneur_id;
+    private MeetingDTO meeting;
+    private TeacherDTO teacher;
+    private EntrepreneurDTO entrepreneur;
     private String key;
 //    private StatusDTO status; TODO
 }

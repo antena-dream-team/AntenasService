@@ -13,6 +13,7 @@ public class EntrepreneurDTO {
     private String password;
     private String name;
     private String cpf;
-    private String phone;
+    private String telephone;
     private boolean active;
+    private String company;
 }

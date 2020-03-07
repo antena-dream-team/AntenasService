@@ -6,10 +6,9 @@ import br.gov.sp.fatec.cadi.controller.dto.CadiDTO;
 import br.gov.sp.fatec.cadi.service.CadiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @Controller
 @RequestMapping("/dev/cadi")
@@ -21,10 +20,9 @@ public class CadiController {
     @Autowired
     CadiConverter converter;
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    private CadiDTO create (Cadi cadi) {
+    private CadiDTO create (@RequestBody Cadi cadi) {
         return converter.toDTO(service.save(cadi));
     }
-
 }

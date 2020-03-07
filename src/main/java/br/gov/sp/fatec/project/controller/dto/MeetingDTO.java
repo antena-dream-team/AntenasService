@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -12,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class MeetingDTO {
     private Long id;
-    private DateDTO chosenDate;
+    private Date chosenDate;
     private Address address;
     private List<DateDTO> possible_date;
 }

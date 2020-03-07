@@ -1,38 +1,33 @@
 package br.gov.sp.fatec.cadi.controller.converter;
 
-import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.controller.dto.CadiDTO;
-import org.modelmapper.ModelMapper;
+import br.gov.sp.fatec.cadi.domain.Cadi;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CadiConverter {
 
     public Cadi toModel (CadiDTO dto) {
-        ModelMapper modelMapper = new ModelMapper();
+        Cadi model = new Cadi();
 
-        return modelMapper.map(dto, Cadi.class);
+        model.setEmail(dto.getEmail());
+        model.setPassword(dto.getPassword());
+        model.setActive(dto.isActive());
+        model.setId(dto.getId());
+        model.setPosition(dto.getPosition());
+
+        return model;
     }
 
     public CadiDTO toDTO (Cadi model) {
-        ModelMapper modelMapper = new ModelMapper();
+        CadiDTO dto = new CadiDTO();
 
-        return modelMapper.map(model, CadiDTO.class);
+        dto.setEmail(model.getEmail());
+        dto.setPassword(model.getPassword());
+        dto.setCpf(model.getCpf());
+        dto.setName(model.getName());
+        dto.setCpf(model.getCpf());
+
+        return dto;
     }
-
-//    public Cadi toModel (CadiDTO dto) {
-//        Cadi cadi =  new Cadi();
-//        cadi.setEmail(dto.getEmail());
-//        cadi.setPassword(dto.getPassword());
-//
-//        return cadi;
-//    }
-//
-//    public CadiDTO toDTO (Cadi cadi) {
-//        CadiDTO cadiDTO = new CadiDTO();
-//        cadiDTO.setEmail(cadi.getEmail());
-//        cadiDTO.setPassword(cadi.getPassword());
-//
-//        return cadiDTO;
-//    }
 }

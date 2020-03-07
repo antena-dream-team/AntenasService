@@ -17,6 +17,6 @@ public class Date {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String dateTime;
+    private java.util.Date dateTime;
 }
 

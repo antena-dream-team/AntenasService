@@ -18,12 +18,13 @@ public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "chosen_date_id", referencedColumnName = "id")
-    private Date chosenDate;
+//    @OneToOne
+//    @JoinColumn(name = "chosen_date_id", referencedColumnName = "id")
+    @Column(name = "chosen_date")
+    private java.util.Date chosenDate;
 
     @ManyToOne
-    @JoinColumn(name="address_id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @ManyToMany

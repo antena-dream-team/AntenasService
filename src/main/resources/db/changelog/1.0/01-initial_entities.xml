@@ -9,7 +9,7 @@
     <changeSet id="AS-1" author="danielly">
         <createTable tableName="date">
             <column name="id" type="BIGINT"/>
-            <column name="date_time" type="VARCHAR(50)"/>
+            <column name="date_time" type="DATE"/>
         </createTable>
     </changeSet>
 
@@ -32,7 +32,7 @@
             <column name="company" type="VARCHAR(100)"/>
             <column name="cpf" type="VARCHAR(100)"/>
             <column name="password" type="VARCHAR(50)"/>
-            <column name="phone" type="VARCHAR(100)"/>
+            <column name="telephone" type="VARCHAR(100)"/>
             <column name="active" type="BOOLEAN"/>
         </createTable>
     </changeSet>
@@ -59,7 +59,7 @@
     <changeSet id="AS-6" author="danielly">
         <createTable tableName="meeting">
             <column name="id" type="BIGINT"/>
-            <column name="chosen_date_id" type="BIGINT"/>
+            <column name="chosen_date" type="DATE"/>
             <column name="address_id" type="BIGINT"/>
         </createTable>
     </changeSet>
@@ -148,14 +148,14 @@
 
     <changeSet author="danielly" id="AS-15">
         <addPrimaryKey columnNames="id" tableName="cadi" constraintName="address_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="cadi" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="cadi" columnDataType="BIGINT"/>
     </changeSet>
 
     <!-- ADDRESS -->
 
     <changeSet author="danielly" id="AS-16">
         <addPrimaryKey columnNames="id" tableName="address" constraintName="address_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="address" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="address" columnDataType="BIGINT"/>
     </changeSet>
 
 
@@ -163,7 +163,7 @@
 
     <changeSet author="danielly" id="AS-17">
         <addPrimaryKey columnNames="id" tableName="date" constraintName="possible_date_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="date" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="date" columnDataType="BIGINT"/>
     </changeSet>
 
 
@@ -171,7 +171,7 @@
 
     <changeSet author="danielly" id="AS-18">
         <addPrimaryKey columnNames="id" tableName="teacher" constraintName="teacher_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="teacher" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="teacher" columnDataType="BIGINT"/>
     </changeSet>
 
 
@@ -179,14 +179,14 @@
 
     <changeSet author="danielly" id="AS-19">
         <addPrimaryKey columnNames="id" tableName="entrepreneur" constraintName="entrepreneur_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="entrepreneur" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="entrepreneur" columnDataType="BIGINT"/>
     </changeSet>
 
     <!-- PROJECT_STATUS -->
 
     <changeSet author="danielly" id="AS-20">
         <addPrimaryKey columnNames="id" tableName="project_status" constraintName="project_status_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="project_status" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="project_status" columnDataType="BIGINT"/>
     </changeSet>
 
 
@@ -194,7 +194,7 @@
 
     <changeSet author="danielly" id="AS-21">
         <addPrimaryKey columnNames="id" tableName="student" constraintName="student_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student" columnDataType="BIGINT"/>
     </changeSet>
 
 
@@ -202,7 +202,7 @@
 
     <changeSet author="danielly" id="AS-22">
         <addPrimaryKey columnNames="id" tableName="meeting" constraintName="meeting_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="meeting" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="meeting" columnDataType="BIGINT"/>
     </changeSet>
 
 
@@ -211,16 +211,16 @@
                                  referencedColumnNames="id" referencedTableName="address"/>
     </changeSet>
 
-    <changeSet author="danielly" id="AS-24">
-        <addForeignKeyConstraint baseColumnNames="chosen_date_id" baseTableName="meeting" constraintName="meeting_choosen_date_fk"
-                                 referencedColumnNames="id" referencedTableName="date"/>
-    </changeSet>
+<!--    <changeSet author="danielly" id="AS-24">-->
+<!--        <addForeignKeyConstraint baseColumnNames="chosen_date_id" baseTableName="meeting" constraintName="meeting_choosen_date_fk"-->
+<!--                                 referencedColumnNames="id" referencedTableName="date"/>-->
+<!--    </changeSet>-->
 
     <!-- PROJECT -->
 
     <changeSet author="danielly" id="AS-25">
         <addPrimaryKey columnNames="id" tableName="project" constraintName="project_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="project" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="project" columnDataType="BIGINT"/>
     </changeSet>
 
     <changeSet author="danielly" id="AS-26">
@@ -252,7 +252,7 @@
 
     <changeSet author="danielly" id="AS-31">
         <addPrimaryKey columnNames="id" tableName="deliver" constraintName="deliver_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="deliver" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="deliver" columnDataType="BIGINT"/>
     </changeSet>
 
     <changeSet author="danielly" id="AS-32">
@@ -265,7 +265,7 @@
 
     <changeSet author="danielly" id="AS-33">
         <addPrimaryKey columnNames="id" tableName="deliver_team" constraintName="deliver_team_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="deliver_team" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="deliver_team" columnDataType="BIGINT"/>
     </changeSet>
 
     <changeSet author="danielly" id="AS-34">
@@ -283,7 +283,7 @@
 
     <changeSet author="danielly" id="AS-36">
         <addPrimaryKey columnNames="id" tableName="project_deliver" constraintName="project_deliver_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="project_deliver" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="project_deliver" columnDataType="BIGINT"/>
     </changeSet>
 
     <changeSet author="danielly" id="AS-37">
@@ -301,7 +301,7 @@
 
     <changeSet author="danielly" id="AS-39">
         <addPrimaryKey columnNames="id" tableName="meeting_possible_date" constraintName="meeting_possible_date_id"/>
-<!--        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="meeting_possible_date" columnDataType="BIGINT"/>-->
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="meeting_possible_date" columnDataType="BIGINT"/>
     </changeSet>
 
     <changeSet author="danielly" id="AS-40">

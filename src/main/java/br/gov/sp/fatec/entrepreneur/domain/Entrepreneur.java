@@ -24,7 +24,9 @@ public class Entrepreneur {
 
     private String cpf;
 
-    private String phone;
+    private String telephone;
 
     private boolean active;
+
+    private String company;
 }
