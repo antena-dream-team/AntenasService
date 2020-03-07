@@ -19,7 +19,7 @@
             <column name="email" type="VARCHAR(50)"/>
             <column name="password" type="VARCHAR(50)"/>
             <column name="name" type="VARCHAR(100)"/>
-            <column name="position" type="VARCHAR(100)"/>
+<!--            <column name="position" type="VARCHAR(100)"/>-->
             <column name="active" type="BOOLEAN"/>
         </createTable>
     </changeSet>
@@ -71,10 +71,10 @@
             <column name="short_description" type="VARCHAR(255)"/>
             <column name="external_link_1" type="VARCHAR(255)"/>
             <column name="external_link_2" type="VARCHAR(255)"/>
-            <column name="complete_description" type="VARCHAR(255)"/>
+            <column name="complete_description" type="VARCHAR(1000)"/>
             <column name="tecnology_description" type="VARCHAR(255)"/>
-            <column name="key" type="VARCHAR(255)"/>
-            <column name="phase" type="VARCHAR(255)"/>
+            <column name="access_key" type="VARCHAR(255)"/>
+            <column name="progress" type="VARCHAR(50)"/>
             <column name="meeting_id" type="BIGINT"/>
 <!--            <column name="cadi_id" type="BIGINT"/>-->
             <column name="teacher_id" type="BIGINT"/>

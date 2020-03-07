@@ -14,13 +14,13 @@ public class ProjectDTO {
     private String title;
     private String shortDescription;
     private String completeDescription;
-    private String tecnologyDescription;
+    private String technologyDescription;
     private String externalLink1;
     private String externalLink2;
-    private String phase;
+    private String progress;
     private MeetingDTO meeting;
     private TeacherDTO teacher;
     private EntrepreneurDTO entrepreneur;
-    private String key;
+    private String accessKey;
 //    private StatusDTO status; TODO
 }

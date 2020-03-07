@@ -30,6 +30,6 @@ public class Address {
 
     private String zip;
 
-    @OneToMany(mappedBy = "id", targetEntity = Meeting.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Meeting> meeting = new ArrayList<>();
+//    @OneToMany(mappedBy = "id", targetEntity = Meeting.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Meeting> meeting = new ArrayList<>();
 }

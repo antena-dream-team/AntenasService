@@ -18,12 +18,10 @@ public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne
-//    @JoinColumn(name = "chosen_date_id", referencedColumnName = "id")
     @Column(name = "chosen_date")
     private java.util.Date chosenDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
@@ -31,5 +29,5 @@ public class Meeting {
     @JoinTable(name="meeting_possible_date",
             joinColumns=@JoinColumn(name="meeting_id"),
             inverseJoinColumns=@JoinColumn(name="possible_date_id"))
-    private List<Date> possible_date;
+    private List<Date> possibleDate;
 }

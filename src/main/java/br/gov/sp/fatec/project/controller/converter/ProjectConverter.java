@@ -1,8 +1,6 @@
 package br.gov.sp.fatec.project.controller.converter;
 
 import br.gov.sp.fatec.entrepreneur.controller.converter.EntrepreneurConverter;
-import br.gov.sp.fatec.entrepreneur.controller.dto.EntrepreneurDTO;
-import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.project.controller.dto.DateDTO;
 import br.gov.sp.fatec.project.controller.dto.MeetingDTO;
 import br.gov.sp.fatec.project.controller.dto.ProjectDTO;
@@ -10,8 +8,6 @@ import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Meeting;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.teacher.controller.converter.TeacherConverter;
-import br.gov.sp.fatec.teacher.controller.dto.TeacherDTO;
-import br.gov.sp.fatec.teacher.domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,15 +28,15 @@ public class ProjectConverter {
         Project model = new Project();
 
         model.setCompleteDescription(dto.getCompleteDescription());
-        model.setPhase(dto.getPhase());
-        model.setKey(dto.getKey());
+        model.setProgress(dto.getProgress());
+        model.setAccessKey(dto.getAccessKey());
         model.setId(dto.getId());
         model.setExternalLink2(dto.getExternalLink2());
         model.setExternalLink1(dto.getExternalLink1());
         model.setEntrepreneur(entrepreneurConverter.toModel(dto.getEntrepreneur()));
         model.setMeeting(meetingToModel(dto.getMeeting()));
         model.setTeacher(teacherConverter.toModel(dto.getTeacher()));
-        model.setTecnologyDescription(dto.getTecnologyDescription());
+        model.setTechnologyDescription(dto.getTechnologyDescription());
         model.setCompleteDescription(dto.getCompleteDescription());
         model.setShortDescription(dto.getShortDescription());
 
@@ -54,7 +50,7 @@ public class ProjectConverter {
         model.setAddress(dto.getAddress());
         model.setChosenDate(dto.getChosenDate());
         model.setId(dto.getId());
-        model.setPossible_date(dateToModel(dto.getPossible_date()));
+        model.setPossibleDate(dateToModel(dto.getPossibleDate()));
 
         return model;
     }
@@ -78,15 +74,15 @@ public class ProjectConverter {
         ProjectDTO dto = new ProjectDTO();
 
         dto.setCompleteDescription(model.getCompleteDescription());
-        dto.setPhase(model.getPhase());
-        dto.setKey(model.getKey());
+        dto.setProgress(model.getProgress());
+        dto.setAccessKey(model.getAccessKey());
         dto.setId(model.getId());
         dto.setExternalLink2(model.getExternalLink2());
         dto.setExternalLink1(model.getExternalLink1());
         dto.setEntrepreneur(entrepreneurConverter.toDTO(model.getEntrepreneur()));
         dto.setMeeting(meetingToDTO(model.getMeeting()));
         dto.setTeacher(teacherConverter.toDTO(model.getTeacher()));
-        dto.setTecnologyDescription(model.getTecnologyDescription());
+        dto.setTechnologyDescription(model.getTechnologyDescription());
         dto.setCompleteDescription(model.getCompleteDescription());
         dto.setShortDescription(model.getShortDescription());
 
@@ -100,23 +96,27 @@ public class ProjectConverter {
         dto.setAddress(model.getAddress());
         dto.setChosenDate(model.getChosenDate());
         dto.setId(model.getId());
-        dto.setPossible_date(dateToDTO(model.getPossible_date()));
+        dto.setPossibleDate(dateToDTO(model.getPossibleDate()));
 
         return dto;
     }
 
     public List<DateDTO> dateToDTO(List<Date> models) {
-        List<DateDTO> list = new LinkedList<>();
 
-        for (Date date : models) {
-            DateDTO dto = new DateDTO();
+        if (models != null) {
+            List<DateDTO> list = new LinkedList<>();
 
-            dto.setDateTime(date.getDateTime());
-            dto.setId(date.getId());
+            for (Date date : models) {
+                DateDTO dto = new DateDTO();
 
-            list.add(dto);
+                dto.setDateTime(date.getDateTime());
+                dto.setId(date.getId());
+
+                list.add(dto);
+            }
+
+            return list;
         }
-
-        return list;
+    return null;
     }
 }

@@ -4,6 +4,7 @@ import br.gov.sp.fatec.project.controller.converter.ProjectConverter;
 import br.gov.sp.fatec.project.controller.dto.ProjectDTO;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
+import br.gov.sp.fatec.teacher.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,19 +20,18 @@ public class ProjectController {
     @Autowired
     private ProjectConverter converter;
 
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ProjectDTO create (@RequestBody Project project) {
+
+        return converter.toDTO(service.save(project));
+    }
 
 //    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 //    @ResponseBody
-//    public ProjectDTO create (@RequestBody Project project) {
+//    public String create (@RequestBody Project project) {
 //
-//        return converter.toDTO(service.save(project));
+//        return "Não implementado";
 //    }
-
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String create (@RequestBody Project project) {
-
-        return "Não implementado";
-    }
 
 }

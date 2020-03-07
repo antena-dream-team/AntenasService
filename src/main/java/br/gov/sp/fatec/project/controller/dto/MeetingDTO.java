@@ -16,5 +16,5 @@ public class MeetingDTO {
     private Long id;
     private Date chosenDate;
     private Address address;
-    private List<DateDTO> possible_date;
+    private List<DateDTO> possibleDate;
 }

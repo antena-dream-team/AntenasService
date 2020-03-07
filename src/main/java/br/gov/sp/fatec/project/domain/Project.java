@@ -29,7 +29,7 @@ public class Project {
     private String completeDescription;
 
     @Column(name = "tecnology_description")
-    private String tecnologyDescription;
+    private String technologyDescription;
 
     @Column(name = "external_link_1")
     private String externalLink1;
@@ -37,7 +37,7 @@ public class Project {
     @Column(name = "external_link_2")
     private String externalLink2;
 
-    private String phase;
+    private String progress;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
@@ -54,8 +54,12 @@ public class Project {
     @JoinColumn(name = "entrepreneur_id", referencedColumnName = "id")
     private Entrepreneur entrepreneur;
 
-    private String key;
+    private String accessKey;
 
-//    private Status status; // TODO - VERIFICAR SE O LIQUIBASE ESTA CRIANDO O STATUS
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
+    private Status status;
+
+    // todo - adicionar os alunos
 
 }
