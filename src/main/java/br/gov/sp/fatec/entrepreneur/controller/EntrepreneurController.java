@@ -1,7 +1,5 @@
 package br.gov.sp.fatec.entrepreneur.controller;
 
-import br.gov.sp.fatec.entrepreneur.controller.converter.EntrepreneurConverter;
-import br.gov.sp.fatec.entrepreneur.controller.dto.EntrepreneurDTO;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +18,9 @@ public class EntrepreneurController {
     @Autowired
     EntrepreneurService service;
 
-    @Autowired
-    EntrepreneurConverter converter;
-
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
-    public EntrepreneurDTO create (@RequestBody Entrepreneur entrepreneur) {
-        return converter.toDTO(service.save(entrepreneur));
+    public Entrepreneur create (@RequestBody Entrepreneur entrepreneur) {
+        return service.save(entrepreneur);
     }
 }
