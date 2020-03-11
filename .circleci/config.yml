@@ -38,11 +38,11 @@ jobs: # a collection of steps
           destination: sample-springboot-api
 workflows:
   version: 2
-  build:
+  ci-build:
       jobs:
-          - build
-              filters:
-                branches:
-                  only:
-                    - master 
+        - deploy_to_development:
+            filters:
+              branches:
+                only:
+                  - master
 
