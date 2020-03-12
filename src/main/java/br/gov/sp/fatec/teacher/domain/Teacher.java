@@ -23,7 +23,6 @@ public class Teacher {
     @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
     private String email;
 
-    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
     private String password;
 
     @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
