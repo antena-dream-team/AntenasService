@@ -39,15 +39,21 @@ public class TeacherController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable("id") Long id) throws NotFoundException {
-        service.delete(id);
+    public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
+        service.deactivate(id);
     }
 
-    @PutMapping(value = {"/id"})
+    @PutMapping(value = "/{id}")
     @JsonView(TeacherView.Teacher.class)
     public Teacher update(@PathVariable("id") Long id,
                    @RequestBody Teacher teacher) {
         return  service.save(teacher);
+    }
+
+    @GetMapping(value = "/active")
+    @JsonView(TeacherView.Teacher.class)
+    public List<Teacher> findActive() {
+        return service.findActive();
     }
 }
 

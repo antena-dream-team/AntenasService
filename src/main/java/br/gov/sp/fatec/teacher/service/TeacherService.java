@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TeacherService {
@@ -15,18 +14,24 @@ public class TeacherService {
     @Autowired
     private TeacherRepository repository;
 
-
     public Teacher save(Teacher teacher) {
         return repository.save(teacher);
     }
 
-    public void delete(Long id) throws NotFoundException {
-        NotFoundException.throwIfNull(repository.findById(id));
-        repository.deleteById(id);
+    public void deactivate(Long id) throws NotFoundException {
+        Teacher found = repository.findById(id).orElse(null);
+        NotFoundException.throwIfNull(found);
+
+        found.setActive(false);
+        repository.save(found);
     }
 
     public List<Teacher> findAll() {
         return repository.findAll();
+    }
+
+    public List<Teacher> findActive() {
+        return repository.findAllByActive(true);
     }
 
     public Teacher findById(Long id) {
@@ -42,7 +47,5 @@ public class TeacherService {
         found.setEmail(teacher.getEmail());
 
         return repository.save(found);
-
     }
-
 }

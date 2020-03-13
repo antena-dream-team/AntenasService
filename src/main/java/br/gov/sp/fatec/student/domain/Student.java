@@ -25,7 +25,6 @@ public class Student {
     @JsonView({ProjectView.Project.class, StudentView.Student.class})
     private String email;
 
-    @JsonView({ProjectView.Project.class, StudentView.Student.class})
     private String password;
 
     @JsonView({ProjectView.Project.class, StudentView.Student.class})
