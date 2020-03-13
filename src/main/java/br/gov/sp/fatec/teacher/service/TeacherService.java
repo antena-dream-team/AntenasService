@@ -1,9 +1,13 @@
 package br.gov.sp.fatec.teacher.service;
 
+import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.service.ProjectService;
+import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import br.gov.sp.fatec.student.exception.StudentException.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +17,9 @@ public class TeacherService {
 
     @Autowired
     private TeacherRepository repository;
+
+    @Autowired
+    private ProjectService projectService;
 
     public Teacher save(Teacher teacher) {
         return repository.save(teacher);
@@ -47,5 +54,25 @@ public class TeacherService {
         found.setEmail(teacher.getEmail());
 
         return repository.save(found);
+    }
+
+    public Project setStudentsToProject(List<Student> studentList, Long projectId) {
+        try {
+            return projectService.setStudents(projectId, studentList);
+        } catch (Exception | NotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public Project setStudentsResponsibleToProject(Long studentId, Long projectId){
+        try {
+        return projectService.setStudentResponsible(projectId, studentId);
+        } catch (Exception | NotFoundException ex ) {
+            ex.printStackTrace();
+        }
+
+        return null;
     }
 }

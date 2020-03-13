@@ -1,20 +1,21 @@
 package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
-import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
+import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
-import br.gov.sp.fatec.student.repository.StudentRepository;
+import br.gov.sp.fatec.student.exception.StudentException.*;
+import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
-import br.gov.sp.fatec.teacher.repository.TeacherRepository;
+import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -24,23 +25,23 @@ public class ProjectService {
     private ProjectRepository repository;
 
     @Autowired
-    private TeacherRepository teacherRepository;
+    private TeacherService teacherService;
 
     @Autowired
-    private EntrepreneurRepository entrepreneurRepository;
+    private EntrepreneurService entrepreneurService;
 
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentService studentService;
 
     public Project save(Project project) throws NotFoundException {
         if (project.getTeacher() != null && project.getTeacher().getId() != null) {
-            Teacher found = teacherRepository.findById(project.getTeacher().getId()).orElse(null);
+            Teacher found = teacherService.findById(project.getTeacher().getId());
             NotFoundException.throwIfNull(found);
             project.setTeacher(found);
         }
 
         if (project.getEntrepreneur() != null) {
-            Entrepreneur found = entrepreneurRepository.findById(project.getEntrepreneur().getId()).orElse(null);
+            Entrepreneur found = entrepreneurService.findById(project.getEntrepreneur().getId());
             NotFoundException.throwIfNull(found);
             project.setEntrepreneur(found);
         }
@@ -53,11 +54,11 @@ public class ProjectService {
                 studentList.add(student.getId());
             }
 
-            project.setStudents(studentRepository.findAllById(studentList));
+            project.setStudents(studentService.findAllById(studentList));
         }
 
         if (project.getStudentResponsible() != null && project.getStudentResponsible().getId() != null) {
-            project.setStudentResponsible(studentRepository.getOne(project.getStudentResponsible().getId()));
+            project.setStudentResponsible(studentService.findById(project.getStudentResponsible().getId()));
         }
 
         return repository.save(project);
@@ -74,4 +75,42 @@ public class ProjectService {
 //    public void delete(Long id) { // todo - vai deletar ou desativar? se for desativar, é necessario adicionar o active no model (doman) e no banco (adicionar campo no arquivo dentro da pasta chengelog)
 //
 //    }
+
+    public Project setStudentResponsible(Long projectId, Long studentId) throws NotFoundException, StudentInactiveException, StudentNotFoundException {
+        Project project = findById(projectId);
+        NotFoundException.throwIfNull(project);
+
+        Student student = studentService.findById(studentId);
+        NotFoundException.throwIfStudentIsNull(student, studentId);
+
+        if (!student.isActive()) {
+            throw new StudentInactiveException(studentId);
+        }
+
+        project.setStudentResponsible(student);
+
+        return repository.save(project);
+    }
+
+    public Project setStudents(Long projectId, List<Student> studentList) throws NotFoundException, StudentInactiveException, StudentNotFoundException {
+        Project project = findById(projectId);
+        NotFoundException.throwIfNull(project);
+
+        List<Student> students = new LinkedList<>();
+
+        for (Student student : studentList) {
+            Student found = studentService.findById(student.getId());
+            NotFoundException.throwIfStudentIsNull(found, student.getId());
+
+            if (!found.isActive()) {
+                throw new StudentInactiveException(student.getId());
+            }
+
+            students.add(found);
+        }
+
+        project.setStudents(students);
+
+        return repository.save(project);
+    }
 }

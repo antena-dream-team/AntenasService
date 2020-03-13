@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.student.service;
 
+import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class StudentService {
@@ -30,6 +32,10 @@ public class StudentService {
         return repository.findAll();
     }
 
+    public List<Student> findAllById(Set<Long> idList) {
+        return repository.findAllById(idList);
+    }
+
     public List<Student> findActive() {
         return repository.findAllByActive(true);
     }
@@ -48,6 +54,5 @@ public class StudentService {
         found.setProjects(student.getProjects());
 
         return found;
-
     }
 }

@@ -3,6 +3,7 @@ package br.gov.sp.fatec.project.domain;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.view.StudentView;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ProjectView.Project.class})
+    @JsonView({ProjectView.Project.class, StudentView.Student.class})
     private Long id;
 
     @JsonView({ProjectView.Project.class})

@@ -1,5 +1,8 @@
 package br.gov.sp.fatec.teacher.controller;
 
+import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.view.ProjectView;
+import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.teacher.view.TeacherView;
@@ -7,6 +10,7 @@ import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import br.gov.sp.fatec.student.exception.StudentException.*;
 
 import java.util.List;
 
@@ -54,6 +58,28 @@ public class TeacherController {
     @JsonView(TeacherView.Teacher.class)
     public List<Teacher> findActive() {
         return service.findActive();
+    }
+
+    @PostMapping(value = "/set-students/{projectId}")
+    @JsonView(ProjectView.Project.class)
+    public Project setStudents(@PathVariable("projectId") Long projectId,
+                                         @RequestBody List<Student> studentList) {
+
+        // todo - checar se o professor pode adicionar os alunos
+        // todo - se ja ouverem alunos, sobrescrever ou so adicionar mais? depende de como vai funcionar o front. está sobrescrevendo
+
+        return service.setStudentsToProject(studentList, projectId);
+    }
+
+    @PostMapping(value = "/set-student-responsible/{projectId}/{studentId}")
+    @JsonView(ProjectView.Project.class)
+    public Project setResponsibleStudent(@PathVariable("projectId") Long projectId,
+                                         @PathVariable("studentId") Long studentId) {
+
+        // todo - checar se o professor pode adicionar os alunos
+        // todo - fazer com que o projeto fique na lista de projetos do aluno
+
+        return service.setStudentsResponsibleToProject(studentId, projectId);
     }
 }
 
