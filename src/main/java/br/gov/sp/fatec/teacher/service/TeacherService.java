@@ -7,10 +7,11 @@ import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import br.gov.sp.fatec.student.exception.StudentException.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfTeacherIsNull;
 
 @Service
 public class TeacherService {
@@ -25,12 +26,14 @@ public class TeacherService {
         return repository.save(teacher);
     }
 
-    public void deactivate(Long id) throws NotFoundException {
-        Teacher found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfNull(found);
+    public Teacher deactivate(Long id) {
+        Teacher found = repository.getOne(id);
+        throwIfTeacherIsNull(found, id);
 
         found.setActive(false);
         repository.save(found);
+
+        return found;
     }
 
     public List<Teacher> findAll() {
@@ -42,12 +45,14 @@ public class TeacherService {
     }
 
     public Teacher findById(Long id) {
-        return repository.findById(id).orElse(null);
+        Teacher teacher = repository.getOne(id);
+        throwIfTeacherIsNull(teacher, id);
+        return teacher;
     }
 
-    public Teacher update(Long id, Teacher teacher) throws NotFoundException {
-        Teacher found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfNull(found);
+    public Teacher update(Long id, Teacher teacher) {
+        Teacher found = repository.getOne(id);
+        throwIfTeacherIsNull(found, id);
 
         found.setActive(teacher.getActive());
         found.setName(teacher.getName());
@@ -68,7 +73,7 @@ public class TeacherService {
 
     public Project setStudentsResponsibleToProject(Long studentId, Long projectId){
         try {
-        return projectService.setStudentResponsible(projectId, studentId);
+            return projectService.setStudentResponsible(projectId, studentId);
         } catch (Exception | NotFoundException ex ) {
             ex.printStackTrace();
         }

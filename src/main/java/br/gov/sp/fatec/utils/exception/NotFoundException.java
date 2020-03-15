@@ -2,6 +2,8 @@ package br.gov.sp.fatec.utils.exception;
 
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.exception.StudentException.*;
+import br.gov.sp.fatec.teacher.domain.Teacher;
+import br.gov.sp.fatec.teacher.exception.TeacherException.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -23,6 +25,11 @@ public class NotFoundException extends Throwable {
     public static void throwIfStudentIsNull(Student student, Long id) throws StudentNotFoundException {
         if (student == null) {
             throw new StudentNotFoundException(id);
+        }
+    }
+    public static void throwIfTeacherIsNull(Teacher teacher, Long id) throws TeacherNotFoundException {
+        if (teacher == null) {
+            throw new TeacherNotFoundException(id);
         }
     }
     public static void throwIfNull(Object obj, String message) throws NotFoundException {

@@ -3,6 +3,7 @@ package br.gov.sp.fatec.project.domain;
 import br.gov.sp.fatec.project.view.ProjectView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "meeting")
 public class Meeting {
 

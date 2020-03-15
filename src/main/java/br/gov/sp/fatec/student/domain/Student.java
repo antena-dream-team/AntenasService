@@ -4,6 +4,7 @@ import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.view.StudentView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "student")
 public class Student {
     @Id

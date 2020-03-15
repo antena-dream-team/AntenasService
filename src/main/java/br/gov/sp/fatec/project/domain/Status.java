@@ -3,6 +3,7 @@ package br.gov.sp.fatec.project.domain;
 import br.gov.sp.fatec.project.view.ProjectView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "project_status")
 public class Status {
     @Id
