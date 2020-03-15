@@ -3,7 +3,6 @@ jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
         - image: circleci/openjdk:8-jdk-stretch 
-        - image: circleci/mysql:latest
 
     working_directory: ~/AccountSystem
 
