@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 @Repository
 public interface EntrepreneurRepository extends JpaRepository<Entrepreneur, Long>, JpaSpecificationExecutor<Entrepreneur> {
+
+    List<Entrepreneur> findAllByActive(Boolean active);
 }

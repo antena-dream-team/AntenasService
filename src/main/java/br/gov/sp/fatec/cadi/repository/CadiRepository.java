@@ -5,6 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CadiRepository extends JpaRepository<Cadi, Long>, JpaSpecificationExecutor<Cadi> {
+
+    List<Cadi> findAllByActive(Boolean active);
 }
