@@ -22,7 +22,7 @@ jobs: # a collection of steps
           keys:
           - sample-springboot-api-{{ checksum "pom.xml" }}
 
-      - run: mvn dependency:go-offline -DskipTests
+      - run: mvn dependency:go-offline
 
       - save_cache:
           paths:
@@ -30,7 +30,7 @@ jobs: # a collection of steps
           key: sample-springboot-api-{{ checksum "pom.xml" }}
         
       # package into a jar
-      - run: mvn clean package -DskipTests
+      - run: mvn clean package 
 
       # store raw contents of src code
       - store_artifacts:
@@ -40,7 +40,7 @@ workflows:
   version: 2
   ci-build:
       jobs:
-        - deploy_to_development:
+        - build:
             filters:
               branches:
                 only:
