@@ -10,7 +10,7 @@ public class StudentException {
         }
     }
 
-    public static class StudentNotFoundException extends Exception {
+    public static class StudentNotFoundException extends RuntimeException {
         public StudentNotFoundException(Long id) {
             super(format("The student with the id '%d' does not exists", id));
         }

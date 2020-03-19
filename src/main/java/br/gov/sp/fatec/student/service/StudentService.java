@@ -22,7 +22,7 @@ public class StudentService {
 
     public void deactivate(Long id) throws NotFoundException {
         Student found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfNull(found);
+        NotFoundException.throwIfStudentIsNull(found, id);
 
         found.setActive(false);
         repository.save(found);
@@ -41,15 +41,17 @@ public class StudentService {
     }
 
     public Student findById(Long id) {
-        return repository.findById(id).orElse(null);
+        Student found = repository.getOne(id);
+        NotFoundException.throwIfStudentIsNull(found, id);
+        return found;
     }
 
     public Student update(Long id, Student student) throws NotFoundException {
         Student found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfNull(repository.findById(id));
+        NotFoundException.throwIfStudentIsNull(found, id);
 
         found.setName(student.getName());
-        found.setEmail(student.getName());
+        found.setEmail(student.getEmail());
         found.setActive(student.isActive());
         found.setProjects(student.getProjects());
 

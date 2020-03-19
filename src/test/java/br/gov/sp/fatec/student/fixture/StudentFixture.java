@@ -35,6 +35,7 @@ public class StudentFixture {
                 .name(NAME)
                 .password(PASSWORD)
                 .id(ID)
+                .projects(getProjectList())
                 .build();
     }
 
