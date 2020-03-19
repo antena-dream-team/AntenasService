@@ -8,4 +8,10 @@ public class TeacherException {
             super(format("Teacher with id %d does not exists", id));
         }
     }
+
+    public static class TeacherInactiveException extends Exception {
+        public TeacherInactiveException(Long id) {
+            super(format("Teacher with id %d is inactive", id));
+        }
+    }
 }
