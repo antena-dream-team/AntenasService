@@ -9,6 +9,7 @@ import br.gov.sp.fatec.teacher.view.TeacherView;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import br.gov.sp.fatec.student.exception.StudentException.*;
 
@@ -25,6 +26,7 @@ public class TeacherController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(TeacherView.Teacher.class)
     public Teacher create (@RequestBody Teacher teacher) {
         return service.save(teacher);
@@ -34,6 +36,12 @@ public class TeacherController {
     @JsonView(TeacherView.Teacher.class)
     public List<Teacher> findAll() {
         return service.findAll();
+    }
+
+    @GetMapping(value = "/active")
+    @JsonView(TeacherView.Teacher.class)
+    public List<Teacher> findActive() {
+        return service.findActive();
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
@@ -52,12 +60,6 @@ public class TeacherController {
     public Teacher update(@PathVariable("id") Long id,
                    @RequestBody Teacher teacher) {
         return  service.save(teacher);
-    }
-
-    @GetMapping(value = "/active")
-    @JsonView(TeacherView.Teacher.class)
-    public List<Teacher> findActive() {
-        return service.findActive();
     }
 
     @PostMapping(value = "/set-students/{projectId}")
