@@ -1,7 +1,7 @@
-package br.gov.sp.fatec.teacher.controller;
+package br.gov.sp.fatec.entrepreneur.controller;
 
-import br.gov.sp.fatec.teacher.domain.Teacher;
-import br.gov.sp.fatec.teacher.service.TeacherService;
+import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
+import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,24 +17,22 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 import java.util.Objects;
 
-import static br.gov.sp.fatec.teacher.fixture.TeacherFixture.newTeacher;
+import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
 import static br.gov.sp.fatec.utils.commons.JSONParser.toJSON;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @RunWith(MockitoJUnitRunner.class)
-public class teacherControllerTest {
-
-    private static final String URL = "/dev/teacher";
+public class EntrepreneurControllerTest {
+    private static final String URL = "/dev/entrepreneur";
 
     @InjectMocks
-    private  TeacherController controller;
+    private EntrepreneurController controller;
 
     @Mock
-    private TeacherService service;
+    private EntrepreneurService service;
 
     private MockMvc mockMvc;
 
@@ -47,24 +45,24 @@ public class teacherControllerTest {
 
     @Test
     public void create_shouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        when(service.save(teacher)).thenReturn(teacher);
+        Entrepreneur entrepreneur = newEntrepreneur();
+        when(service.save(entrepreneur)).thenReturn(entrepreneur);
 
         mockMvc.perform(post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(toJSON(teacher))))
+                .content(Objects.requireNonNull(toJSON(entrepreneur))))
                 .andExpect(status().isCreated());
 
-        verify(service).save(teacher);
+        verify(service).save(entrepreneur);
     }
 
     @Test
     public void findAll_shouldSucceed() throws Exception {
-        List<Teacher> teacherList = Lists.newArrayList(newTeacher(1L, true),
-                newTeacher(2L, true),
-                newTeacher(3L, true));
+        List<Entrepreneur> entrepreneurList = Lists.newArrayList(newEntrepreneur(1L, true),
+                newEntrepreneur(2L, true),
+                newEntrepreneur(3L, true));
 
-        when(service.findAll()).thenReturn(teacherList);
+        when(service.findAll()).thenReturn(entrepreneurList);
 
         mockMvc.perform(get(URL))
                 .andExpect(status().isOk());
@@ -74,13 +72,13 @@ public class teacherControllerTest {
 
     @Test
     public void findActive_shouldSucceed() throws Exception {
-        List<Teacher> teacherList = Lists.newArrayList(newTeacher(1L, true),
-                newTeacher(2L, true),
-                newTeacher(3L, true),
-                newTeacher(4L, true),
-                newTeacher(5L, true));
+        List<Entrepreneur> entrepreneurList = Lists.newArrayList(newEntrepreneur(1L, true),
+                newEntrepreneur(2L, true),
+                newEntrepreneur(3L, true),
+                newEntrepreneur(4L, true),
+                newEntrepreneur(5L, true));
 
-        when(service.findActive()).thenReturn(teacherList);
+        when(service.findActive()).thenReturn(entrepreneurList);
 
         mockMvc.perform(get(URL + "/active"))
                 .andExpect(status().isOk());
@@ -88,31 +86,31 @@ public class teacherControllerTest {
 
     @Test
     public void findById_shouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        when(service.findById(teacher.getId())).thenReturn(teacher);
+        Entrepreneur entrepreneur = newEntrepreneur();
+        when(service.findById(entrepreneur.getId())).thenReturn(entrepreneur);
 
-        mockMvc.perform(get(URL + "/" + teacher.getId()))
+        mockMvc.perform(get(URL + "/" + entrepreneur.getId()))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void update_ShouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        Teacher updated = newTeacher();
+        Entrepreneur entrepreneur = newEntrepreneur();
+        Entrepreneur updated = newEntrepreneur();
         updated.setEmail("newEmail@test.com");
 
-        mockMvc.perform(put(URL + "/" + teacher.getId())
+        mockMvc.perform(put(URL + "/" + entrepreneur.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(toJSON(teacher))))
+                .content(Objects.requireNonNull(toJSON(entrepreneur))))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void deactivate_shouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        teacher.setActive(false);
+        Entrepreneur entrepreneur = newEntrepreneur();
+        entrepreneur.setActive(false);
 
-        mockMvc.perform(delete(URL + "/" + teacher.getId()))
+        mockMvc.perform(delete(URL + "/" + entrepreneur.getId()))
                 .andExpect(status().isOk());
     }
 }

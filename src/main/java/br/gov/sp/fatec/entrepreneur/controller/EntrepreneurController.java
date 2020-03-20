@@ -6,6 +6,7 @@ import br.gov.sp.fatec.entrepreneur.view.EntrepreneurView;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,9 @@ public class EntrepreneurController {
     EntrepreneurService service;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.CREATED)
     @ResponseBody
+    @JsonView(EntrepreneurView.Entrepreneur.class)
     public Entrepreneur create (@RequestBody Entrepreneur entrepreneur) {
         return service.save(entrepreneur);
     }
