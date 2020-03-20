@@ -25,4 +25,17 @@ public class EntrepreneurFixture {
                 .id(ID)
                 .build();
     }
+
+    public static Entrepreneur newEntrepreneur(Long id, Boolean active) {
+        return Entrepreneur.builder()
+                .active(active)
+                .company(COMPANY)
+                .cpf(CPF)
+                .email(EMAIL)
+                .name(NAME)
+                .password(PASSWORD)
+                .telephone(TELEPHONE)
+                .id(id)
+                .build();
+    }
 }

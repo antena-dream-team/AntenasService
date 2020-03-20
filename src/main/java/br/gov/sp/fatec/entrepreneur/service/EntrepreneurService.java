@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfEntrepreneurIsNull;
+
 @Service
 public class EntrepreneurService {
 
@@ -16,14 +18,6 @@ public class EntrepreneurService {
 
     public Entrepreneur save(Entrepreneur entrepreneur) {
         return repository.save(entrepreneur);
-    }
-
-    public void deactivate(Long id) throws NotFoundException {
-        Entrepreneur found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfNull(found);
-
-        found.setActive(false);
-        repository.save(found);
     }
 
     public List<Entrepreneur> findAll() {
@@ -38,9 +32,19 @@ public class EntrepreneurService {
         return repository.findById(id).orElse(null);
     }
 
-    public Entrepreneur update(Long id, Entrepreneur entrepreneur) throws NotFoundException {
+    public Entrepreneur deactivate(Long id) {
+        Entrepreneur found = repository.getOne(id);
+        throwIfEntrepreneurIsNull(found, id);
+
+        found.setActive(false);
+        repository.save(found);
+
+        return found;
+    }
+
+    public Entrepreneur update(Long id, Entrepreneur entrepreneur) {
         Entrepreneur found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfNull(found);
+        throwIfEntrepreneurIsNull(found, id);
 
         found.setName(entrepreneur.getName());
         found.setEmail(entrepreneur.getEmail());
