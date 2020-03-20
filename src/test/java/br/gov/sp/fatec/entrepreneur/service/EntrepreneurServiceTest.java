@@ -1,7 +1,7 @@
 package br.gov.sp.fatec.entrepreneur.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
-import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException;
+import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.EntrepreneurNotFoundException;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
@@ -47,7 +47,7 @@ public class EntrepreneurServiceTest {
         assertFalse(entrepreneur.isActive());
     }
 
-    @Test(expected = EntrepreneurException.EntrepreneurNotFoundException.class)
+    @Test(expected = EntrepreneurNotFoundException.class)
     public void deactivate_shouldFail() {
         service.deactivate(1L);
     }
@@ -92,10 +92,8 @@ public class EntrepreneurServiceTest {
         assertEquals(entrepreneur.getId(), found.getId());
     }
 
-    @Test(expected = EntrepreneurException.EntrepreneurNotFoundException.class)
+    @Test(expected = EntrepreneurNotFoundException.class)
     public void findById_shouldFail() {
-        when(repository.getOne(1L)).thenReturn(null);
-
         service.findById(1L);
     }
 
@@ -105,7 +103,7 @@ public class EntrepreneurServiceTest {
         Entrepreneur updated = newEntrepreneur();
         updated.setEmail("newEmail@test.com");
 
-        when(repository.getOne(entrepreneur.getId())).thenReturn(entrepreneur);
+        when(repository.findById(entrepreneur.getId())).thenReturn(java.util.Optional.of(entrepreneur));
         when(repository.save(updated)).thenReturn(updated);
 
         Entrepreneur returned = service.update(entrepreneur.getId(), updated);
@@ -113,12 +111,10 @@ public class EntrepreneurServiceTest {
         assertEquals(updated.getEmail(), returned.getEmail());
     }
 
-    @Test(expected = EntrepreneurException.EntrepreneurNotFoundException.class)
+    @Test(expected = EntrepreneurNotFoundException.class)
     public void update_shouldFail() {
         Entrepreneur updated = newEntrepreneur();
         updated.setEmail("newEmail@test.com");
-
-        when(repository.getOne(2L)).thenReturn(null);
 
         service.update(2L, updated);
     }

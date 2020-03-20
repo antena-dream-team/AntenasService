@@ -29,7 +29,10 @@ public class EntrepreneurService {
     }
 
     public Entrepreneur findById(Long id) {
-        return repository.findById(id).orElse(null);
+        Entrepreneur found = repository.getOne(id);
+        throwIfEntrepreneurIsNull(found, id);
+
+        return found;
     }
 
     public Entrepreneur deactivate(Long id) {
