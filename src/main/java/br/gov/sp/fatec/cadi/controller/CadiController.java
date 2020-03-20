@@ -6,6 +6,7 @@ import br.gov.sp.fatec.cadi.view.CadiView;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class CadiController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(CadiView.Cadi.class)
     private Cadi create (@RequestBody Cadi cadi) {
         return (service.save(cadi));
