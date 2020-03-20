@@ -2,11 +2,14 @@ package br.gov.sp.fatec.cadi.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
+import br.gov.sp.fatec.cadi.exception.CadiException.CadiNotFoundException;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfCadiIsNull;
 
 @Service
 public class CadiService {
@@ -18,14 +21,6 @@ public class CadiService {
         return repository.save(cadi);
     }
 
-    public void deactivate(Long id) throws NotFoundException {
-        Cadi found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfNull(found);
-
-        found.setActive(false);
-        repository.save(found);
-    }
-
     public List<Cadi> findAll() {
         return repository.findAll();
     }
@@ -35,12 +30,14 @@ public class CadiService {
     }
 
     public Cadi findById(Long id) {
-        return repository.findById(id).orElse(null);
+        Cadi found = repository.findById(id).orElse(null);
+        throwIfCadiIsNull(found, id);
+        return found;
     }
 
-    public Cadi update(Long id, Cadi cadi) throws NotFoundException {
+    public Cadi update(Long id, Cadi cadi) {
         Cadi found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfNull(found);
+        throwIfCadiIsNull(found, id);
 
         found.setActive(cadi.isActive());
         found.setName(cadi.getName());
@@ -51,4 +48,13 @@ public class CadiService {
         return repository.save(found);
     }
 
+    public Cadi deactivate(Long id) {
+        Cadi found = repository.getOne(id);
+        throwIfCadiIsNull(found, id);
+
+        found.setActive(false);
+        repository.save(found);
+
+        return found;
+    }
 }
