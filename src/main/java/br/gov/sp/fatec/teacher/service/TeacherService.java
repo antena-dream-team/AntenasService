@@ -64,7 +64,7 @@ public class TeacherService {
     public Project setStudentsToProject(List<Student> studentList, Long projectId) {
         try {
             return projectService.setStudents(projectId, studentList);
-        } catch (Exception | NotFoundException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 

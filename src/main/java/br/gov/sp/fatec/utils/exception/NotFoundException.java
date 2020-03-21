@@ -1,9 +1,11 @@
 package br.gov.sp.fatec.utils.exception;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
-import br.gov.sp.fatec.cadi.exception.CadiException.CadiNotFoundException;
+import br.gov.sp.fatec.cadi.exception.CadiException.*;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
-import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.EntrepreneurNotFoundException;
+import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.*;
+import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.exception.ProjectException.*;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.exception.StudentException.*;
 import br.gov.sp.fatec.teacher.domain.Teacher;
@@ -35,7 +37,8 @@ public class NotFoundException extends Throwable {
         if (teacher == null) {
             throw new TeacherNotFoundException(id);
         }
-    }    public static void throwIfEntrepreneurIsNull(Entrepreneur entrepreneur, Long id) throws EntrepreneurNotFoundException {
+    }
+    public static void throwIfEntrepreneurIsNull(Entrepreneur entrepreneur, Long id) throws EntrepreneurNotFoundException {
         if (entrepreneur == null) {
             throw new EntrepreneurNotFoundException(id);
         }
@@ -43,6 +46,16 @@ public class NotFoundException extends Throwable {
     public static void throwIfCadiIsNull(Cadi cadi, Long id) throws CadiNotFoundException {
         if (cadi == null) {
             throw new CadiNotFoundException(id);
+        }
+    }
+    public static void throwIfCadiIsNull(Cadi cadi) throws CadiLoginFailed {
+        if (cadi == null) {
+            throw new CadiLoginFailed();
+        }
+    }
+    public static void throwIfProjectIsNull(Project project, Long id) throws ProjectNotFoundException {
+        if (project == null) {
+            throw new ProjectNotFoundException(id);
         }
     }
     public static void throwIfNull(Object obj, String message) throws NotFoundException {

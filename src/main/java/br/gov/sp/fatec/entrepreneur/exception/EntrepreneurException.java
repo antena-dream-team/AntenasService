@@ -9,4 +9,10 @@ public class EntrepreneurException {
             super(format("Entrepreneur with id %d does not exists", id));
         }
     }
+
+    public static class EntrepreneurInactiveException extends RuntimeException {
+        public EntrepreneurInactiveException (Long id) {
+            super(format("Entrepreneur with id %d is inactive", id));
+        }
+    }
 }
