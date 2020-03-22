@@ -31,7 +31,7 @@ public class StudentService {
     public Student save(Student student) {
         student.setActive(false);
         student.setPassword(Base64.getEncoder().encodeToString(student.getPassword().getBytes()));
-        sendEmail.sendMail(student.getEmail(), "cadi");
+        sendEmail.sendMail(student.getEmail(), "student");
         return repository.save(student);
     }
 

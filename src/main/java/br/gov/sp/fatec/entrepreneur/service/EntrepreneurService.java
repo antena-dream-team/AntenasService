@@ -2,6 +2,7 @@ package br.gov.sp.fatec.entrepreneur.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
+import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,14 @@ public class EntrepreneurService {
     @Autowired
     EntrepreneurRepository repository;
 
+    @Autowired
+    private SendEmail sendEmail;
+
     public Entrepreneur save(Entrepreneur entrepreneur) {
+        entrepreneur.setActive(false);
+        entrepreneur.setPassword(Base64.getEncoder().encodeToString(entrepreneur.getPassword().getBytes()));
+        sendEmail.sendMail(entrepreneur.getEmail(), "entrepreneur");
+
         return repository.save(entrepreneur);
     }
 
