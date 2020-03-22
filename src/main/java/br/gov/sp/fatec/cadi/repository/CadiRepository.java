@@ -13,4 +13,6 @@ public interface CadiRepository extends JpaRepository<Cadi, Long>, JpaSpecificat
     List<Cadi> findAllByActive(Boolean active);
 
     Cadi findByEmailAndPassword(String email, String password);
+
+    Cadi findByEmail(String email);
 }

@@ -35,7 +35,7 @@ public class CadiController {
     @JsonView(CadiView.Cadi.class)
     private Cadi create (@RequestBody Cadi cadi) {
         // todo - enviar verificação para o email
-        sendEmail.sendMail();
+        sendEmail.sendMail(cadi.getEmail(), "cadi");
         return (service.save(cadi));
     }
 
@@ -52,8 +52,13 @@ public class CadiController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
+    public void deactivate(@PathVariable("id") Long id) {
         service.deactivate(id);
+    }
+
+    @GetMapping(value = "/activate/{b64}")
+    public Cadi activate(@PathVariable("b64") String b64) {
+        return service.activate(b64);
     }
 
     @PutMapping(value = "/{id}")

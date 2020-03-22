@@ -53,6 +53,11 @@ public class NotFoundException extends Throwable {
             throw new CadiLoginFailed();
         }
     }
+    public static void throwCadiIsNull(Cadi cadi) throws CadiNotFoundException {
+        if (cadi == null) {
+            throw new CadiNotFoundException();
+        }
+    }
     public static void throwIfProjectIsNull(Project project, Long id) throws ProjectNotFoundException {
         if (project == null) {
             throw new ProjectNotFoundException(id);

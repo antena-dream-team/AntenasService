@@ -6,10 +6,13 @@ import br.gov.sp.fatec.cadi.exception.CadiException.CadiNotFoundException;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.service.ProjectService;
+import br.gov.sp.fatec.utils.commons.JSONParser;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfCadiIsInactive;
@@ -25,6 +28,7 @@ public class CadiService {
     private ProjectService projectService;
 
     public Cadi save(Cadi cadi) {
+        cadi.setActive(false);
         return repository.save(cadi);
     }
 
@@ -60,6 +64,17 @@ public class CadiService {
         throwIfCadiIsNull(found, id);
 
         found.setActive(false);
+        repository.save(found);
+
+        return found;
+    }
+
+    public Cadi activate(String b64) {
+        JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
+        Cadi found = repository.findByEmail(jsonObject.get("email").toString());
+        throwIfCadiIsNull(found);
+
+        found.setActive(true);
         repository.save(found);
 
         return found;

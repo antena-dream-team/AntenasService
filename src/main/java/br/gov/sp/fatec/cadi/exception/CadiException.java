@@ -8,11 +8,15 @@ public class CadiException {
         public CadiNotFoundException(Long id) {
             super(format("Cadi with id %d does not exists", id));
         }
+
+        public CadiNotFoundException() {
+            super("Cadi does not exists");
+        }
     }
 
     public static class CadiLoginFailed extends RuntimeException {
         public CadiLoginFailed() {
-            super(format("Cadi - login failed"));
+            super("Cadi - login failed");
         }
     }
 
