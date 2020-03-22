@@ -20,4 +20,9 @@ public class StudentException {
         }
     }
 
+    public static class StudentLoginFailed extends RuntimeException {
+        public StudentLoginFailed() {
+            super("Student - login failed");
+        }
+    }
 }

@@ -4,6 +4,7 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
+import br.gov.sp.fatec.teacher.exception.TeacherException.*;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.teacher.view.TeacherView;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import br.gov.sp.fatec.student.exception.StudentException.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -95,6 +97,18 @@ public class TeacherController {
     public Project removeStudent(@PathVariable("projectId") Long projectId,
                                  @PathVariable("studentId") Long studentId) {
         return service.removeStudents(projectId, studentId);
+    }
+
+    @PostMapping(value = "/login")
+    @JsonView(TeacherView.Teacher.class)
+    public Teacher login(@RequestBody Map<String, String> login) {
+        try {
+            String password = login.get("password");
+            String email = login.get("email");
+            return service.login(email, password);
+        } catch (Exception e) {
+            throw new TeacherLoginFailed();
+        }
     }
 }
 

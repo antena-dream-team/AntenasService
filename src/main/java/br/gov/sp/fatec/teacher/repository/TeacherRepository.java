@@ -9,4 +9,6 @@ import java.util.List;
 public interface TeacherRepository extends JpaRepository<Teacher, Long>, JpaSpecificationExecutor<Teacher> {
     List<Teacher> findAllByActive(Boolean active);
 
+    Teacher findByEmailAndPassword(String email, String password);
+
 }

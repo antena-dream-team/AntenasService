@@ -158,6 +158,21 @@ public class ProjectService {
         return projects;
     }
 
+    public List<Project> getProjectByStudent(Long studentId) {
+        List<Project> projects = repository.findByTeacherId(studentId);
+        throwIfProjectIsNull(projects);
+        return projects;
+    }
+
+    public Project setSolution(Long projectId, String link) {
+        Project project = findById(projectId);
+        throwIfProjectIsNull(project);
+
+        project.setExternalLink1(link);
+
+        return repository.save(project);
+    }
+
 //    private String generateCode() {
 //        boolean unique = false;
 //

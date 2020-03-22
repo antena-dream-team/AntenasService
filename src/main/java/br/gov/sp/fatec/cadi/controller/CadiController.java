@@ -1,14 +1,12 @@
 package br.gov.sp.fatec.cadi.controller;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
-import br.gov.sp.fatec.cadi.exception.CadiException;
+import br.gov.sp.fatec.cadi.exception.CadiException.CadiLoginFailed;
 import br.gov.sp.fatec.cadi.service.CadiService;
 import br.gov.sp.fatec.cadi.view.CadiView;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.view.ProjectView;
-import br.gov.sp.fatec.utils.commons.SendEmail;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -98,7 +96,7 @@ public class CadiController {
             String email = login.get("email");
             return service.login(email, password);
         } catch (Exception e) {
-            throw new CadiException.CadiLoginFailed();
+            throw new CadiLoginFailed();
         }
     }
 }

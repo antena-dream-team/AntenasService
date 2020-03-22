@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Base64;
 import java.util.List;
 
+import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfTeacherIsInactive;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfTeacherIsNull;
 
 @Service
@@ -105,5 +106,15 @@ public class TeacherService {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    public Teacher login(String email, String password) {
+        password =  Base64.getEncoder().encodeToString(password.getBytes());
+        Teacher teacher = repository.findByEmailAndPassword(email, password);
+
+        throwIfTeacherIsNull(teacher);
+        throwIfTeacherIsInactive(teacher);
+
+        return teacher;
     }
 }

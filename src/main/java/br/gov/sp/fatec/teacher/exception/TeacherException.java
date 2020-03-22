@@ -17,4 +17,10 @@ public class TeacherException {
             super(format("Teacher with id %d is inactive", id));
         }
     }
+
+    public static class TeacherLoginFailed extends RuntimeException {
+        public TeacherLoginFailed() {
+            super("Teacher - login failed");
+        }
+    }
 }
