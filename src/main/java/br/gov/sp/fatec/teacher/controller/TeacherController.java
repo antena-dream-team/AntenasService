@@ -78,10 +78,23 @@ public class TeacherController {
     public Project setResponsibleStudent(@PathVariable("projectId") Long projectId,
                                          @PathVariable("studentId") Long studentId) {
 
-        // todo - checar se o professor pode adicionar os alunos
-        // todo - fazer com que o projeto fique na lista de projetos do aluno
+        // todo - checar se o professor pode adicionar o aluno
+        // todo - fazer com que o projeto fique na lista de projetos do aluno ???
 
         return service.setStudentsResponsibleToProject(studentId, projectId);
+    }
+
+    @GetMapping(value = "/list-project-by-teacher/{teacherId}")
+    @JsonView(ProjectView.Project.class)
+    public List<Project> listProjectByTeacher(@PathVariable("teacherId") Long teacherId) {
+        return service.listProjectByTeacher(teacherId);
+    }
+
+    @DeleteMapping(value = "/remove-student/{projectId}/{studentId}")
+    @JsonView(ProjectView.Project.class)
+    public Project removeStudent(@PathVariable("projectId") Long projectId,
+                                 @PathVariable("studentId") Long studentId) {
+        return service.removeStudents(projectId, studentId);
     }
 }
 

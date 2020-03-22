@@ -8,5 +8,16 @@ public class ProjectException {
         public ProjectNotFoundException(Long id) {
             super(format("Project with id %d does not exists", id));
         }
+
+        public ProjectNotFoundException() {
+            super("Project does not exists");
+        }
     }
+
+    public static class NoProjectForThisUserException extends RuntimeException {
+        public NoProjectForThisUserException() {
+            super("There is no project registered for this user");
+        }
+    }
+
 }

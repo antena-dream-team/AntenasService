@@ -5,10 +5,12 @@ import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
+import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfTeacherIsNull;
@@ -22,7 +24,14 @@ public class TeacherService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private SendEmail sendEmail;
+
     public Teacher save(Teacher teacher) {
+        teacher.setActive(false);
+        teacher.setPassword(Base64.getEncoder().encodeToString(teacher.getPassword().getBytes()));
+        sendEmail.sendMail(teacher.getEmail(), "teacher");
+
         return repository.save(teacher);
     }
 
@@ -76,8 +85,25 @@ public class TeacherService {
             return projectService.setStudentResponsible(projectId, studentId);
         } catch (Exception | NotFoundException ex ) {
             ex.printStackTrace();
+            return null;
         }
+    }
 
-        return null;
+    public List<Project> listProjectByTeacher(Long teacherId) {
+        try {
+            return projectService.getProjectByTeacher(teacherId);
+        } catch (Exception ex ) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public Project removeStudents(Long projectId, Long studentId) {
+        try {
+            return projectService.removeStudents(projectId, studentId);
+        } catch (Exception ex ) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }

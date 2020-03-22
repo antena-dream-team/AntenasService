@@ -26,16 +26,12 @@ public class CadiController {
     @Autowired
     CadiService service;
 
-    @Autowired
-    private SendEmail sendEmail;
-
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(CadiView.Cadi.class)
     private Cadi create (@RequestBody Cadi cadi) {
-        // todo - enviar verificação para o email
-        sendEmail.sendMail(cadi.getEmail(), "cadi");
+
         return (service.save(cadi));
     }
 
@@ -57,8 +53,8 @@ public class CadiController {
     }
 
     @GetMapping(value = "/activate/{b64}")
-    public Cadi activate(@PathVariable("b64") String b64) {
-        return service.activate(b64);
+    public void activate(@PathVariable("b64") String b64) {
+        service.activate(b64);
     }
 
     @PutMapping(value = "/{id}")
@@ -96,10 +92,10 @@ public class CadiController {
 
     @PostMapping(value = "/login")
     @JsonView(CadiView.Cadi.class)
-    public Cadi login(@RequestBody Map<String, Object> login) {
+    public Cadi login(@RequestBody Map<String, String> login) {
         try {
-            String password = (String) login.get("password");
-            String email = (String) login.get("email");
+            String password = login.get("password");
+            String email = login.get("email");
             return service.login(email, password);
         } catch (Exception e) {
             throw new CadiException.CadiLoginFailed();

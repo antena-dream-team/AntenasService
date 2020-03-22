@@ -13,6 +13,8 @@ import br.gov.sp.fatec.teacher.exception.TeacherException.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.List;
+
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class NotFoundException extends Throwable {
     public NotFoundException() {
@@ -28,41 +30,72 @@ public class NotFoundException extends Throwable {
             throw new NotFoundException();
         }
     }
+
     public static void throwIfStudentIsNull(Student student, Long id) throws StudentNotFoundException {
         if (student == null) {
             throw new StudentNotFoundException(id);
         }
     }
+    public static void throwIfStudentIsNull(Student student) throws StudentNotFoundException {
+        if (student == null) {
+            throw new StudentNotFoundException();
+        }
+    }
+
     public static void throwIfTeacherIsNull(Teacher teacher, Long id) throws TeacherNotFoundException {
         if (teacher == null) {
             throw new TeacherNotFoundException(id);
         }
     }
+
+    public static void throwIfTeacherIsNull(Teacher teacher) throws TeacherNotFoundException {
+        if (teacher == null) {
+            throw new TeacherNotFoundException();
+        }
+    }
+
     public static void throwIfEntrepreneurIsNull(Entrepreneur entrepreneur, Long id) throws EntrepreneurNotFoundException {
         if (entrepreneur == null) {
             throw new EntrepreneurNotFoundException(id);
         }
     }
+
     public static void throwIfCadiIsNull(Cadi cadi, Long id) throws CadiNotFoundException {
         if (cadi == null) {
             throw new CadiNotFoundException(id);
         }
     }
+
     public static void throwIfCadiIsNull(Cadi cadi) throws CadiLoginFailed {
         if (cadi == null) {
             throw new CadiLoginFailed();
         }
     }
+
     public static void throwCadiIsNull(Cadi cadi) throws CadiNotFoundException {
         if (cadi == null) {
             throw new CadiNotFoundException();
         }
     }
+
     public static void throwIfProjectIsNull(Project project, Long id) throws ProjectNotFoundException {
         if (project == null) {
             throw new ProjectNotFoundException(id);
         }
     }
+
+    public static void throwIfProjectIsNull(List<Project> projects) throws NoProjectForThisUserException {
+        if (projects.isEmpty()) {
+            throw new NoProjectForThisUserException();
+        }
+    }
+
+    public static void throwIfProjectIsNull(Project project) throws ProjectNotFoundException {
+        if (project == null) {
+            throw new ProjectNotFoundException();
+        }
+    }
+
     public static void throwIfNull(Object obj, String message) throws NotFoundException {
         if (obj == null) {
             throw new NotFoundException(message);

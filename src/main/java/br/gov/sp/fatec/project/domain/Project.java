@@ -10,8 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +74,8 @@ public class Project {
     @JoinColumn(name = "entrepreneur_id", referencedColumnName = "id")
     private Entrepreneur entrepreneur;
 
-    @JsonView({ProjectView.Project.class})
-    private String accessKey;
+//    @JsonView({ProjectView.Project.class})
+//    private String accessKey;
 
     @JsonView({ProjectView.Project.class})
     @ManyToOne(cascade = CascadeType.ALL)
@@ -90,4 +92,9 @@ public class Project {
     @JsonView({ProjectView.Project.class})
     @OneToOne(cascade = CascadeType.ALL)
     private Student studentResponsible;
+
+    @CreatedDate
+    @Column(nullable = false)
+    private ZonedDateTime createdAt = ZonedDateTime.now();
+
 }
