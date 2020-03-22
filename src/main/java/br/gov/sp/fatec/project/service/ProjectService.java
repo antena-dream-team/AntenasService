@@ -2,6 +2,8 @@ package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
+import br.gov.sp.fatec.project.domain.Date;
+import br.gov.sp.fatec.project.domain.Meeting;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
@@ -16,10 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
+import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfEntrepreneurIsInactive;
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfStudentIsInactive;
-import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfTeacherIsInactive;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.*;
 
 @Service
@@ -37,7 +42,7 @@ public class ProjectService {
     @Autowired
     private StudentService studentService;
 
-    public Project save(Project project) throws NotFoundException {
+    public Project save(Project project) {
         if (project.getTeacher() != null && project.getTeacher().getId() != null) {
             Teacher found = teacherService.findById(project.getTeacher().getId());
             throwIfTeacherIsNull(found);
@@ -46,7 +51,8 @@ public class ProjectService {
 
         if (project.getEntrepreneur() != null) {
             Entrepreneur found = entrepreneurService.findById(project.getEntrepreneur().getId());
-            NotFoundException.throwIfNull(found);
+            throwIfEntrepreneurIsNull(found);
+            throwIfEntrepreneurIsInactive(found);
             project.setEntrepreneur(found);
         }
 
@@ -54,7 +60,8 @@ public class ProjectService {
             Set<Long> studentList = new HashSet<>();
 
             for (Student student : project.getStudents()) {
-                NotFoundException.throwIfNull(student.getId());
+                throwIfStudentIsNull(student);
+                throwIfStudentIsInactive(student);
                 studentList.add(student.getId());
             }
 
@@ -159,7 +166,13 @@ public class ProjectService {
     }
 
     public List<Project> getProjectByStudent(Long studentId) {
-        List<Project> projects = repository.findByTeacherId(studentId);
+        List<Project> projects = repository.findByStudentId(studentId);
+        throwIfProjectIsNull(projects);
+        return projects;
+    }
+
+    public List<Project> getProjectByEntrepreneur(Long entrepreneurId) {
+        List<Project> projects = repository.findByEntrepreneurId(entrepreneurId);
         throwIfProjectIsNull(projects);
         return projects;
     }
@@ -172,6 +185,41 @@ public class ProjectService {
 
         return repository.save(project);
     }
+
+    public Project setMeetingPossibleDate(List<Date> possibleDate, Long projectId) {
+        for (Date date : possibleDate) {
+            throwIfDateIsNull(date);
+        }
+
+        Project project = findById(projectId);
+        throwIfProjectIsNull(project);
+
+        Meeting meeting = new Meeting();
+        meeting.setPossibleDate(possibleDate);
+
+        project.setMeeting(meeting);
+
+        return repository.save(project);
+    }
+
+    public Project setMeetingChosenDate(Long possibleDateId, Long projectId) {
+        Project project = findById(projectId);
+        throwIfProjectIsNull(project);
+
+        List<Date> possibleDateList = project.getMeeting().getPossibleDate();
+
+        Date date = possibleDateList.stream().filter(
+                possibleDate -> possibleDateId.equals(possibleDate.getId()))
+                .findFirst().orElse(null);
+
+        throwIfDateIsNull(date);
+
+        project.getMeeting().setChosenDate(date.getDateTime());
+
+        return repository.save(project);
+    }
+
+
 
 //    private String generateCode() {
 //        boolean unique = false;

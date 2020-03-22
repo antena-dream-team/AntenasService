@@ -3,6 +3,7 @@ package br.gov.sp.fatec.cadi.service;
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
 import br.gov.sp.fatec.cadi.exception.CadiException.CadiNotFoundException;
+import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.service.ProjectService;
@@ -84,10 +85,6 @@ public class CadiService {
         repository.save(found);
     }
 
-    public List<Project> getAllProjects() {
-        return projectService.findAll();
-    }
-
     public Project setTeacher(Long teacherId, Long projectId) {
         return projectService.setTeacher(teacherId, projectId);
     }
@@ -104,5 +101,9 @@ public class CadiService {
         throwIfCadiIsInactive(cadi);
 
         return cadi;
+    }
+
+    public Project setMeetingPossibleDate(List<Date> dates, Long projectId) {
+        return projectService.setMeetingPossibleDate(dates, projectId);
     }
 }

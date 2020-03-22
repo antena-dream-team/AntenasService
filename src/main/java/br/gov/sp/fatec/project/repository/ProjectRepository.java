@@ -9,6 +9,11 @@ import java.util.List;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long>, JpaSpecificationExecutor<Project> {
+
     List<Project> findByTeacherId(Long id);
+
+    List<Project> findByStudentId(Long id);
+
+    List<Project> findByEntrepreneurId(Long id);
 
 }

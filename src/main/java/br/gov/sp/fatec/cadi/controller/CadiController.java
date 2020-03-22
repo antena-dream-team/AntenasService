@@ -4,6 +4,7 @@ import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.exception.CadiException.CadiLoginFailed;
 import br.gov.sp.fatec.cadi.service.CadiService;
 import br.gov.sp.fatec.cadi.view.CadiView;
+import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.view.ProjectView;
@@ -68,12 +69,6 @@ public class CadiController {
         return service.findActive();
     }
 
-    @GetMapping(value = "/list-project")
-    @JsonView(ProjectView.Project.class)
-    public List<Project> getAllProjects() {
-        return service.getAllProjects();
-    }
-
     @PutMapping(value = "/set-teacher/{projectId}/{teacherId}")
     @JsonView(ProjectView.Project.class)
     public Project setTeacher(@PathVariable("teacherId") Long teacherId,
@@ -98,5 +93,11 @@ public class CadiController {
         } catch (Exception e) {
             throw new CadiLoginFailed();
         }
+    }
+
+    @PostMapping(value = "/set-possible-date/{projectId}")
+    public Project setPossibleDate(@PathVariable("projectId") Long projectId,
+                                   @RequestBody List<Date> possibleDate) {
+        return service.setMeetingPossibleDate(possibleDate, projectId);
     }
 }

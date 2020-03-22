@@ -20,4 +20,9 @@ public class ProjectException {
         }
     }
 
+    public static class DateDoesNotExistsException extends RuntimeException {
+        public DateDoesNotExistsException() {
+            super("This date is not registered");
+        }
+    }
 }

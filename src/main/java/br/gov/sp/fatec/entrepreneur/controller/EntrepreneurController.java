@@ -4,6 +4,8 @@ import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.*;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.entrepreneur.view.EntrepreneurView;
+import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ public class EntrepreneurController {
     @PutMapping(value = "/{id}")
     @JsonView(EntrepreneurView.Entrepreneur.class)
     public Entrepreneur update(@PathVariable("id") Long id,
-                          @RequestBody Entrepreneur entrepreneur) {
+                               @RequestBody Entrepreneur entrepreneur) {
         return  service.save(entrepreneur);
     }
 
@@ -71,5 +73,18 @@ public class EntrepreneurController {
         } catch (Exception e) {
             throw new EntrepreneurLoginFailed();
         }
+    }
+
+    @GetMapping(value = "/get-project/{id}")
+    @JsonView(ProjectView.Project.class)
+    public List<Project> getProjectByEntrepreneur(@PathVariable("id") Long id) {
+        return service.getProjectByEntrepreneur(id);
+    }
+
+    @PostMapping(value = "/set-chosen-date/{projectId}/{dateId}")
+    @JsonView(ProjectView.Project.class)
+    public Project setMeetingChosenDate(@PathVariable("projectId") Long projectId,
+                                        @PathVariable("dateId") Long dateId) {
+        return service.setMeetingChosenDate(dateId, projectId);
     }
 }
