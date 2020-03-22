@@ -7,11 +7,11 @@ import br.gov.sp.fatec.cadi.view.CadiView;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.view.ProjectView;
+import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,12 +26,16 @@ public class CadiController {
     @Autowired
     CadiService service;
 
+    @Autowired
+    private SendEmail sendEmail;
+
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(CadiView.Cadi.class)
     private Cadi create (@RequestBody Cadi cadi) {
         // todo - enviar verificação para o email
+        sendEmail.sendMail();
         return (service.save(cadi));
     }
 
