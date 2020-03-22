@@ -8,11 +8,21 @@ public class EntrepreneurException {
         public EntrepreneurNotFoundException (Long id) {
             super(format("Entrepreneur with id %d does not exists", id));
         }
+
+        public EntrepreneurNotFoundException () {
+            super("Entrepreneu does not exists");
+        }
     }
 
     public static class EntrepreneurInactiveException extends RuntimeException {
         public EntrepreneurInactiveException (Long id) {
             super(format("Entrepreneur with id %d is inactive", id));
+        }
+    }
+
+    public static class EntrepreneurLoginFailed extends RuntimeException {
+        public EntrepreneurLoginFailed() {
+            super("Entrepreneur - login failed");
         }
     }
 }

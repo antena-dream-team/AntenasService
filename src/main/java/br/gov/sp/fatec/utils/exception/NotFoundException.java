@@ -60,6 +60,12 @@ public class NotFoundException extends Throwable {
         }
     }
 
+    public static void throwIfEntrepreneurIsNull(Entrepreneur entrepreneur) throws EntrepreneurNotFoundException {
+        if (entrepreneur == null) {
+            throw new EntrepreneurNotFoundException();
+        }
+    }
+
     public static void throwIfCadiIsNull(Cadi cadi, Long id) throws CadiNotFoundException {
         if (cadi == null) {
             throw new CadiNotFoundException(id);

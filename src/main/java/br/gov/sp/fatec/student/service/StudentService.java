@@ -4,6 +4,7 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.repository.StudentRepository;
+import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,13 @@ public class StudentService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private SendEmail sendEmail;
+
     public Student save(Student student) {
+        student.setActive(false);
+        student.setPassword(Base64.getEncoder().encodeToString(student.getPassword().getBytes()));
+        sendEmail.sendMail(student.getEmail(), "cadi");
         return repository.save(student);
     }
 

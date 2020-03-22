@@ -6,8 +6,10 @@ import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 
+import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfEntrepreneurIsInactive;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfEntrepreneurIsNull;
 
 @Service
@@ -59,4 +61,13 @@ public class EntrepreneurService {
         return repository.save(found);
     }
 
+    public Entrepreneur login(String email, String password) {
+        password =  Base64.getEncoder().encodeToString(password.getBytes());
+        Entrepreneur entrepreneur = repository.findByEmailAndPassword(email, password);
+
+        throwIfEntrepreneurIsNull(entrepreneur);
+        throwIfEntrepreneurIsInactive(entrepreneur);
+
+        return entrepreneur;
+    }
 }
