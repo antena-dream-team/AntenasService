@@ -10,6 +10,14 @@ jobs: # a collection of steps
     working_directory: ~/AccountSystem
 
     steps:
+      - run: # print the name of the branch we're on
+          name: "What branch am I on?"
+          command: env
+      
+      - run: # print the name of the branch we're on
+          name: "print uma env?"
+          command: ${TELEGRAM_CHAT_ID}
+
       - telegram/notify:
           message: "[CircleCI]: starting CI :)"
           telegram-chat-id: ${TELEGRAM_CHAT_ID}
