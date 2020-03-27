@@ -49,4 +49,5 @@ workflows:
               branches:
                 only:
                   - master
+            context: ANTENA
 
