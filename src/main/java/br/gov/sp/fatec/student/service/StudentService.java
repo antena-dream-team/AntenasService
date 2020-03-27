@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfStudentIsInactive;
@@ -47,7 +48,7 @@ public class StudentService {
         return repository.findAll();
     }
 
-    public List<Student> findAllById(Set<Long> idList) {
+    public List<Student> findAllById(List<Long> idList) {
         return repository.findAllById(idList);
     }
 
@@ -77,11 +78,17 @@ public class StudentService {
         return projectService.getProjectByStudent(studentId);
     }
 
-    public Project setSolution(Long projectId, String link) {
+    public Project setSolution(Map<String, String> deliver) {
+        // todo - quem pode postar uma solução?
+        Long projectId = Long.valueOf(deliver.get("projectId"));
+        String link = deliver.get("link");
         return projectService.setSolution(projectId, link);
     }
 
-    public Student login(String email, String password) {
+    public Student login(Map<String, String> login) {
+        String password = login.get("password");
+        String email = login.get("email");
+
         password =  Base64.getEncoder().encodeToString(password.getBytes());
         Student student = repository.findByEmailAndPassword(email, password);
 

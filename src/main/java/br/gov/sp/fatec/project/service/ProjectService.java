@@ -57,7 +57,7 @@ public class ProjectService {
         }
 
         if (project.getStudents() != null) {
-            Set<Long> studentList = new HashSet<>();
+            List<Long> studentList = new LinkedList<>();
             for (Student student : project.getStudents()) {
                 throwIfStudentIsNull(student);
                 throwIfStudentIsInactive(student);

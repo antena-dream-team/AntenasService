@@ -194,7 +194,6 @@ public class TeacherServiceTest {
     @Test(expected = TeacherNotFoundException.class)
     public void login_shouldFail_notFound() {
         Teacher teacher = newTeacher();
-        when(repository.findByEmailAndPassword(teacher.getEmail(), Base64.getEncoder().encodeToString(teacher.getPassword().getBytes()))).thenReturn(null);
         service.login(teacher.getEmail(), teacher.getPassword());
     }
 

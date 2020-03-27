@@ -9,6 +9,7 @@ import br.gov.sp.fatec.student.view.StudentView;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class StudentController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(StudentView.Student.class)
     public Student create (@RequestBody Student student) {
         return service.save(student);
@@ -70,19 +72,15 @@ public class StudentController {
     @PostMapping(value = "/deliver")
     @JsonView(ProjectView.Project.class)
     public Project deliverSolution(@RequestBody Map<String, String> deliver) {
-        Long projectId = Long.valueOf(deliver.get("projectId"));
-        String link = deliver.get("link");
-
-        return service.setSolution(projectId, link);
+        return service.setSolution(deliver);
     }
 
     @PostMapping(value = "/login")
     @JsonView(StudentView.Student.class)
     public Student login(@RequestBody Map<String, String> login) {
         try {
-            String password = login.get("password");
-            String email = login.get("email");
-            return service.login(email, password);
+
+            return service.login(login);
         } catch (Exception e) {
             throw new StudentLoginFailed();
         }
