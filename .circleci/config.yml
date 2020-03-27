@@ -12,6 +12,8 @@ jobs: # a collection of steps
     steps:
       - telegram/notify:
           message: "[CircleCI]: starting CI :)"
+          telegram-chat-id: ${TELEGRAM_CHAT_ID}
+          telegram-bot-token: ${TELEGRAM_BOT_TOKEN}
       # git pull
       - checkout
           #- run:
