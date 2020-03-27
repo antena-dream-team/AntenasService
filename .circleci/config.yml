@@ -57,10 +57,8 @@ workflows:
          - telegram/notify:
             context: ANTENA
             message: "[CircleCI]: starting CI :)"
-            telegram-chat-id: |
-                    echo $TELEGRAM_CHAT_ID"
-            telegram-bot-token: | 
-                    echo  $TELEGRAM_BOT_TOKEN
+            telegram-chat-id: TELEGRAM_CHAT_ID
+            telegram-bot-token: TELEGRAM_BOT_TOKEN
 
          - build:
             filters:
