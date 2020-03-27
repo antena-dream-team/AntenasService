@@ -55,6 +55,7 @@ workflows:
   build:
       jobs:
          - telegram/notify:
+            context: ANTENA
             message: "[CircleCI]: starting CI :)"
             telegram-chat-id: ${TELEGRAM_CHAT_ID}
             telegram-bot-token: ${TELEGRAM_BOT_TOKEN}
@@ -64,5 +65,4 @@ workflows:
               branches:
                 only:
                   - master
-            context: ANTENA
 
