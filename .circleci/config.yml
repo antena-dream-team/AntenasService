@@ -11,7 +11,7 @@ jobs: # a collection of steps
 
     steps:
       - telegram/notify:
-          message: "[CircleCI]: Initializing CI :)"
+          message: "[CircleCI]: starting CI :)"
       # git pull
       - checkout
           #- run:
