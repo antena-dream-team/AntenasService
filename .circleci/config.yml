@@ -1,4 +1,7 @@
-version: 2 # use CircleCI 2.0
+version: 2.1 # use CircleCI 2.0
+orbs:
+    telegram: woltsu/telegram@0.0.9
+
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
@@ -7,6 +10,8 @@ jobs: # a collection of steps
     working_directory: ~/AccountSystem
 
     steps:
+      - telegram/notify:
+          message: "[CircleCI]: Initializing CI :)"
       # git pull
       - checkout
           #- run:
