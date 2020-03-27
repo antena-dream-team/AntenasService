@@ -72,40 +72,19 @@ public class TeacherService {
     }
 
     public Project setStudentsToProject(List<Student> studentList, Long projectId) {
-        try {
-            return projectService.setStudents(projectId, studentList);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
+        return projectService.setStudents(projectId, studentList);
     }
 
     public Project setStudentsResponsibleToProject(Long studentId, Long projectId){
-        try {
             return projectService.setStudentResponsible(projectId, studentId);
-        } catch (Exception | NotFoundException ex ) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     public List<Project> listProjectByTeacher(Long teacherId) {
-        try {
-            return projectService.getProjectByTeacher(teacherId);
-        } catch (Exception ex ) {
-            ex.printStackTrace();
-            return null;
-        }
+        return projectService.getProjectByTeacher(teacherId);
     }
 
-    public Project removeStudents(Long projectId, Long studentId) {
-        try {
-            return projectService.removeStudents(projectId, studentId);
-        } catch (Exception ex ) {
-            ex.printStackTrace();
-            return null;
-        }
+    public Project removeStudent(Long projectId, Long studentId) {
+        return projectService.removeStudents(projectId, studentId);
     }
 
     public Teacher login(String email, String password) {

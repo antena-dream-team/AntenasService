@@ -22,8 +22,7 @@ public class ProjectController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
     @JsonView(ProjectView.Project.class)
-    public br.gov.sp.fatec.project.domain.Project create (@RequestBody br.gov.sp.fatec.project.domain.Project project) throws NotFoundException {
-
+    public br.gov.sp.fatec.project.domain.Project create (@RequestBody br.gov.sp.fatec.project.domain.Project project) {
         return service.save(project);
     }
 
@@ -37,5 +36,10 @@ public class ProjectController {
     @JsonView(ProjectView.Project.class)
     public Project findById(@PathVariable("id") Long id) {
         return service.findById(id);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        service.delete(id);
     }
 }

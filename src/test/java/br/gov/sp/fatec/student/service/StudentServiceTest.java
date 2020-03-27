@@ -3,6 +3,7 @@ package br.gov.sp.fatec.student.service;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.exception.StudentException;
 import br.gov.sp.fatec.student.repository.StudentRepository;
+import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -28,6 +29,9 @@ public class StudentServiceTest {
 
     @Mock
     private StudentRepository repository;
+
+    @Mock
+    private SendEmail sendEmail;
 
     @Test
     public void save_shoudSucceed() {

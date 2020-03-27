@@ -58,20 +58,17 @@ public class ProjectService {
 
         if (project.getStudents() != null) {
             Set<Long> studentList = new HashSet<>();
-
             for (Student student : project.getStudents()) {
                 throwIfStudentIsNull(student);
                 throwIfStudentIsInactive(student);
                 studentList.add(student.getId());
             }
-
             project.setStudents(studentService.findAllById(studentList));
         }
 
         if (project.getStudentResponsible() != null && project.getStudentResponsible().getId() != null) {
             project.setStudentResponsible(studentService.findById(project.getStudentResponsible().getId()));
         }
-
 //        project.setAccessKey(generateCode());
         project.setCreatedAt(ZonedDateTime.now());
 
@@ -86,11 +83,14 @@ public class ProjectService {
         return repository.findById(id).orElse(null);
     }
 
-//    public void delete(Long id) { // todo - vai deletar ou desativar? se for desativar, é necessario adicionar o active no model (doman) e no banco (adicionar campo no arquivo dentro da pasta chengelog)
-//
-//    }
+    public void delete(Long id) {
+        Project project = findById(id);
+        throwIfProjectIsNull(project, id);
 
-    public Project setStudentResponsible(Long projectId, Long studentId) throws NotFoundException, StudentInactiveException, StudentNotFoundException {
+        repository.delete(project);
+    }
+
+    public Project setStudentResponsible(Long projectId, Long studentId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
 
@@ -103,7 +103,7 @@ public class ProjectService {
     }
 
     // serve para editar também. ele sobrescreve
-    public Project setStudents(Long projectId, List<Student> studentList) throws StudentInactiveException, StudentNotFoundException {
+    public Project setStudents(Long projectId, List<Student> studentList) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
 
@@ -112,11 +112,7 @@ public class ProjectService {
         for (Student student : studentList) {
             Student found = studentService.findById(student.getId());
             throwIfStudentIsNull(found, student.getId());
-            throwIfStudentIsInactive(student);
-
-            if (!found.isActive()) {
-                throw new StudentInactiveException(student.getId());
-            }
+            throwIfStudentIsInactive(found);
 
             students.add(found);
         }
@@ -152,7 +148,6 @@ public class ProjectService {
 
         Student student = studentService.findById(StudentId);
         throwIfStudentIsNull(student, StudentId);
-        throwIfStudentIsInactive(student);
 
         project.getStudents().remove(student);
 

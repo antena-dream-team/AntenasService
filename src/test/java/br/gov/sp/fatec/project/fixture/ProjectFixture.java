@@ -14,7 +14,7 @@ public class ProjectFixture {
                 .entrepreneur(newEntrepreneur())
 //                .externalLink1()
 //                .externalLink2()
-//                .id()
+                .id(1L)
 //                .progress()
 //                .status()
 //                .meeting()

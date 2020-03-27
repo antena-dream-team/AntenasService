@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import br.gov.sp.fatec.student.exception.StudentException.*;
 
 import java.util.List;
 import java.util.Map;
@@ -67,7 +66,7 @@ public class TeacherController {
     @PostMapping(value = "/set-students/{projectId}")
     @JsonView(ProjectView.Project.class)
     public Project setStudents(@PathVariable("projectId") Long projectId,
-                                         @RequestBody List<Student> studentList) {
+                               @RequestBody List<Student> studentList) {
 
         // todo - checar se o professor pode adicionar os alunos
         // todo - se ja ouverem alunos, sobrescrever ou so adicionar mais? depende de como vai funcionar o front. está sobrescrevendo
@@ -96,7 +95,7 @@ public class TeacherController {
     @JsonView(ProjectView.Project.class)
     public Project removeStudent(@PathVariable("projectId") Long projectId,
                                  @PathVariable("studentId") Long studentId) {
-        return service.removeStudents(projectId, studentId);
+        return service.removeStudent(projectId, studentId);
     }
 
     @PostMapping(value = "/login")

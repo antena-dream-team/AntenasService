@@ -46,7 +46,8 @@ public class EntrepreneurController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
+    public void deactivate(@PathVariable("id") Long id) {
+        // todo - remover do projeto se desativar
         service.deactivate(id);
     }
 

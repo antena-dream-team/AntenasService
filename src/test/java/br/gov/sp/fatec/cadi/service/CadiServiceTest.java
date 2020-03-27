@@ -3,6 +3,7 @@ package br.gov.sp.fatec.cadi.service;
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.exception.CadiException;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
+import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -26,6 +27,9 @@ public class CadiServiceTest {
 
     @Mock
     private CadiRepository repository;
+
+    @Mock
+    private SendEmail sendEmail;
 
     @Test
     public void save_shoudSucceed() {
@@ -116,8 +120,6 @@ public class CadiServiceTest {
     public void update_shouldFail() {
         Cadi updated = newCadi();
         updated.setEmail("newEmail@test.com");
-
-        when(repository.getOne(2L)).thenReturn(null);
 
         service.update(2L, updated);
     }

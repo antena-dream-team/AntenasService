@@ -3,6 +3,7 @@ package br.gov.sp.fatec.entrepreneur.service;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.EntrepreneurNotFoundException;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
+import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
@@ -25,6 +26,9 @@ public class EntrepreneurServiceTest {
 
     @Mock
     private EntrepreneurRepository repository;
+
+    @Mock
+    private SendEmail sendEmail;
 
     @Test
     public void save_shoudSucceed() {

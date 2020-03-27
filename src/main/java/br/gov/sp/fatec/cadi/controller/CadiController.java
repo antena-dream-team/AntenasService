@@ -48,6 +48,7 @@ public class CadiController {
 
     @DeleteMapping(value = "/{id}")
     public void deactivate(@PathVariable("id") Long id) {
+        // todo - remover do projeto se desativar
         service.deactivate(id);
     }
 

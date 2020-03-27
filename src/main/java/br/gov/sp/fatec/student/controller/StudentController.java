@@ -44,6 +44,7 @@ public class StudentController {
 
     @DeleteMapping(value = "/{id}")
     public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
+        // todo - remover do projeto se desativar
         service.deactivate(id);
     }
 
