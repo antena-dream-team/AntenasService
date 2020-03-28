@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfEntrepreneurIsInactive;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfEntrepreneurIsNull;
@@ -75,7 +76,10 @@ public class EntrepreneurService {
         return repository.save(found);
     }
 
-    public Entrepreneur login(String email, String password) {
+    public Entrepreneur login(Map<String, String> login) {
+        String password = login.get("password");
+        String email = login.get("email");
+
         password =  Base64.getEncoder().encodeToString(password.getBytes());
         Entrepreneur entrepreneur = repository.findByEmailAndPassword(email, password);
 

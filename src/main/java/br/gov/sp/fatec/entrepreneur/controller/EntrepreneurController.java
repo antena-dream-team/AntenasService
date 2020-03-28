@@ -67,13 +67,7 @@ public class EntrepreneurController {
     @PostMapping(value = "/login")
     @JsonView(EntrepreneurView.Entrepreneur.class)
     public Entrepreneur login(@RequestBody Map<String, String> login) {
-        try {
-            String password = login.get("password");
-            String email = login.get("email");
-            return service.login(email, password);
-        } catch (Exception e) {
-            throw new EntrepreneurLoginFailed();
-        }
+        return service.login(login);
     }
 
     @GetMapping(value = "/get-project/{id}")
@@ -84,8 +78,8 @@ public class EntrepreneurController {
 
     @PostMapping(value = "/set-chosen-date/{projectId}/{dateId}")
     @JsonView(ProjectView.Project.class)
-    public Project setMeetingChosenDate(@PathVariable("projectId") Long projectId,
-                                        @PathVariable("dateId") Long dateId) {
+    public Project setMeetingChosenDate(@PathVariable("dateId") Long dateId,
+                                        @PathVariable("projectId") Long projectId) {
         return service.setMeetingChosenDate(dateId, projectId);
     }
 }

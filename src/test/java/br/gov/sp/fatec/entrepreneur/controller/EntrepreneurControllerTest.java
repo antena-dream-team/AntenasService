@@ -2,7 +2,9 @@ package br.gov.sp.fatec.entrepreneur.controller;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
+import br.gov.sp.fatec.project.domain.Project;
 import org.assertj.core.util.Lists;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
+import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.utils.commons.JSONParser.toJSON;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -111,6 +116,51 @@ public class EntrepreneurControllerTest {
         entrepreneur.setActive(false);
 
         mockMvc.perform(delete(URL + "/" + entrepreneur.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void login_shouldSucceed() throws Exception {
+        Entrepreneur entrepreneur = newEntrepreneur();
+
+        Map<String, String> loginMap = new HashMap<>();
+        loginMap.put("email", entrepreneur.getEmail());
+        loginMap.put("password", entrepreneur.getPassword());
+
+        when(service.login(loginMap)).thenReturn(entrepreneur);
+
+        JSONObject loginObject = new JSONObject();
+        loginObject.put("email", entrepreneur.getEmail());
+        loginObject.put("password", entrepreneur.getPassword());
+
+        mockMvc.perform(post(URL + "/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.valueOf(loginObject)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void setMeetingChosenDate_shouldSucceed() throws Exception {
+        Project project = newProject();
+        when(service.setMeetingChosenDate(1L, project.getId())).thenReturn(project);
+        mockMvc.perform(post(URL + "/set-chosen-date/" + 1L + "/" + project.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getProjectByEntrepreneur_shouldSucceet() throws Exception {
+        Entrepreneur entrepreneur = newEntrepreneur();
+        List<Project> projectList = Lists.newArrayList(
+                newProject(1L),
+                newProject(2L),
+                newProject(3L));
+
+        for(Project project : projectList) {
+            project.setEntrepreneur(entrepreneur);
+        }
+
+        when(service.getProjectByEntrepreneur(entrepreneur.getId())).thenReturn(projectList);
+        mockMvc.perform(get(URL + "/get-project/" + entrepreneur.getId()))
                 .andExpect(status().isOk());
     }
 }
