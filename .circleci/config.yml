@@ -1,7 +1,7 @@
 version: 2.1 # use CircleCI 2.1
 orbs:
         #telegram: woltsu/telegram@0.0.9
-    telegram: iuniqueck/telegram-orb@0.0.1
+    telegram: uniqueck/telegram-orb@0.0.1
 
 jobs:
   build:
