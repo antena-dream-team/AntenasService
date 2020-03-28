@@ -47,7 +47,7 @@ workflows:
 
          - build:
             requires:
-              - telegram/notify
+              - telegram_entry/notify
             context: ANTENA
             filters:
               branches:
