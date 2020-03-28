@@ -1,19 +1,24 @@
 package br.gov.sp.fatec.cadi.controller;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
+import br.gov.sp.fatec.cadi.exception.CadiException.CadiLoginFailed;
 import br.gov.sp.fatec.cadi.service.CadiService;
 import br.gov.sp.fatec.cadi.view.CadiView;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
+import br.gov.sp.fatec.project.domain.Date;
+import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.domain.Status;
+import br.gov.sp.fatec.project.view.ProjectView;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
-@Controller
+@RestController
 @RequestMapping("/dev/cadi")
 public class CadiController {
 
@@ -22,8 +27,10 @@ public class CadiController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(CadiView.Cadi.class)
     private Cadi create (@RequestBody Cadi cadi) {
+
         return (service.save(cadi));
     }
 
@@ -40,14 +47,20 @@ public class CadiController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
+    public void deactivate(@PathVariable("id") Long id) {
+        // todo - remover do projeto se desativar
         service.deactivate(id);
+    }
+
+    @GetMapping(value = "/activate/{b64}")
+    public void activate(@PathVariable("b64") String b64) {
+        service.activate(b64);
     }
 
     @PutMapping(value = "/{id}")
     @JsonView(CadiView.Cadi.class)
     public Cadi update(@PathVariable("id") Long id,
-                          @RequestBody Cadi cadi) {
+                       @RequestBody Cadi cadi) {
         return  service.save(cadi);
     }
 
@@ -55,5 +68,37 @@ public class CadiController {
     @JsonView(CadiView.Cadi.class)
     public List<Cadi> findActive() {
         return service.findActive();
+    }
+
+    @PutMapping(value = "/set-teacher/{projectId}/{teacherId}")
+    @JsonView(ProjectView.Project.class)
+    public Project setTeacher(@PathVariable("teacherId") Long teacherId,
+                              @PathVariable("projectId") Long projectId) {
+        return service.setTeacher(teacherId, projectId);
+    }
+
+    @PutMapping(value = "/set-project-status/{projectId}")
+    @JsonView(ProjectView.Project.class)
+    public Project setStatus(@PathVariable("projectId") Long projectId,
+                             @RequestBody Status status) {
+        return service.setProjectStatus(projectId, status);
+    }
+
+    @PostMapping(value = "/login")
+    @JsonView(CadiView.Cadi.class)
+    public Cadi login(@RequestBody Map<String, String> login) {
+        try {
+            String password = login.get("password");
+            String email = login.get("email");
+            return service.login(email, password);
+        } catch (Exception e) {
+            throw new CadiLoginFailed();
+        }
+    }
+
+    @PostMapping(value = "/set-possible-date/{projectId}")
+    public Project setPossibleDate(@PathVariable("projectId") Long projectId,
+                                   @RequestBody List<Date> possibleDate) {
+        return service.setMeetingPossibleDate(possibleDate, projectId);
     }
 }

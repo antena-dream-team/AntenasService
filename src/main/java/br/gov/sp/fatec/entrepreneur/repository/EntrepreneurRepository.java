@@ -11,4 +11,8 @@ import java.util.List;
 public interface EntrepreneurRepository extends JpaRepository<Entrepreneur, Long>, JpaSpecificationExecutor<Entrepreneur> {
 
     List<Entrepreneur> findAllByActive(Boolean active);
+
+    Entrepreneur findByEmailAndPassword(String email, String password);
+
+    Entrepreneur findByEmail(String email);
 }

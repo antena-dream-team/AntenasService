@@ -7,12 +7,20 @@ public class TeacherException {
         public TeacherNotFoundException(Long id) {
             super(format("Teacher with id %d does not exists", id));
         }
+        public TeacherNotFoundException() {
+            super("Teacher does not exists");
+        }
     }
 
-    public static class TeacherInactiveException extends Exception {
+    public static class TeacherInactiveException extends RuntimeException {
         public TeacherInactiveException(Long id) {
             super(format("Teacher with id %d is inactive", id));
         }
     }
 
+    public static class TeacherLoginFailed extends RuntimeException {
+        public TeacherLoginFailed() {
+            super("Teacher - login failed");
+        }
+    }
 }
