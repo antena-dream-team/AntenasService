@@ -8,23 +8,17 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
-import br.gov.sp.fatec.student.exception.StudentException.StudentInactiveException;
-import br.gov.sp.fatec.student.exception.StudentException.StudentNotFoundException;
 import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.service.TeacherService;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfEntrepreneurIsInactive;
-import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfStudentIsInactive;
+import static br.gov.sp.fatec.utils.exception.InactiveException.*;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.*;
 
 @Service
@@ -46,6 +40,7 @@ public class ProjectService {
         if (project.getTeacher() != null && project.getTeacher().getId() != null) {
             Teacher found = teacherService.findById(project.getTeacher().getId());
             throwIfTeacherIsNull(found);
+            throwIfTeacherIsInactive(found);
             project.setTeacher(found);
         }
 
@@ -57,13 +52,15 @@ public class ProjectService {
         }
 
         if (project.getStudents() != null) {
-            List<Long> studentList = new LinkedList<>();
+            List<Student> studentList = new LinkedList<>();
             for (Student student : project.getStudents()) {
-                throwIfStudentIsNull(student);
-                throwIfStudentIsInactive(student);
-                studentList.add(student.getId());
+                Student found = studentService.findById(student.getId());
+                throwIfStudentIsNull(found);
+                throwIfStudentIsInactive(found);
+                studentList.add(found);
             }
-            project.setStudents(studentService.findAllById(studentList));
+
+            project.setStudents(studentList);
         }
 
         if (project.getStudentResponsible() != null && project.getStudentResponsible().getId() != null) {
@@ -80,7 +77,7 @@ public class ProjectService {
     }
 
     public Project findById(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.getOne(id);
     }
 
     public void delete(Long id) {
@@ -102,7 +99,7 @@ public class ProjectService {
         return repository.save(project);
     }
 
-    // serve para editar também. ele sobrescreve
+    // serve para editar também. ele sobrescreve. Só deve ser passado todos os alunos
     public Project setStudents(Long projectId, List<Student> studentList) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
@@ -127,6 +124,7 @@ public class ProjectService {
 
         Teacher teacher = teacherService.findById(teacherId);
         throwIfTeacherIsNull(teacher, teacherId);
+        throwIfTeacherIsInactive(teacher);
 
         project.setTeacher(teacher);
 
@@ -155,29 +153,21 @@ public class ProjectService {
     }
 
     public List<Project> getProjectByTeacher(Long teacherId) {
-        List<Project> projects = repository.findByTeacherId(teacherId);
-        throwIfProjectIsNull(projects);
-        return projects;
+        return repository.findByTeacherId(teacherId);
     }
 
     public List<Project> getProjectByStudent(Long studentId) {
-        List<Project> projects = repository.findByStudentId(studentId);
-        throwIfProjectIsNull(projects);
-        return projects;
+        return repository.findByStudentId(studentId);
     }
 
     public List<Project> getProjectByEntrepreneur(Long entrepreneurId) {
-        List<Project> projects = repository.findByEntrepreneurId(entrepreneurId);
-        throwIfProjectIsNull(projects);
-        return projects;
+        return repository.findByEntrepreneurId(entrepreneurId);
     }
 
     public Project setSolution(Long projectId, String link) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
-
         project.setExternalLink1(link);
-
         return repository.save(project);
     }
 
@@ -189,8 +179,9 @@ public class ProjectService {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
 
-        Meeting meeting = new Meeting();
-        meeting.setPossibleDate(possibleDate);
+        Meeting meeting = Meeting.builder()
+                .possibleDate(possibleDate)
+                .build();
 
         project.setMeeting(meeting);
 
@@ -213,8 +204,6 @@ public class ProjectService {
 
         return repository.save(project);
     }
-
-
 
 //    private String generateCode() {
 //        boolean unique = false;

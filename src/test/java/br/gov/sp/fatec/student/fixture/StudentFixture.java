@@ -39,6 +39,16 @@ public class StudentFixture {
                 .build();
     }
 
+    public static Student newStudentNoProject(Long id, boolean active) {
+        return Student.builder()
+                .active(active)
+                .email(EMAIL)
+                .name(NAME)
+                .password(PASSWORD)
+                .id(id)
+                .build();
+    }
+
     private static List<Project> getProjectList() {
         List<Project> projects = new LinkedList<>();
 

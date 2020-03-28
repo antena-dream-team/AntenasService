@@ -1,34 +1,43 @@
 package br.gov.sp.fatec.project.fixture;
 
-import br.gov.sp.fatec.project.domain.Date;
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.domain.Status;
+import br.gov.sp.fatec.project.domain.*;
+import br.gov.sp.fatec.student.domain.Student;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
+import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
+import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudentNoProject;
+import static br.gov.sp.fatec.teacher.fixture.TeacherFixture.newTeacher;
 
 public class ProjectFixture {
 
     private static final String COMPLETE_DESCRIPTION = "projeto que faz uma banana de cimento comestível para combater carrapatos em cinemas";
+    private static final String TECHNOLOGY_DESCRIPTION = "Uma banana feita de cimento que pode ser ingerido que persegue carrapatos e batalha com eles, para expula-los dos cinemas";
+    private static final String SHORT_DESCRIPTION = "banana de cimento que combate carrapato";
+    private static final String TITLE = "destruidora de carrapato";
+    private static final String EXTERNAL_LINK_1 = "github.com/1";
+    private static final String EXTERNAL_LINK_2 = "github.com/2";
+    private static final String PROGRESS = "1";
+    private static final Long ID = 1L;
 
     public static Project newProject() {
         return  Project.builder()
                 .completeDescription(COMPLETE_DESCRIPTION)
                 .entrepreneur(newEntrepreneur())
-//                .externalLink1()
-//                .externalLink2()
-                .id(1L)
-//                .progress()
+                .externalLink1(EXTERNAL_LINK_1)
+                .externalLink2(EXTERNAL_LINK_2)
+                .id(ID)
+                .progress(PROGRESS)
                 .status(newStatus())
-//                .meeting()
-//                .shortDescription()
-//                .students()
-//                .studentResponsible()
-//                .teacher()
-//                .technologyDescription()
-//                .title()
+                .meeting(newMeeting())
+                .shortDescription(SHORT_DESCRIPTION)
+                .studentResponsible(newStudentNoProject(ID, true))
+                .students(getStudents())
+                .teacher(newTeacher())
+                .technologyDescription(TECHNOLOGY_DESCRIPTION)
+                .title(TITLE)
                 .build();
     }
 
@@ -36,18 +45,39 @@ public class ProjectFixture {
         return  Project.builder()
                 .completeDescription(COMPLETE_DESCRIPTION)
                 .entrepreneur(newEntrepreneur())
+                .externalLink1(EXTERNAL_LINK_1)
+                .externalLink2(EXTERNAL_LINK_2)
                 .id(id)
-//                .externalLink1()
-//                .externalLink2()
-//                .progress()
+                .progress(PROGRESS)
                 .status(newStatus())
-//                .meeting()
-//                .shortDescription()
-//                .students()
-//                .studentResponsible()
-//                .teacher()
-//                .technologyDescription()
-//                .title()
+                .meeting(newMeeting())
+                .shortDescription(SHORT_DESCRIPTION)
+                .studentResponsible(newStudentNoProject(ID, true))
+                .students(getStudents())
+                .teacher(newTeacher())
+                .technologyDescription(TECHNOLOGY_DESCRIPTION)
+                .title(TITLE)
+                .build();
+    }
+
+    public static Meeting newMeeting() {
+        return Meeting.builder()
+                .address(newAddress())
+                .chosenDate(new java.util.Date())
+                .possibleDate(getPossibleDate())
+                .id(ID)
+                .build();
+    }
+
+    public static Address newAddress() {
+        return Address.builder()
+                .city("SJC")
+                .neighborhood("vila do chaves")
+                .place("vila")
+                .street("rua dos bobos")
+                .zip("1234-123")
+                .number(0)
+                .id(ID)
                 .build();
     }
 
@@ -75,5 +105,11 @@ public class ProjectFixture {
         }
 
         return dateList;
+    }
+
+    public static List<Student> getStudents() {
+        List<Student> studentList = new LinkedList<>();
+        studentList.add(newStudentNoProject(1L, true));
+        return studentList;
     }
 }

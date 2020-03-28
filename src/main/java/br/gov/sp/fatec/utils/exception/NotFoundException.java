@@ -92,12 +92,6 @@ public class NotFoundException extends Throwable {
         }
     }
 
-    public static void throwIfProjectIsNull(List<Project> projects) throws NoProjectForThisUserException {
-        if (projects.isEmpty()) {
-            throw new NoProjectForThisUserException();
-        }
-    }
-
     public static void throwIfProjectIsNull(Project project) throws ProjectNotFoundException {
         if (project == null) {
             throw new ProjectNotFoundException();

@@ -14,12 +14,6 @@ public class ProjectException {
         }
     }
 
-    public static class NoProjectForThisUserException extends RuntimeException {
-        public NoProjectForThisUserException() {
-            super("There is no project registered for this user");
-        }
-    }
-
     public static class DateDoesNotExistsException extends RuntimeException {
         public DateDoesNotExistsException() {
             super("This date is not registered");

@@ -3,9 +3,9 @@ package br.gov.sp.fatec.project.controller;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.project.view.ProjectView;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +21,9 @@ public class ProjectController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(ProjectView.Project.class)
-    public br.gov.sp.fatec.project.domain.Project create (@RequestBody br.gov.sp.fatec.project.domain.Project project) {
+    public Project create (@RequestBody br.gov.sp.fatec.project.domain.Project project) {
         return service.save(project);
     }
 
