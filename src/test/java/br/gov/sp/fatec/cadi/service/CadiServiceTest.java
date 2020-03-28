@@ -1,17 +1,21 @@
 package br.gov.sp.fatec.cadi.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
-import br.gov.sp.fatec.cadi.exception.CadiException;
+import br.gov.sp.fatec.cadi.exception.CadiException.*;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import static br.gov.sp.fatec.cadi.fixture.CadiFixture.newCadi;
@@ -42,7 +46,7 @@ public class CadiServiceTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws NotFoundException {
+    public void deactivate_shouldSucceed() {
         Cadi cadi = newCadi();
         when(repository.save(cadi)).thenReturn(cadi);
         when(repository.getOne(cadi.getId())).thenReturn(cadi);
@@ -52,7 +56,7 @@ public class CadiServiceTest {
         assertFalse(cadi.isActive());
     }
 
-    @Test(expected = CadiException.CadiNotFoundException.class)
+    @Test(expected = CadiNotFoundException.class)
     public void deactivate_shouldFail() {
         service.deactivate(1L);
     }
@@ -97,7 +101,7 @@ public class CadiServiceTest {
         assertEquals(cadi.getId(), found.getId());
     }
 
-    @Test(expected = CadiException.CadiNotFoundException.class)
+    @Test(expected = CadiNotFoundException.class)
     public void findById_shouldFail() {
         service.findById(1L);
     }
@@ -116,11 +120,34 @@ public class CadiServiceTest {
         assertEquals(updated.getEmail(), returned.getEmail());
     }
 
-    @Test(expected = CadiException.CadiNotFoundException.class)
+    @Test(expected = CadiNotFoundException.class)
     public void update_shouldFail() {
         Cadi updated = newCadi();
         updated.setEmail("newEmail@test.com");
 
         service.update(2L, updated);
+    }
+
+    @Test
+    public void activate_shouldSucceed() throws JSONException {
+        Cadi cadi = newCadi();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", cadi.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        when(repository.findByEmail((String) base64.get("email"))).thenReturn(cadi);
+        service.activate(b64);
+    }
+
+    @Test(expected = CadiNotFoundException.class)
+    public void activate_shouldFail() throws JSONException {
+        Cadi cadi = newCadi();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", cadi.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        service.activate(b64);
     }
 }

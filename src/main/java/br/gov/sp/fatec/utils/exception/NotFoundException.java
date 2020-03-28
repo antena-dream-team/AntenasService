@@ -80,13 +80,7 @@ public class NotFoundException extends Throwable {
         }
     }
 
-    public static void throwIfCadiIsNull(Cadi cadi) throws CadiLoginFailed {
-        if (cadi == null) {
-            throw new CadiLoginFailed();
-        }
-    }
-
-    public static void throwCadiIsNull(Cadi cadi) throws CadiNotFoundException {
+    public static void throwIfCadiIsNull(Cadi cadi) throws CadiNotFoundException {
         if (cadi == null) {
             throw new CadiNotFoundException();
         }

@@ -85,4 +85,9 @@ public class StudentController {
             throw new StudentLoginFailed();
         }
     }
+
+    @GetMapping(value = "/activate/{b64}")
+    public void activate(@PathVariable("b64") String b64) {
+        service.activate(b64);
+    }
 }

@@ -13,4 +13,6 @@ public interface EntrepreneurRepository extends JpaRepository<Entrepreneur, Long
     List<Entrepreneur> findAllByActive(Boolean active);
 
     Entrepreneur findByEmailAndPassword(String email, String password);
+
+    Entrepreneur findByEmail(String email);
 }
