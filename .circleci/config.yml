@@ -4,8 +4,8 @@ orbs:
 
 jobs:
   build:
-    #docker: # run the steps with Docker
-          #- image: circleci/openjdk:8-jdk-stretch 
+    docker: # run the steps with Docker
+          - image: circleci/openjdk:8-jdk-stretch 
 
     #working_directory: ~/AccountSystem
 
