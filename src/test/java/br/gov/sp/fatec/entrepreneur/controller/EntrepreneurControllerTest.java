@@ -16,10 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
@@ -161,6 +158,18 @@ public class EntrepreneurControllerTest {
 
         when(service.getProjectByEntrepreneur(entrepreneur.getId())).thenReturn(projectList);
         mockMvc.perform(get(URL + "/get-project/" + entrepreneur.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void activate_shouldSucceed() throws Exception {
+        Entrepreneur entrepreneur = newEntrepreneur();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", entrepreneur.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        mockMvc.perform(get(URL + "/activate/" + b64))
                 .andExpect(status().isOk());
     }
 }

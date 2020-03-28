@@ -6,7 +6,7 @@ import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -95,5 +95,14 @@ public class TeacherService {
         throwIfTeacherIsInactive(teacher);
 
         return teacher;
+    }
+
+    public void activate(String b64) {
+        JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
+        Teacher found = repository.findByEmail(jsonObject.get("email").toString());
+        throwIfTeacherIsNull(found);
+
+        found.setActive(true);
+        repository.save(found);
     }
 }

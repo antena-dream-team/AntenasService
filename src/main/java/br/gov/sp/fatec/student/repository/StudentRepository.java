@@ -10,4 +10,6 @@ public interface StudentRepository extends JpaRepository<Student, Long>, JpaSpec
     List<Student> findAllByActive(Boolean active);
 
     Student findByEmailAndPassword(String email, String password);
+
+    Student findByEmail(String email);
 }

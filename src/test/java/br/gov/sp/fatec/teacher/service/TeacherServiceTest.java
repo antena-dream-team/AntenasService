@@ -8,6 +8,8 @@ import br.gov.sp.fatec.teacher.exception.TeacherException.*;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.assertj.core.util.Lists;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
@@ -204,5 +207,28 @@ public class TeacherServiceTest {
 
         when(repository.findByEmailAndPassword(teacher.getEmail(), Base64.getEncoder().encodeToString(teacher.getPassword().getBytes()))).thenReturn(teacher);
         service.login(teacher.getEmail(), teacher.getPassword());
+    }
+
+    @Test
+    public void activate_shouldSucceed() throws JSONException {
+        Teacher teacher = newTeacher();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", teacher.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        when(repository.findByEmail((String) base64.get("email"))).thenReturn(teacher);
+        service.activate(b64);
+    }
+
+    @Test(expected = TeacherNotFoundException.class)
+    public void activate_shouldFail() throws JSONException {
+        Teacher teacher = newTeacher();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", teacher.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        service.activate(b64);
     }
 }

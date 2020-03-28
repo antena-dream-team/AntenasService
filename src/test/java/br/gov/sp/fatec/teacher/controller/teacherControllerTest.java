@@ -5,6 +5,7 @@ import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import org.assertj.core.util.Lists;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -193,6 +195,17 @@ public class teacherControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(String.valueOf(login)))
                 .andExpect(status().isOk());
+    }
 
+    @Test
+    public void activate_shouldSucceed() throws Exception {
+        Teacher teacher = newTeacher();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", teacher.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        mockMvc.perform(get(URL + "/activate/" + b64))
+                .andExpect(status().isOk());
     }
 }

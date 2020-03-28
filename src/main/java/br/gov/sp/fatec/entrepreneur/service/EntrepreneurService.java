@@ -7,6 +7,7 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,15 @@ public class EntrepreneurService {
         throwIfEntrepreneurIsNull(found, id);
 
         return found;
+    }
+
+    public void activate(String b64) {
+        JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
+        Entrepreneur found = repository.findByEmail(jsonObject.get("email").toString());
+        throwIfEntrepreneurIsNull(found);
+
+        found.setActive(true);
+        repository.save(found);
     }
 
     public Entrepreneur deactivate(Long id) {

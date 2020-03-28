@@ -3,21 +3,21 @@ package br.gov.sp.fatec.student.service;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.exception.StudentException;
 import br.gov.sp.fatec.student.exception.StudentException.*;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
@@ -202,5 +202,29 @@ public class StudentServiceTest {
         when(repository.findAllById(idList)).thenReturn(studentList);
 
         service.findAllById(idList);
+    }
+
+
+    @Test
+    public void activate_shouldSucceed() throws JSONException {
+        Student student = newStudent();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", student.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        when(repository.findByEmail((String) base64.get("email"))).thenReturn(student);
+        service.activate(b64);
+    }
+
+    @Test(expected = StudentException.StudentNotFoundException.class)
+    public void activate_shouldFail() throws JSONException {
+        Student student = newStudent();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", student.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        service.activate(b64);
     }
 }

@@ -8,16 +8,15 @@ import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
@@ -189,5 +188,28 @@ public class EntrepreneurServiceTest {
         Project project = newProject();
         when (projectService.setMeetingChosenDate(1L, project.getId())).thenReturn(project);
         service.setMeetingChosenDate(1L, project.getId());
+    }
+
+    @Test
+    public void activate_shouldSucceed() throws JSONException {
+        Entrepreneur entrepreneur = newEntrepreneur();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", entrepreneur.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        when(repository.findByEmail((String) base64.get("email"))).thenReturn(entrepreneur);
+        service.activate(b64);
+    }
+
+    @Test(expected = EntrepreneurNotFoundException.class)
+    public void activate_shouldFail() throws JSONException {
+        Entrepreneur entrepreneur = newEntrepreneur();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", entrepreneur.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        service.activate(b64);
     }
 }

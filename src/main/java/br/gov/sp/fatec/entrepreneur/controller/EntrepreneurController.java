@@ -82,4 +82,9 @@ public class EntrepreneurController {
                                         @PathVariable("projectId") Long projectId) {
         return service.setMeetingChosenDate(dateId, projectId);
     }
+
+    @GetMapping(value = "/activate/{b64}")
+    public void activate(@PathVariable("b64") String b64) {
+        service.activate(b64);
+    }
 }

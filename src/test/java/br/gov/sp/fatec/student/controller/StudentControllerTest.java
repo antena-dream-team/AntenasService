@@ -17,10 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
@@ -174,6 +171,18 @@ public class StudentControllerTest {
         mockMvc.perform(post(URL + "/deliver")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(String.valueOf(deliverJson)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void activate_shouldSucceed() throws Exception {
+        Student student = newStudent();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", student.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        mockMvc.perform(get(URL + "/activate/" + b64))
                 .andExpect(status().isOk());
     }
 }

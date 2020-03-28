@@ -4,6 +4,7 @@ import br.gov.sp.fatec.cadi.controller.CadiController;
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.service.CadiService;
 import org.assertj.core.util.Lists;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -114,6 +117,18 @@ public class CadiControllerTest {
         cadi.setActive(false);
 
         mockMvc.perform(delete(URL + "/" + cadi.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void activate_shouldSucceed() throws Exception {
+        Cadi cadi = newCadi();
+        JSONObject base64 = new JSONObject();
+        base64.put("dateTime", new Date());
+        base64.put("email", cadi.getEmail());
+        String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
+
+        mockMvc.perform(get(URL + "/activate/" + b64))
                 .andExpect(status().isOk());
     }
 }
