@@ -2,9 +2,8 @@ package br.gov.sp.fatec.student.controller;
 
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.student.domain.Student;
-import br.gov.sp.fatec.student.exception.StudentException.StudentLoginFailed;
 import br.gov.sp.fatec.student.service.StudentService;
-import com.google.inject.internal.util.Lists;
+import org.assertj.core.util.Lists;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;

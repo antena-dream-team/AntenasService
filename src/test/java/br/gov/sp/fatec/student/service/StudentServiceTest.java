@@ -219,6 +219,7 @@ public class StudentServiceTest {
 
     @Test(expected = StudentException.StudentNotFoundException.class)
     public void activate_shouldFail() throws JSONException {
+        // todo - verificar se ativou
         Student student = newStudent();
         JSONObject base64 = new JSONObject();
         base64.put("dateTime", new Date());
