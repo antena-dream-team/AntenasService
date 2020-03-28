@@ -24,7 +24,6 @@ public class Cadi {
     @JsonView({CadiView.Cadi.class})
     private String email;
 
-    @JsonView({CadiView.Cadi.class})
     private String password;
 
     @JsonView({CadiView.Cadi.class})

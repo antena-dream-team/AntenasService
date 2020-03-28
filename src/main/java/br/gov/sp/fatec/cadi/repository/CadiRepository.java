@@ -11,4 +11,8 @@ import java.util.List;
 public interface CadiRepository extends JpaRepository<Cadi, Long>, JpaSpecificationExecutor<Cadi> {
 
     List<Cadi> findAllByActive(Boolean active);
+
+    Cadi findByEmailAndPassword(String email, String password);
+
+    Cadi findByEmail(String email);
 }

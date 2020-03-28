@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long>, JpaSpecificationExecutor<Student> {
     List<Student> findAllByActive(Boolean active);
+
+    Student findByEmailAndPassword(String email, String password);
 }
