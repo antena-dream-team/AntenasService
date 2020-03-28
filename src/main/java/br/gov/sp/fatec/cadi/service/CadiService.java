@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfCadiIsInactive;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfCadiIsNull;
@@ -76,13 +77,13 @@ public class CadiService {
         return found;
     }
 
-    public void activate(String b64) {
+    public Cadi activate(String b64) {
         JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
         Cadi found = repository.findByEmail(jsonObject.get("email").toString());
         throwIfCadiIsNull(found);
 
         found.setActive(true);
-        repository.save(found);
+        return repository.save(found);
     }
 
     public Project setTeacher(Long teacherId, Long projectId) {
@@ -93,7 +94,10 @@ public class CadiService {
         return projectService.setStatus(projectId, status);
     }
 
-    public Cadi login(String email, String password) {
+    public Cadi login(Map<String, String> login) {
+        String password = login.get("password");
+        String email = login.get("email");
+
         password =  Base64.getEncoder().encodeToString(password.getBytes());
         Cadi cadi = repository.findByEmailAndPassword(email, password);
 

@@ -87,13 +87,7 @@ public class CadiController {
     @PostMapping(value = "/login")
     @JsonView(CadiView.Cadi.class)
     public Cadi login(@RequestBody Map<String, String> login) {
-        try {
-            String password = login.get("password");
-            String email = login.get("email");
-            return service.login(email, password);
-        } catch (Exception e) {
-            throw new CadiLoginFailed();
-        }
+        return service.login(login);
     }
 
     @PostMapping(value = "/set-possible-date/{projectId}")

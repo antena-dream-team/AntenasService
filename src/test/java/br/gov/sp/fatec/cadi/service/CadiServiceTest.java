@@ -3,6 +3,9 @@ package br.gov.sp.fatec.cadi.service;
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.exception.CadiException.*;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
+import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.domain.Status;
+import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
@@ -14,11 +17,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static br.gov.sp.fatec.cadi.fixture.CadiFixture.newCadi;
+import static br.gov.sp.fatec.project.fixture.ProjectFixture.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
@@ -31,6 +33,9 @@ public class CadiServiceTest {
 
     @Mock
     private CadiRepository repository;
+
+    @Mock
+    private ProjectService projectService;
 
     @Mock
     private SendEmail sendEmail;
@@ -137,6 +142,7 @@ public class CadiServiceTest {
         String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
 
         when(repository.findByEmail((String) base64.get("email"))).thenReturn(cadi);
+        when(repository.save(cadi)).thenReturn(cadi);
         service.activate(b64);
     }
 
@@ -149,5 +155,68 @@ public class CadiServiceTest {
         String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
 
         service.activate(b64);
+    }
+
+    @Test
+    public void setTeacher_shouldSucceed() {
+        Project project = newProject();
+        when(projectService.setTeacher(1L, project.getId())).thenReturn(project);
+        service.setTeacher(1L, project.getId());
+    }
+
+    @Test
+    public void setProjectStatus_shouldSucceed() {
+        Project project = newProject();
+        Status status = newStatus();
+
+        when(projectService.setStatus(project.getId(), status)).thenReturn(project);
+        service.setProjectStatus(project.getId(), status);
+    }
+
+    @Test
+    public void setMeetingPossibleDate() {
+        Project project = newProject();
+        List<br.gov.sp.fatec.project.domain.Date> possibleDate = getPossibleDate();
+
+        when(projectService.setMeetingPossibleDate(possibleDate, project.getId())).thenReturn(project);
+        service.setMeetingPossibleDate(possibleDate, project.getId());
+    }
+
+    @Test
+    public void login_shouldSucceed() {
+        Cadi cadi = newCadi();
+
+        Map<String, String> login = new HashMap<>();
+        login.put("email", cadi.getEmail());
+        login.put("password", cadi.getPassword());
+
+        when(repository.findByEmailAndPassword(cadi.getEmail(), Base64.getEncoder().encodeToString(cadi.getPassword().getBytes())))
+                .thenReturn(cadi);
+        service.login(login);
+    }
+
+    @Test(expected = CadiNotFoundException.class)
+    public void login_shouldFail_notFound() {
+        Cadi cadi = newCadi();
+
+        Map<String, String> login = new HashMap<>();
+        login.put("email", cadi.getEmail());
+        login.put("password", cadi.getPassword());
+
+        service.login(login);
+    }
+
+    @Test(expected = CadiInactiveException.class)
+    public void login_shouldFail_Inactive() {
+        Cadi cadi = newCadi();
+        cadi.setActive(false);
+
+        Map<String, String> login = new HashMap<>();
+        login.put("email", cadi.getEmail());
+        login.put("password", cadi.getPassword());
+
+        when(repository.findByEmailAndPassword(cadi.getEmail(), Base64.getEncoder().encodeToString(cadi.getPassword().getBytes())))
+                .thenReturn(cadi);
+        service.login(login);
     }
 }

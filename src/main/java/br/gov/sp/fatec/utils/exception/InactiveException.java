@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.utils.exception;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
+import br.gov.sp.fatec.cadi.exception.CadiException.CadiInactiveException;
 import br.gov.sp.fatec.cadi.exception.CadiException.CadiNotFoundException;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.EntrepreneurInactiveException;
@@ -29,9 +30,9 @@ public class InactiveException {
             throw new EntrepreneurInactiveException(entrepreneur.getId());
         }
     }
-    public static void throwIfCadiIsInactive(Cadi cadi) throws CadiNotFoundException {
+    public static void throwIfCadiIsInactive(Cadi cadi) throws CadiInactiveException {
         if (!cadi.isActive()) {
-            throw new CadiNotFoundException(cadi.getId());
+            throw new CadiInactiveException(cadi.getId());
         }
     }
 }

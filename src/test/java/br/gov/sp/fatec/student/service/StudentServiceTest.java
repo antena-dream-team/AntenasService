@@ -163,7 +163,8 @@ public class StudentServiceTest {
         login.put("email", student.getEmail());
         login.put("password", student.getPassword());
 
-        when(repository.findByEmailAndPassword(student.getEmail(), Base64.getEncoder().encodeToString(student.getPassword().getBytes()))).thenReturn(student);
+        when(repository.findByEmailAndPassword(student.getEmail(), Base64.getEncoder().encodeToString(student.getPassword().getBytes())))
+                .thenReturn(student);
         service.login(login);
     }
 
@@ -187,7 +188,8 @@ public class StudentServiceTest {
         login.put("email", student.getEmail());
         login.put("password", student.getPassword());
 
-        when(repository.findByEmailAndPassword(student.getEmail(), Base64.getEncoder().encodeToString(student.getPassword().getBytes()))).thenReturn(student);
+        when(repository.findByEmailAndPassword(student.getEmail(), Base64.getEncoder().encodeToString(student.getPassword().getBytes())))
+                .thenReturn(student);
         service.login(login);
     }
 
