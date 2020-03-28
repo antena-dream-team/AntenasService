@@ -39,7 +39,7 @@ workflows:
   version: 2
   build:
       jobs:
-        - telegram_entry/notify:
+         - telegram_entry/notify:
             context: ANTENA
             message: "[CircleCI]: starting CI commit ${CIRCLE_SHA1} by ${CIRCLE_USERNAME}"
             telegram-chat-id: TELEGRAM_CHAT_ID
