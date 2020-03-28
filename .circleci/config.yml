@@ -1,6 +1,6 @@
 version: 2.1 # use CircleCI 2.1
 orbs:
-        #telegram: woltsu/telegram@0.0.9
+    telegram_entry: woltsu/telegram@0.0.9
     telegram: uniqueck/telegram-orb@0.0.1
 
 jobs:
@@ -34,25 +34,20 @@ jobs:
           path: target/classes
           destination: sample-springboot-api
       - telegram/status
-          #- telegram/notify:
-          #context: ANTENA
-          #message: "[CircleCI]: reporting CI result: "
-          #telegram-chat-id: TELEGRAM_CHAT_ID
-          #telegram-bot-token: TELEGRAM_BOT_TOKEN
 
 workflows:
   version: 2
   build:
       jobs:
-              #- telegram/notify:
-              #context: ANTENA
-              #message: "[CircleCI]: starting CI commit ${CIRCLE_SHA1} by ${CIRCLE_USERNAME}"
-              #telegram-chat-id: TELEGRAM_CHAT_ID
-              #telegram-bot-token: TELEGRAM_BOT_TOKEN
+        - telegram/notify:
+            context: ANTENA
+            message: "[CircleCI]: starting CI commit ${CIRCLE_SHA1} by ${CIRCLE_USERNAME}"
+            telegram-chat-id: TELEGRAM_CHAT_ID
+            telegram-bot-token: TELEGRAM_BOT_TOKEN
 
          - build:
-                 #requires:
-                 #- telegram/notify
+            requires:
+              - telegram/notify
             context: ANTENA
             filters:
               branches:
