@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.project.domain;
 
+import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.domain.Student;
@@ -46,12 +47,8 @@ public class Project {
     private String technologyDescription;
 
     @JsonView({ProjectView.Project.class})
-    @Column(name = "external_link_1")
-    private String externalLink1;
-
-    @JsonView({ProjectView.Project.class})
-    @Column(name = "external_link_2")
-    private String externalLink2;
+    @Column(name = "notes")
+    private String notes;
 
     @JsonView({ProjectView.Project.class})
     private String progress;
@@ -61,8 +58,10 @@ public class Project {
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
     private Meeting meeting;
 
-//    @OneToOne // TODO - VERIFICAR OQ FAZER C ISSO
-//    private Cadi cadi_id;
+    @JsonView({ProjectView.Project.class})
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cadi_id", referencedColumnName = "id")
+    private Cadi cadi;
 
     @JsonView({ProjectView.Project.class})
     @ManyToOne(cascade = CascadeType.ALL)
@@ -73,9 +72,6 @@ public class Project {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneur_id", referencedColumnName = "id")
     private Entrepreneur entrepreneur;
-
-//    @JsonView({ProjectView.Project.class})
-//    private String accessKey;
 
     @JsonView({ProjectView.Project.class})
     @ManyToOne(cascade = CascadeType.ALL)
@@ -89,6 +85,14 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "student_id"))
    private List<Student> students = new ArrayList<>();
 
+//    todo - testar sem o cascade dps
+    @JsonView({ProjectView.Project.class})
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "project_deliver",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "deliver_id"))
+    private List<Deliver> deliver = new ArrayList<>();
+
     @JsonView({ProjectView.Project.class})
     @OneToOne(cascade = CascadeType.ALL)
     private Student studentResponsible;
@@ -96,5 +100,4 @@ public class Project {
     @CreatedDate
     @Column(nullable = false)
     private ZonedDateTime createdAt = ZonedDateTime.now();
-
 }

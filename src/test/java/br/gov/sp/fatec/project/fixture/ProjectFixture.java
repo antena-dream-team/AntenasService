@@ -17,8 +17,9 @@ public class ProjectFixture {
     private static final String TECHNOLOGY_DESCRIPTION = "Uma banana feita de cimento que pode ser ingerido que persegue carrapatos e batalha com eles, para expula-los dos cinemas";
     private static final String SHORT_DESCRIPTION = "banana de cimento que combate carrapato";
     private static final String TITLE = "destruidora de carrapato";
-    private static final String EXTERNAL_LINK_1 = "github.com/1";
-    private static final String EXTERNAL_LINK_2 = "github.com/2";
+    private static final String CLOUD_LINK = "cloud.com";
+    private static final String REPOSITORY_LINK = "repository.com";
+    private static final String COMMENT = "Comentario da entrega";
     private static final String PROGRESS = "1";
     private static final Long ID = 1L;
 
@@ -26,9 +27,8 @@ public class ProjectFixture {
         return  Project.builder()
                 .completeDescription(COMPLETE_DESCRIPTION)
                 .entrepreneur(newEntrepreneur())
-                .externalLink1(EXTERNAL_LINK_1)
-                .externalLink2(EXTERNAL_LINK_2)
                 .id(ID)
+                .deliver(getDeliver())
                 .progress(PROGRESS)
                 .status(newStatus())
                 .meeting(newMeeting())
@@ -45,9 +45,8 @@ public class ProjectFixture {
         return  Project.builder()
                 .completeDescription(COMPLETE_DESCRIPTION)
                 .entrepreneur(newEntrepreneur())
-                .externalLink1(EXTERNAL_LINK_1)
-                .externalLink2(EXTERNAL_LINK_2)
                 .id(id)
+                .deliver(getDeliver())
                 .progress(PROGRESS)
                 .status(newStatus())
                 .meeting(newMeeting())
@@ -58,6 +57,38 @@ public class ProjectFixture {
                 .technologyDescription(TECHNOLOGY_DESCRIPTION)
                 .title(TITLE)
                 .build();
+    }
+
+    public static Deliver newDeliver() {
+        return Deliver.builder()
+                .id(ID)
+                .cloudLink(CLOUD_LINK)
+                .comment("COMMENT")
+                .repositoryLink(REPOSITORY_LINK)
+                .studentResponsible(newStudent())
+                .students(getStudents())
+                .build();
+    }
+
+    public static Deliver newDeliver(Long id) {
+        return Deliver.builder()
+                .id(id)
+                .cloudLink(CLOUD_LINK)
+                .comment("COMMENT")
+                .repositoryLink(REPOSITORY_LINK)
+                .studentResponsible(newStudent())
+                .students(getStudents())
+                .build();
+    }
+
+    public static List<Deliver> getDeliver() {
+        List<Deliver> deliverList = new LinkedList<>();
+
+        for (long i = 0; i < 3; i++) {
+            deliverList.add(newDeliver(i));
+        }
+
+        return deliverList;
     }
 
     public static Meeting newMeeting() {

@@ -69,14 +69,13 @@
             <column name="id" type="BIGINT"/>
             <column name="title" type="VARCHAR(255)"/>
             <column name="short_description" type="VARCHAR(255)"/>
-            <column name="external_link_1" type="VARCHAR(255)"/>
-            <column name="external_link_2" type="VARCHAR(255)"/>
+            <column name="notes" type="VARCHAR(400)"/>
             <column name="complete_description" type="VARCHAR(1000)"/>
             <column name="tecnology_description" type="VARCHAR(255)"/>
-            <column name="access_key" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME" />
             <column name="progress" type="VARCHAR(50)"/>
             <column name="meeting_id" type="BIGINT"/>
-<!--            <column name="cadi_id" type="BIGINT"/>-->
+            <column name="cadi_id" type="BIGINT"/>
             <column name="teacher_id" type="BIGINT"/>
             <column name="entrepreneur_id" type="BIGINT"/>
             <column name="status_id" type="BIGINT"/>
@@ -150,6 +149,7 @@
         </createTable>
     </changeSet>
 
+
     <!-- cadi -->
 
     <changeSet author="danielly" id="AS-15">
@@ -217,11 +217,6 @@
                                  referencedColumnNames="id" referencedTableName="address"/>
     </changeSet>
 
-<!--    <changeSet author="danielly" id="AS-24">-->
-<!--        <addForeignKeyConstraint baseColumnNames="chosen_date_id" baseTableName="meeting" constraintName="meeting_choosen_date_fk"-->
-<!--                                 referencedColumnNames="id" referencedTableName="date"/>-->
-<!--    </changeSet>-->
-
     <!-- PROJECT -->
 
     <changeSet author="danielly" id="AS-25">
@@ -252,6 +247,11 @@
     <changeSet author="danielly" id="AS-30">
         <addForeignKeyConstraint baseColumnNames="status_id" baseTableName="project" constraintName="project_status_fk"
                                  referencedColumnNames="id" referencedTableName="project_status"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="AS-47">
+        <addForeignKeyConstraint baseColumnNames="cadi_id" baseTableName="project" constraintName="project_cadi_fk"
+                                 referencedColumnNames="id" referencedTableName="cadi"/>
     </changeSet>
 
     <!-- DELIVER -->
@@ -336,5 +336,10 @@
         <addForeignKeyConstraint baseTableName="project_student" baseColumnNames="student_id" constraintName="project_student_student_id"
                                  referencedColumnNames="id" referencedTableName="student"/>
     </changeSet>
+
+    <changeSet author="danielly" id="TBL-46">
+        <addUniqueConstraint columnNames="project_id, student_id" tableName="project_student" constraintName="project_student_uk"/>
+    </changeSet>
+
 
 </databaseChangeLog>

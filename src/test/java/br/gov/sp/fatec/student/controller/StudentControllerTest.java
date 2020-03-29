@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.student.controller;
 
+import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
@@ -157,19 +158,12 @@ public class StudentControllerTest {
     @Test
     public void deliverSolution_shouldSucceed() throws Exception {
         Project project = newProject();
+        Deliver deliver = project.getDeliver().get(0);
 
-        JSONObject deliverJson = new JSONObject();
-        deliverJson.put("projectId",project.getId().toString());
-        deliverJson.put("link", "github.com");
-
-        Map<String, String> deliverMap = new HashMap<>();
-        deliverMap.put("projectId", project.getId().toString());
-        deliverMap.put("link", "github.com");
-
-        when(service.setSolution(deliverMap)).thenReturn(project);
+        when(service.setSolution(deliver, project.getId())).thenReturn(project);
         mockMvc.perform(post(URL + "/deliver")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(deliverJson)))
+                .content(toJSON(deliver)))
                 .andExpect(status().isOk());
     }
 

@@ -2,10 +2,7 @@ package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
-import br.gov.sp.fatec.project.domain.Date;
-import br.gov.sp.fatec.project.domain.Meeting;
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.domain.Status;
+import br.gov.sp.fatec.project.domain.*;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
@@ -157,17 +154,19 @@ public class ProjectService {
     }
 
     public List<Project> getProjectByStudent(Long studentId) {
-        return repository.findByStudentId(studentId);
+        return repository.findByStudentsId(studentId);
     }
 
     public List<Project> getProjectByEntrepreneur(Long entrepreneurId) {
         return repository.findByEntrepreneurId(entrepreneurId);
     }
 
-    public Project setSolution(Long projectId, String link) {
+    public Project setSolution(Long projectId, Deliver deliver) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
-        project.setExternalLink1(link);
+
+
+        project.getDeliver().add(deliver);
         return repository.save(project);
     }
 

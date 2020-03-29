@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.student.service;
 
+import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
@@ -78,11 +79,11 @@ public class StudentService {
         return projectService.getProjectByStudent(studentId);
     }
 
-    public Project setSolution(Map<String, String> deliver) {
+    public Project setSolution(Deliver deliver, Long projectId) {
         // todo - quem pode postar uma solução?
-        Long projectId = Long.valueOf(deliver.get("projectId"));
-        String link = deliver.get("link");
-        return projectService.setSolution(projectId, link);
+//        Long projectId = Long.valueOf(deliver.get("projectId"));
+//        String link = deliver.get("link");
+        return projectService.setSolution(projectId, deliver);
     }
 
     public Student login(Map<String, String> login) {

@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.student.service;
 
+import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
@@ -19,6 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.*;
 
+import static br.gov.sp.fatec.project.fixture.ProjectFixture.newDeliver;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
 import static org.junit.Assert.assertEquals;
@@ -145,14 +147,10 @@ public class StudentServiceTest {
     @Test
     public void setSolution_shouldSucceed() {
         Project project = newProject();
-        String link = "github.com";
+        Deliver deliver = newDeliver();
 
-        Map<String, String> deliver = new HashMap<>();
-        deliver.put("projectId", project.getId().toString());
-        deliver.put("link", link);
-
-        when(projectService.setSolution(project.getId(), link)).thenReturn(project);
-        service.setSolution(deliver);
+        when(projectService.setSolution(project.getId(), deliver)).thenReturn(project);
+        service.setSolution(deliver, project.getId());
     }
 
     @Test

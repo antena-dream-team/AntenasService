@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.student.controller;
 
+import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.domain.Student;
@@ -69,10 +70,11 @@ public class StudentController {
         return service.findProjectByStudent(id);
     }
 
-    @PostMapping(value = "/deliver")
+    @PostMapping(value = "/deliver/{projectId}")
     @JsonView(ProjectView.Project.class)
-    public Project deliverSolution(@RequestBody Map<String, String> deliver) {
-        return service.setSolution(deliver);
+    public Project deliverSolution(@PathVariable("projectId") Long projectId,
+                                   @RequestBody Deliver deliver) {
+        return service.setSolution(deliver, projectId);
     }
 
     @PostMapping(value = "/login")

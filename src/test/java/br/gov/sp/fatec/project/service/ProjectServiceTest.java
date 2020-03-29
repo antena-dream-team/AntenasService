@@ -5,6 +5,7 @@ import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.Entrepreneur
 import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.EntrepreneurNotFoundException;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.project.domain.Date;
+import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.exception.ProjectException.*;
@@ -26,6 +27,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
+import static br.gov.sp.fatec.project.fixture.ProjectFixture.newDeliver;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
 import static br.gov.sp.fatec.teacher.fixture.TeacherFixture.newTeacher;
@@ -381,7 +383,7 @@ public class ProjectServiceTest {
                 newProject(2L),
                 newProject(3L));
 
-        when(repository.findByStudentId(projectList.get(0).getStudentResponsible().getId())).thenReturn(projectList);
+        when(repository.findByStudentsId(projectList.get(0).getStudentResponsible().getId())).thenReturn(projectList);
 
         List<Project> returned = service.getProjectByStudent(projectList.get(0).getStudentResponsible().getId());
         assertEquals(projectList.size(), returned.size());
@@ -403,17 +405,19 @@ public class ProjectServiceTest {
     @Test
     public void setSolution_shouldSucceed() {
         Project project = newProject();
+        Deliver deliver = newDeliver();
 
         when(repository.getOne(project.getId())).thenReturn(project);
         when(repository.save(project)).thenReturn(project);
 
-        Project returned = service.setSolution(project.getId(), "github.com");
+        Project returned = service.setSolution(project.getId(), deliver);
         assertNotNull(returned);
     }
 
     @Test(expected = ProjectNotFoundException.class)
     public void setSolution_shouldFail() {
-        service.setSolution(1L, "github.com");
+        Deliver deliver = newDeliver();
+        service.setSolution(1L, deliver);
     }
 
     @Test
