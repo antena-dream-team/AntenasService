@@ -129,4 +129,13 @@
             </plugin>
         </plugins>
     </build>
+    
+    <distributionManagement>
+         <repository>
+             <id>github</id>
+             <name>antena-dream-team</name>
+             <url>https://maven.pkg.github.com/antena-dream-team/AntenasService</url>
+         </repository>
+    </distributionManagement>
+
 </project>
