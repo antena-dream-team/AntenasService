@@ -26,11 +26,4 @@
     </profile>
   </profiles>
 
-  <servers>
-    <server>
-      <id>github</id>
-      <username>mateusmsouza</username>
-      <password>19f9544f2937cc27db32b7bbe7cae981e4b7672f</password>
-    </server>
-  </servers>
 </settings>
