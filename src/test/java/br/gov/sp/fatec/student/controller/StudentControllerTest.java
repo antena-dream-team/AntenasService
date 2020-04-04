@@ -161,9 +161,9 @@ public class StudentControllerTest {
         Deliver deliver = project.getDeliver().get(0);
 
         when(service.setSolution(deliver, project.getId())).thenReturn(project);
-        mockMvc.perform(post(URL + "/deliver")
+        mockMvc.perform(post(URL + "/deliver/" + project.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJSON(deliver)))
+                .content(Objects.requireNonNull(toJSON(deliver))))
                 .andExpect(status().isOk());
     }
 

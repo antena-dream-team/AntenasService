@@ -63,7 +63,7 @@ public class ProjectFixture {
         return Deliver.builder()
                 .id(ID)
                 .cloudLink(CLOUD_LINK)
-                .comment("COMMENT")
+                .comment(COMMENT)
                 .repositoryLink(REPOSITORY_LINK)
                 .studentResponsible(newStudent())
                 .students(getStudents())
@@ -74,9 +74,9 @@ public class ProjectFixture {
         return Deliver.builder()
                 .id(id)
                 .cloudLink(CLOUD_LINK)
-                .comment("COMMENT")
+                .comment(COMMENT)
                 .repositoryLink(REPOSITORY_LINK)
-                .studentResponsible(newStudent())
+                .studentResponsible(newStudentNoProject())
                 .students(getStudents())
                 .build();
     }

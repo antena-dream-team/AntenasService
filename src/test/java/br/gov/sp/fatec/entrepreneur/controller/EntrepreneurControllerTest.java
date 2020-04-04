@@ -101,7 +101,7 @@ public class EntrepreneurControllerTest {
         Entrepreneur updated = newEntrepreneur();
         updated.setEmail("newEmail@test.com");
 
-        mockMvc.perform(put(URL + "/" + entrepreneur.getId())
+        mockMvc.perform(put(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(entrepreneur))))
                 .andExpect(status().isOk());
