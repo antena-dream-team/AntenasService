@@ -119,6 +119,7 @@ public class teacherControllerTest {
     @Test
     public void setStudents_shouldSucceed() throws Exception {
         Project project = newProject();
+        Teacher teacher = newTeacher();
 
         List<Student> studentList = Lists.newArrayList(newStudent(1L, true),
                 newStudent(2L, true),
@@ -126,7 +127,7 @@ public class teacherControllerTest {
 
         project.setStudents(studentList);
 
-        when(service.setStudentsToProject(studentList, project.getId())).thenReturn(project);
+        when(service.setStudentsToProject(studentList, project.getId(), teacher.getId())).thenReturn(project);
         mockMvc.perform(post(URL + "/set-students/" + project.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(studentList))))
@@ -137,9 +138,11 @@ public class teacherControllerTest {
     public void setResponsibleStudent_shouldSucceed() throws Exception {
         Project project = newProject();
         Student student = newStudent(1L, true);
+        Teacher teacher = newTeacher();
+
         project.setStudentResponsible(student);
 
-        when(service.setStudentsResponsibleToProject(student.getId(), project.getId())).thenReturn(project);
+        when(service.setStudentsResponsibleToProject(student.getId(), project.getId(), teacher.getId())).thenReturn(project);
         mockMvc.perform(post(URL + "/set-student-responsible/" + project.getId() + "/" + student.getId()))
                 .andExpect(status().isOk());
     }

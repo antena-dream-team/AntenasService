@@ -123,6 +123,7 @@ public class TeacherServiceTest {
     @Test
     public void setStudentsToProject_shouldSucceed() {
         Project project = newProject();
+        Teacher teacher = newTeacher();
 
         List<Student> studentList = Lists.newArrayList(newStudent(1L, true),
                 newStudent(2L, true),
@@ -130,8 +131,31 @@ public class TeacherServiceTest {
 
         project.setStudents(studentList);
 
+        when(repository.getOne(teacher.getId())).thenReturn(teacher);
+        when(projectService.findById(project.getId())).thenReturn(project);
         when(projectService.setStudents(project.getId(), studentList)).thenReturn(project);
-        service.setStudentsToProject(studentList, project.getId());
+
+        service.setStudentsToProject(studentList, project.getId(), teacher.getId());
+        assertEquals(studentList.size(), project.getStudents().size());
+    }
+
+    @Test(expected = CannotAddOrRemoveStudentsToThisProject.class)
+    public void setStudentsToProject_shouldFail() {
+        Project project = newProject();
+        Teacher teacher = newTeacher();
+        teacher.setId(2L);
+
+        List<Student> studentList = Lists.newArrayList(newStudent(1L, true),
+                newStudent(2L, true),
+                newStudent(3L, true));
+
+        project.setStudents(studentList);
+
+        when(repository.getOne(teacher.getId())).thenReturn(teacher);
+        when(projectService.findById(project.getId())).thenReturn(project);
+        when(projectService.setStudents(project.getId(), studentList)).thenReturn(project);
+
+        service.setStudentsToProject(studentList, project.getId(), teacher.getId());
         assertEquals(studentList.size(), project.getStudents().size());
     }
 
@@ -139,10 +163,28 @@ public class TeacherServiceTest {
     public void setStudentsResponsibleToProject_shouldSucceed() {
         Project project = newProject();
         Student student = newStudent();
+        Teacher teacher = newTeacher();
         project.setStudentResponsible(student);
 
+        when(repository.getOne(teacher.getId())).thenReturn(teacher);
+        when(projectService.findById(project.getId())).thenReturn(project);
         when(projectService.setStudentResponsible(project.getId(), student.getId())).thenReturn(project);
-        Project returned = service.setStudentsResponsibleToProject(student.getId(), project.getId());
+        Project returned = service.setStudentsResponsibleToProject(student.getId(), project.getId(), teacher.getId());
+        assertEquals(returned, project);
+    }
+
+    @Test(expected = CannotAddOrRemoveStudentsToThisProject.class)
+    public void setStudentsResponsibleToProject_shouldFail() {
+        Project project = newProject();
+        Student student = newStudent();
+        Teacher teacher = newTeacher();
+        teacher.setId(2L);
+        project.setStudentResponsible(student);
+
+        when(repository.getOne(teacher.getId())).thenReturn(teacher);
+        when(projectService.findById(project.getId())).thenReturn(project);
+        when(projectService.setStudentResponsible(project.getId(), student.getId())).thenReturn(project);
+        Project returned = service.setStudentsResponsibleToProject(student.getId(), project.getId(), teacher.getId());
         assertEquals(returned, project);
     }
 
