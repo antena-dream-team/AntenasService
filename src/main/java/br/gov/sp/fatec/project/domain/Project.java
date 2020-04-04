@@ -54,32 +54,32 @@ public class Project {
     private int progress;
 
     @JsonView({ProjectView.Project.class})
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
     private Meeting meeting;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "cadi_id", referencedColumnName = "id")
     private Cadi cadi;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private Teacher teacher;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "entrepreneur_id", referencedColumnName = "id")
     private Entrepreneur entrepreneur;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "project_student",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
@@ -87,14 +87,14 @@ public class Project {
 
 //    todo - testar sem o cascade dps
     @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "project_deliver",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "deliver_id"))
     private List<Deliver> deliver = new ArrayList<>();
 
     @JsonView({ProjectView.Project.class})
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Student studentResponsible;
 
     @CreatedDate

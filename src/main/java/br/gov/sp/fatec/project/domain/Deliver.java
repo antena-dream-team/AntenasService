@@ -38,18 +38,18 @@ public class Deliver {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView({ProjectView.Project.class})
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Student studentResponsible;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "deliver_team",
             joinColumns = @JoinColumn(name = "deliver_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students = new ArrayList<>();
 
     @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "project_deliver",
             joinColumns = @JoinColumn(name = "deliver_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
