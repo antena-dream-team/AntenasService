@@ -46,12 +46,6 @@ public class EntrepreneurController {
         return service.findById(id);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) {
-        // todo - remover do projeto se desativar
-        service.deactivate(id);
-    }
-
     @PutMapping
     @JsonView(EntrepreneurView.Entrepreneur.class)
     public Entrepreneur update(@RequestBody Entrepreneur entrepreneur) {

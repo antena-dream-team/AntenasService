@@ -37,14 +37,6 @@ public class StudentService {
         return repository.save(student);
     }
 
-    public void deactivate(Long id) throws NotFoundException {
-        Student found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfStudentIsNull(found, id);
-
-        found.setActive(false);
-        repository.save(found);
-    }
-
     public List<Student> findAll() {
         return repository.findAll();
     }

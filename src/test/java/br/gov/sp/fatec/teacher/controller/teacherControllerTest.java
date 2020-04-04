@@ -117,15 +117,6 @@ public class teacherControllerTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        teacher.setActive(false);
-
-        mockMvc.perform(delete(URL + "/" + teacher.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void setStudents_shouldSucceed() throws Exception {
         Project project = newProject();
 

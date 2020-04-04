@@ -53,22 +53,6 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws NotFoundException {
-        Student student = newStudent();
-        when(repository.save(student)).thenReturn(student);
-        when(repository.findById(student.getId())).thenReturn(java.util.Optional.of(student));
-
-        service.deactivate(student.getId());
-
-        assertFalse(student.isActive());
-    }
-
-    @Test(expected = StudentNotFoundException.class)
-    public void deactivate_shouldFail() throws NotFoundException {
-        service.deactivate(1L);
-    }
-
-    @Test
     public void findAll_shouldSucceed() {
         List<Student> studentList = Lists.newArrayList(
                 newStudent(1L, true),

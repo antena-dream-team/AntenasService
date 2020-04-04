@@ -110,15 +110,6 @@ public class StudentControllerTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws Exception {
-        Student student = newStudent();
-        student.setActive(false);
-
-        mockMvc.perform(delete(URL + "/" + student.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void listProjectByStudent_shouldSucceed() throws Exception {
         List<Student> studentList =  Lists.newArrayList(newStudent());
         List<Project> projectList = Lists.newArrayList(

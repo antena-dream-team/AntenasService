@@ -51,11 +51,6 @@ public class TeacherController {
         return service.findById(id);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
-        service.deactivate(id);
-    }
-
     @PutMapping(value = "/{id}")
     @JsonView(TeacherView.Teacher.class)
     public Teacher update(@PathVariable("id") Long id,

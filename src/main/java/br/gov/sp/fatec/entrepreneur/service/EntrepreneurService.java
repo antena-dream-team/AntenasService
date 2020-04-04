@@ -62,16 +62,6 @@ public class EntrepreneurService {
         repository.save(found);
     }
 
-    public Entrepreneur deactivate(Long id) {
-        Entrepreneur found = repository.getOne(id);
-        throwIfEntrepreneurIsNull(found, id);
-
-        found.setActive(false);
-        repository.save(found);
-
-        return found;
-    }
-
     public Entrepreneur update(Long id, Entrepreneur entrepreneur) {
         Entrepreneur found = repository.findById(id).orElse(null);
         throwIfEntrepreneurIsNull(found, id);

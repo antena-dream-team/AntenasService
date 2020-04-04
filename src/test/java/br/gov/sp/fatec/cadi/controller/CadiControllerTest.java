@@ -114,15 +114,6 @@ public class CadiControllerTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws Exception {
-        Cadi cadi = newCadi();
-        cadi.setActive(false);
-
-        mockMvc.perform(delete(URL + "/" + cadi.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void activate_shouldSucceed() throws Exception {
         Cadi cadi = newCadi();
         JSONObject base64 = new JSONObject();

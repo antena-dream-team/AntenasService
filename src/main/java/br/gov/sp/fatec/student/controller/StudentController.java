@@ -45,11 +45,6 @@ public class StudentController {
         return service.findById(id);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
-        // todo - remover do projeto se desativar
-        service.deactivate(id);
-    }
 
     @PutMapping(value = "/{id}")
     @JsonView(StudentView.Student.class)

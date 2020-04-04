@@ -67,16 +67,6 @@ public class CadiService {
         return repository.save(found);
     }
 
-    public Cadi deactivate(Long id) {
-        Cadi found = repository.getOne(id);
-        throwIfCadiIsNull(found, id);
-
-        found.setActive(false);
-        repository.save(found);
-
-        return found;
-    }
-
     public Cadi activate(String b64) {
         JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
         Cadi found = repository.findByEmail(jsonObject.get("email").toString());

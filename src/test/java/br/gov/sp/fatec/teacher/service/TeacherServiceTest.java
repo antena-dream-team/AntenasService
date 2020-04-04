@@ -53,22 +53,6 @@ public class TeacherServiceTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() {
-        Teacher teacher = newTeacher();
-        when(repository.save(teacher)).thenReturn(teacher);
-        when(repository.getOne(teacher.getId())).thenReturn(teacher);
-
-        service.deactivate(teacher.getId());
-
-        assertFalse(teacher.getActive());
-    }
-
-    @Test(expected = TeacherNotFoundException.class)
-    public void deactivate_shouldFail() {
-        service.deactivate(1L);
-    }
-
-    @Test
     public void findAll_shouldSucceed() {
         List<Teacher> teacherList = Lists.newArrayList(
                 newTeacher(1L, true),

@@ -50,12 +50,6 @@ public class CadiController {
         return service.findById(id);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) {
-        // todo - remover do projeto se desativar
-        service.deactivate(id);
-    }
-
     @GetMapping(value = "/activate/{b64}")
     public void activate(@PathVariable("b64") String b64) {
         service.activate(b64);

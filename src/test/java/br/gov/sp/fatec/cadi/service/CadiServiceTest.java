@@ -51,22 +51,6 @@ public class CadiServiceTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() {
-        Cadi cadi = newCadi();
-        when(repository.save(cadi)).thenReturn(cadi);
-        when(repository.getOne(cadi.getId())).thenReturn(cadi);
-
-        service.deactivate(cadi.getId());
-
-        assertFalse(cadi.isActive());
-    }
-
-    @Test(expected = CadiNotFoundException.class)
-    public void deactivate_shouldFail() {
-        service.deactivate(1L);
-    }
-
-    @Test
     public void findAll_shouldSucceed() {
         List<Cadi> cadiList = Lists.newArrayList(newCadi(1L, true),
                 newCadi(2L, true),

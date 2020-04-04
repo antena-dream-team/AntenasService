@@ -36,16 +36,6 @@ public class TeacherService {
         return repository.save(teacher);
     }
 
-    public Teacher deactivate(Long id) {
-        Teacher found = repository.getOne(id);
-        throwIfTeacherIsNull(found, id);
-
-        found.setActive(false);
-        repository.save(found);
-
-        return found;
-    }
-
     public List<Teacher> findAll() {
         return repository.findAll();
     }

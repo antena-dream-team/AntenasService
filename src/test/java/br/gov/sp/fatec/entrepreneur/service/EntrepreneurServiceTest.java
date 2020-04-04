@@ -49,22 +49,6 @@ public class EntrepreneurServiceTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws NotFoundException {
-        Entrepreneur entrepreneur = newEntrepreneur();
-        when(repository.save(entrepreneur)).thenReturn(entrepreneur);
-        when(repository.getOne(entrepreneur.getId())).thenReturn(entrepreneur);
-
-        service.deactivate(entrepreneur.getId());
-
-        assertFalse(entrepreneur.isActive());
-    }
-
-    @Test(expected = EntrepreneurNotFoundException.class)
-    public void deactivate_shouldFail() {
-        service.deactivate(1L);
-    }
-
-    @Test
     public void findAll_shouldSucceed() {
         List<Entrepreneur> entrepreneurList = Lists.newArrayList(newEntrepreneur(1L, true),
                 newEntrepreneur(2L, true),

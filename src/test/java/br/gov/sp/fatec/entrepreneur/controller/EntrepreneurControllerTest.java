@@ -108,15 +108,6 @@ public class EntrepreneurControllerTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws Exception {
-        Entrepreneur entrepreneur = newEntrepreneur();
-        entrepreneur.setActive(false);
-
-        mockMvc.perform(delete(URL + "/" + entrepreneur.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void login_shouldSucceed() throws Exception {
         Entrepreneur entrepreneur = newEntrepreneur();
 
