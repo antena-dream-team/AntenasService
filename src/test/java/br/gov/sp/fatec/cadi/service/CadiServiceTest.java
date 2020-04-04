@@ -21,8 +21,7 @@ import java.util.*;
 
 import static br.gov.sp.fatec.cadi.fixture.CadiFixture.newCadi;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -128,6 +127,7 @@ public class CadiServiceTest {
         when(repository.findByEmail((String) base64.get("email"))).thenReturn(cadi);
         when(repository.save(cadi)).thenReturn(cadi);
         service.activate(b64);
+        assertTrue(cadi.isActive());
     }
 
     @Test(expected = CadiNotFoundException.class)

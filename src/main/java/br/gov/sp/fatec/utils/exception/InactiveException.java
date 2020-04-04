@@ -2,7 +2,6 @@ package br.gov.sp.fatec.utils.exception;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.exception.CadiException.CadiInactiveException;
-import br.gov.sp.fatec.cadi.exception.CadiException.CadiNotFoundException;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.EntrepreneurInactiveException;
 import br.gov.sp.fatec.student.domain.Student;

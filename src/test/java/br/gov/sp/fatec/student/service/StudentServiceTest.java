@@ -2,13 +2,12 @@ package br.gov.sp.fatec.student.service;
 
 import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.exception.ProjectException.ProjectNotFoundException;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
-import br.gov.sp.fatec.student.exception.StudentException;
 import br.gov.sp.fatec.student.exception.StudentException.*;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +23,7 @@ import static br.gov.sp.fatec.project.fixture.ProjectFixture.newDeliver;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -133,7 +132,26 @@ public class StudentServiceTest {
         Project project = newProject();
         Deliver deliver = newDeliver();
 
+        when(projectService.findById(project.getId())).thenReturn(project);
         when(projectService.setSolution(project.getId(), deliver)).thenReturn(project);
+        service.setSolution(deliver, project.getId());
+    }
+
+    @Test(expected = ProjectNotFoundException.class)
+    public void setSolution_shouldFail_projectNotFound() {
+        Project project = newProject();
+        Deliver deliver = newDeliver();
+
+        service.setSolution(deliver, project.getId());
+    }
+
+    @Test(expected = PostSolutionFailedException.class)
+    public void setSolution_shouldFail_studentNotInProject() {
+        Project project = newProject();
+        project.getStudentResponsible().setId(2L);
+        Deliver deliver = newDeliver();
+
+        when(projectService.findById(project.getId())).thenReturn(project);
         service.setSolution(deliver, project.getId());
     }
 
@@ -199,11 +217,11 @@ public class StudentServiceTest {
 
         when(repository.findByEmail((String) base64.get("email"))).thenReturn(student);
         service.activate(b64);
+        assertTrue(student.isActive());
     }
 
-    @Test(expected = StudentException.StudentNotFoundException.class)
+    @Test(expected = StudentNotFoundException.class)
     public void activate_shouldFail() throws JSONException {
-        // todo - verificar se ativou
         Student student = newStudent();
         JSONObject base64 = new JSONObject();
         base64.put("dateTime", new Date());

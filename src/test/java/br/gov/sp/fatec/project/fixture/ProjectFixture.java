@@ -121,7 +121,6 @@ public class ProjectFixture {
     }
 
     public static Date newDate(Long id) {
-        // todo - em vez de ter uma tabela de data separada, ter direto a tabela da relação com a data e o id projeto
         return Date.builder()
                 .id(id)
                 .dateTime(new java.util.Date())

@@ -5,6 +5,7 @@ import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.service.CadiService;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
+import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import org.assertj.core.util.Lists;
 import org.json.JSONObject;
@@ -41,6 +42,9 @@ public class CadiControllerTest {
 
     @Mock
     private CadiService service;
+
+    @Mock
+    private ProjectService projectService;
 
     private MockMvc mockMvc;
 
@@ -177,6 +181,14 @@ public class CadiControllerTest {
         mockMvc.perform(post(URL + "/set-possible-date/" + project.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(possibleDate))))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void approve_shouldSucceed() throws Exception {
+        Project project = newProject();
+        when(projectService.approve(project.getId())).thenReturn(project);
+        mockMvc.perform(put(URL + "/approve/" + project.getId()))
                 .andExpect(status().isOk());
     }
 }

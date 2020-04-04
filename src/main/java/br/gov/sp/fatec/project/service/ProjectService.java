@@ -77,7 +77,6 @@ public class ProjectService {
         return repository.getOne(id);
     }
 
-    // todo - desativar em vez de deletar
     public void delete(Long id) {
         Project project = findById(id);
         throwIfProjectIsNull(project, id);
@@ -116,14 +115,12 @@ public class ProjectService {
         return repository.save(project);
     }
 
-    // todo - fazer endpoint
-    public Project addStudents(Long projectId, Long studentId) {
+    public Project addStudent(Long projectId, Long studentId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
 
-
         Student student = studentService.findById(studentId);
-        throwIfStudentIsNull(student, student.getId());
+        throwIfStudentIsNull(student, studentId);
         throwIfStudentIsInactive(student);
 
         project.getStudents().add(student);
@@ -187,7 +184,7 @@ public class ProjectService {
 
     public Project update(Project project) {
         Project found = findById(project.getId());
-        throwIfProjectIsNull(project);
+        throwIfProjectIsNull(found);
 
         found.setProgress(update_getProgress(found));
         found.setCompleteDescription(project.getCompleteDescription());

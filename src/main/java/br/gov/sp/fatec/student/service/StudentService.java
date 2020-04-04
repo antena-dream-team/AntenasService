@@ -4,6 +4,7 @@ import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.exception.StudentException.PostSolutionFailedException;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfStudentIsInactive;
+import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfProjectIsNull;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfStudentIsNull;
 
 @Service
@@ -72,9 +74,13 @@ public class StudentService {
     }
 
     public Project setSolution(Deliver deliver, Long projectId) {
-        // todo - quem pode postar uma solução?
-//        Long projectId = Long.valueOf(deliver.get("projectId"));
-//        String link = deliver.get("link");
+        Project project = projectService.findById(projectId);
+        throwIfProjectIsNull(project);
+
+        if (project.getStudentResponsible() != null && !project.getStudentResponsible().getId().equals(deliver.getStudentResponsible().getId())) {
+            throw new PostSolutionFailedException();
+        }
+
         return projectService.setSolution(projectId, deliver);
     }
 

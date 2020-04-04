@@ -88,4 +88,13 @@ public class ProjectControllerTest {
         mockMvc.perform(delete(URL + "/" + project.getId()))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void addStudent_shouldSucceed() throws Exception {
+        Project project = newProject();
+
+        when(service.addStudent(project.getId(), 1L)).thenReturn(project);
+        mockMvc.perform(post(URL + "/add-student/" + project.getId() + "/" + 1L))
+                .andExpect(status().isOk());
+    }
 }

@@ -23,8 +23,7 @@ import java.util.List;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
 import static br.gov.sp.fatec.teacher.fixture.TeacherFixture.newTeacher;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -203,6 +202,7 @@ public class TeacherServiceTest {
 
         when(repository.findByEmail((String) base64.get("email"))).thenReturn(teacher);
         service.activate(b64);
+        assertTrue(teacher.getActive());
     }
 
     @Test(expected = TeacherNotFoundException.class)
