@@ -54,6 +54,9 @@ public class StudentService {
     public Student findById(Long id) {
         Student found = repository.getOne(id);
         NotFoundException.throwIfStudentIsNull(found, id);
+
+//        found.setProjects(findProjectByStudent(id));
+//        System.out.println(found);
         return found;
     }
 

@@ -82,7 +82,13 @@ public class StudentServiceTest {
     @Test
     public void findById_shouldSucceed() {
         Student student = newStudent();
+        List<Project> projectList = Lists.newArrayList(
+                newProject(1L),
+                newProject(2L),
+                newProject(3L));
+
         when(repository.getOne(student.getId())).thenReturn(student);
+        when(projectService.getProjectByStudent(student.getId())).thenReturn(projectList);
         Student found = service.findById(student.getId());
         assertEquals(student.getId(), found.getId());
     }

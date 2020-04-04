@@ -64,7 +64,6 @@ public class TeacherController {
                                @PathVariable("teacherId") Long teacherId,
                                @RequestBody List<Student> studentList) {
 
-        // todo - checar se o professor pode adicionar os alunos
         // todo - se ja houverem alunos, sobrescrever ou so adicionar mais? depende de como vai funcionar o front. está sobrescrevendo
 
         return service.setStudentsToProject(studentList, projectId, teacherId);
@@ -76,7 +75,6 @@ public class TeacherController {
                                          @PathVariable("teacherId") Long teacherId,
                                          @PathVariable("studentId") Long studentId) {
 
-        // todo - checar se o professor pode adicionar o aluno
         // todo - fazer com que o projeto fique na lista de projetos do aluno ???
 
         return service.setStudentsResponsibleToProject(studentId, projectId, teacherId);
