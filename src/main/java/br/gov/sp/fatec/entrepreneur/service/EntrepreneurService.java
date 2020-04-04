@@ -104,6 +104,6 @@ public class EntrepreneurService {
     }
 
     public Project setMeetingChosenDate(Long dateId, Long projectId) {
-        return projectService.setMeetingChosenDate(projectId, dateId);
+        return projectService.setMeetingChosenDate(dateId, projectId);
     }
 }

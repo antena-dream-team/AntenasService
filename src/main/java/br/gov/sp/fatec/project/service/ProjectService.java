@@ -63,8 +63,8 @@ public class ProjectService {
         if (project.getStudentResponsible() != null && project.getStudentResponsible().getId() != null) {
             project.setStudentResponsible(studentService.findById(project.getStudentResponsible().getId()));
         }
-//        project.setAccessKey(generateCode());
         project.setCreatedAt(ZonedDateTime.now());
+        project.setProgress(1);
 
         return repository.save(project);
     }
@@ -77,6 +77,7 @@ public class ProjectService {
         return repository.getOne(id);
     }
 
+    // todo - desativar em vez de deletar
     public void delete(Long id) {
         Project project = findById(id);
         throwIfProjectIsNull(project, id);
@@ -112,6 +113,20 @@ public class ProjectService {
         }
 
         project.setStudents(students);
+        return repository.save(project);
+    }
+
+    // todo - fazer endpoint
+    public Project addStudents(Long projectId, Long studentId) {
+        Project project = findById(projectId);
+        throwIfProjectIsNull(project, projectId);
+
+
+        Student student = studentService.findById(studentId);
+        throwIfStudentIsNull(student, student.getId());
+        throwIfStudentIsInactive(student);
+
+        project.getStudents().add(student);
         return repository.save(project);
     }
 
@@ -165,9 +180,27 @@ public class ProjectService {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
 
-
+        project.setProgress(6);
         project.getDeliver().add(deliver);
         return repository.save(project);
+    }
+
+    public Project update(Project project) {
+        Project found = findById(project.getId());
+        throwIfProjectIsNull(project);
+
+        found.setProgress(update_getProgress(found));
+        found.setCompleteDescription(project.getCompleteDescription());
+        found.setTechnologyDescription(project.getTechnologyDescription());
+        found.setTitle(project.getTitle());
+        found.setShortDescription(project.getShortDescription());
+        found.setNotes(project.getNotes());
+
+        return repository.save(found);
+    }
+
+    private int update_getProgress(Project project) {
+        return project.getCompleteDescription() != null && project.getCompleteDescription() != null && project.getProgress() < 2 ? 3 : project.getProgress();
     }
 
     public Project setMeetingPossibleDate(List<Date> possibleDate, Long projectId) {
@@ -183,6 +216,7 @@ public class ProjectService {
                 .build();
 
         project.setMeeting(meeting);
+        project.setProgress(5);
 
         return repository.save(project);
     }
@@ -202,6 +236,18 @@ public class ProjectService {
         project.getMeeting().setChosenDate(date.getDateTime());
 
         return repository.save(project);
+    }
+
+    public Project approve(Long id) {
+        Project project = findById(id);
+        throwIfProjectIsNull(project);
+
+        project.setProgress(approve_getProgress(project));
+        return repository.save(project);
+    }
+
+    public int approve_getProgress(Project project) {
+        return project.getCompleteDescription() != null && project.getTechnologyDescription() != null ? 4 : 2;
     }
 
 //    private String generateCode() {

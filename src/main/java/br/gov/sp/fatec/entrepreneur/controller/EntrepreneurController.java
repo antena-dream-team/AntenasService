@@ -1,16 +1,14 @@
 package br.gov.sp.fatec.entrepreneur.controller;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
-import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.*;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.entrepreneur.view.EntrepreneurView;
 import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.project.view.ProjectView;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +16,15 @@ import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
-@Controller
+@RestController
 @RequestMapping("dev/entrepreneur")
 public class EntrepreneurController {
 
     @Autowired
-    EntrepreneurService service;
+    private EntrepreneurService service;
+
+    @Autowired
+    private ProjectService projectService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -51,10 +52,9 @@ public class EntrepreneurController {
         service.deactivate(id);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping
     @JsonView(EntrepreneurView.Entrepreneur.class)
-    public Entrepreneur update(@PathVariable("id") Long id,
-                               @RequestBody Entrepreneur entrepreneur) {
+    public Entrepreneur update(@RequestBody Entrepreneur entrepreneur) {
         return  service.save(entrepreneur);
     }
 
@@ -86,5 +86,11 @@ public class EntrepreneurController {
     @GetMapping(value = "/activate/{b64}")
     public void activate(@PathVariable("b64") String b64) {
         service.activate(b64);
+    }
+
+    @PutMapping(value = "/update")
+    @JsonView(ProjectView.Project.class)
+    public Project update(@RequestBody Project project) {
+        return projectService.update(project);
     }
 }

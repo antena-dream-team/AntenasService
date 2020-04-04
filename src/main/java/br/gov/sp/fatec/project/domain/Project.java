@@ -51,7 +51,7 @@ public class Project {
     private String notes;
 
     @JsonView({ProjectView.Project.class})
-    private String progress;
+    private int progress;
 
     @JsonView({ProjectView.Project.class})
     @OneToOne(cascade = CascadeType.ALL)
@@ -99,5 +99,6 @@ public class Project {
 
     @CreatedDate
     @Column(nullable = false)
+    @JsonView({ProjectView.Project.class})
     private ZonedDateTime createdAt = ZonedDateTime.now();
 }

@@ -7,6 +7,7 @@ import br.gov.sp.fatec.cadi.view.CadiView;
 import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.domain.Status;
+import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.project.view.ProjectView;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class CadiController {
 
     @Autowired
     CadiService service;
+
+    @Autowired
+    ProjectService projectService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -94,5 +98,11 @@ public class CadiController {
     public Project setPossibleDate(@PathVariable("projectId") Long projectId,
                                    @RequestBody List<Date> possibleDate) {
         return service.setMeetingPossibleDate(possibleDate, projectId);
+    }
+
+    @PutMapping(value = "/approve/{id}")
+    @JsonView(ProjectView.Project.class)
+    public Project approve(@PathVariable("id") Long id) {
+        return projectService.approve(id);
     }
 }

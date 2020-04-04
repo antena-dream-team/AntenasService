@@ -73,7 +73,7 @@
             <column name="complete_description" type="VARCHAR(1000)"/>
             <column name="tecnology_description" type="VARCHAR(255)"/>
             <column name="created_at" type="DATETIME" />
-            <column name="progress" type="VARCHAR(50)"/>
+            <column name="progress" type="INTEGER"/>
             <column name="meeting_id" type="BIGINT"/>
             <column name="cadi_id" type="BIGINT"/>
             <column name="teacher_id" type="BIGINT"/>
