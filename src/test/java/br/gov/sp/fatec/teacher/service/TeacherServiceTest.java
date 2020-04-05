@@ -153,7 +153,6 @@ public class TeacherServiceTest {
 
         when(repository.getOne(teacher.getId())).thenReturn(teacher);
         when(projectService.findById(project.getId())).thenReturn(project);
-        when(projectService.setStudents(project.getId(), studentList)).thenReturn(project);
 
         service.setStudentsToProject(studentList, project.getId(), teacher.getId());
         assertEquals(studentList.size(), project.getStudents().size());
@@ -183,7 +182,6 @@ public class TeacherServiceTest {
 
         when(repository.getOne(teacher.getId())).thenReturn(teacher);
         when(projectService.findById(project.getId())).thenReturn(project);
-        when(projectService.setStudentResponsible(project.getId(), student.getId())).thenReturn(project);
         Project returned = service.setStudentsResponsibleToProject(student.getId(), project.getId(), teacher.getId());
         assertEquals(returned, project);
     }

@@ -128,7 +128,7 @@ public class teacherControllerTest {
         project.setStudents(studentList);
 
         when(service.setStudentsToProject(studentList, project.getId(), teacher.getId())).thenReturn(project);
-        mockMvc.perform(post(URL + "/set-students/" + project.getId())
+        mockMvc.perform(post(URL + "/set-students/" + project.getId() + "/" +  teacher.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(studentList))))
                 .andExpect(status().isOk());
@@ -143,7 +143,7 @@ public class teacherControllerTest {
         project.setStudentResponsible(student);
 
         when(service.setStudentsResponsibleToProject(student.getId(), project.getId(), teacher.getId())).thenReturn(project);
-        mockMvc.perform(post(URL + "/set-student-responsible/" + project.getId() + "/" + student.getId()))
+        mockMvc.perform(post(URL + "/set-student-responsible/" + project.getId() + "/" + student.getId() + "/" + teacher.getId()))
                 .andExpect(status().isOk());
     }
 

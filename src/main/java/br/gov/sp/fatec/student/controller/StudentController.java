@@ -61,7 +61,7 @@ public class StudentController {
 
     @GetMapping(value = "/get-projects/{id}")
     @JsonView(ProjectView.Project.class)
-    public List<Project> findProjectByStudent(@PathVariable("id") Long id) {
+    public  Map<String, List<Project>> findProjectByStudent(@PathVariable("id") Long id) {
         return service.findProjectByStudent(id);
     }
 

@@ -58,24 +58,20 @@ public class TeacherController {
         return  service.save(teacher);
     }
 
+    // todo - se ja houverem alunos, sobrescrever ou so adicionar mais? depende de como vai funcionar o front. está sobrescrevendo
     @PostMapping(value = "/set-students/{projectId}/{teacherId}")
     @JsonView(ProjectView.Project.class)
     public Project setStudents(@PathVariable("projectId") Long projectId,
                                @PathVariable("teacherId") Long teacherId,
                                @RequestBody List<Student> studentList) {
 
-        // todo - se ja houverem alunos, sobrescrever ou so adicionar mais? depende de como vai funcionar o front. está sobrescrevendo
-
         return service.setStudentsToProject(studentList, projectId, teacherId);
     }
-
     @PostMapping(value = "/set-student-responsible/{projectId}/{studentId}/{teacherId}")
     @JsonView(ProjectView.Project.class)
     public Project setResponsibleStudent(@PathVariable("projectId") Long projectId,
                                          @PathVariable("teacherId") Long teacherId,
                                          @PathVariable("studentId") Long studentId) {
-
-        // todo - fazer com que o projeto fique na lista de projetos do aluno ???
 
         return service.setStudentsResponsibleToProject(studentId, projectId, teacherId);
     }

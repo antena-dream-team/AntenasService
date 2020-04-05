@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,8 +73,13 @@ public class StudentService {
         return found;
     }
 
-    public List<Project> findProjectByStudent(Long studentId) {
-        return projectService.getProjectByStudent(studentId);
+    public Map<String, List<Project>>  findProjectByStudent(Long studentId) {
+
+        Map<String, List<Project>> projects = new HashMap<>();
+        projects.put("responsible", projectService.getProjectByStudentResponsible(studentId));
+        projects.put("team", projectService.getProjectByStudent(studentId));
+
+        return projects;
     }
 
     public Project setSolution(Deliver deliver, Long projectId) {

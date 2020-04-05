@@ -117,11 +117,11 @@ public class StudentControllerTest {
                 newProject(2L),
                 newProject(3L));
 
-        for(Project project : projectList) {
-            project.setStudents(studentList);
-        }
+        Map<String, List<Project>> projects = new HashMap<>();
+        projects.put("responsible", null);
+        projects.put("team", projectList);
 
-        when(service.findProjectByStudent(studentList.get(0).getId())).thenReturn(projectList);
+        when(service.findProjectByStudent(studentList.get(0).getId())).thenReturn(projects);
         mockMvc.perform(get(URL + "/get-projects/" + studentList.get(0).getId()))
                 .andExpect(status().isOk());
     }

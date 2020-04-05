@@ -88,7 +88,6 @@ public class StudentServiceTest {
                 newProject(3L));
 
         when(repository.getOne(student.getId())).thenReturn(student);
-        when(projectService.getProjectByStudent(student.getId())).thenReturn(projectList);
         Student found = service.findById(student.getId());
         assertEquals(student.getId(), found.getId());
     }

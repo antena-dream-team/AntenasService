@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -93,6 +94,11 @@ public class ProjectService {
         throwIfStudentIsInactive(student);
 
         project.setStudentResponsible(student);
+
+//        if (student.getProjects() == null) {
+//            student.setProjects(new ArrayList<>());
+//        }
+//        addStudent(projectId, studentId);
         return repository.save(project);
     }
 
@@ -167,6 +173,10 @@ public class ProjectService {
 
     public List<Project> getProjectByStudent(Long studentId) {
         return repository.findByStudentsId(studentId);
+    }
+
+    public List<Project> getProjectByStudentResponsible(Long studentId) {
+        return repository.findByStudentResponsibleId(studentId);
     }
 
     public List<Project> getProjectByEntrepreneur(Long entrepreneurId) {
