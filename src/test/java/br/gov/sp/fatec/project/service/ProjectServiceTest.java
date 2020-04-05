@@ -7,7 +7,6 @@ import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.exception.ProjectException.*;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
@@ -33,7 +32,6 @@ import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
 import static br.gov.sp.fatec.teacher.fixture.TeacherFixture.newTeacher;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -317,25 +315,6 @@ public class ProjectServiceTest {
 
         Project returned = service.setTeacher(project.getId(), teacher.getId());
         assertNotNull(returned);
-    }
-
-    @Test
-    public void setStatus_shouldSucceed() {
-        Project project = newProject();
-        Status status = project.getStatus();
-
-        when(repository.getOne(project.getId())).thenReturn(project);
-        when(repository.save(project)).thenReturn(project);
-
-        Project returned = service.setStatus(project.getId(), status);
-        assertNotNull(returned);
-    }
-
-    @Test(expected = ProjectNotFoundException.class)
-    public void setStatus_shouldFail() {
-        Project project = newProject();
-        Status status = project.getStatus();
-        service.setStatus(project.getId(), status);
     }
 
     @Test

@@ -51,9 +51,6 @@ public class Project {
     private String notes;
 
     @JsonView({ProjectView.Project.class})
-    private int progress;
-
-    @JsonView({ProjectView.Project.class})
     @OneToOne
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
     private Meeting meeting;
@@ -74,18 +71,12 @@ public class Project {
     private Entrepreneur entrepreneur;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne
-    @JoinColumn(name = "status_id", referencedColumnName = "id")
-    private Status status;
-
-    @JsonView({ProjectView.Project.class})
     @ManyToMany
     @JoinTable(name = "project_student",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
    private List<Student> students = new ArrayList<>();
 
-//    todo - testar sem o cascade dps
     @JsonView({ProjectView.Project.class})
     @ManyToMany
     @JoinTable(name = "project_deliver",

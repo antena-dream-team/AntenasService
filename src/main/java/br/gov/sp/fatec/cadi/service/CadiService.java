@@ -2,14 +2,10 @@ package br.gov.sp.fatec.cadi.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
-import br.gov.sp.fatec.cadi.exception.CadiException.CadiNotFoundException;
 import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.service.ProjectService;
-import br.gov.sp.fatec.utils.commons.JSONParser;
 import br.gov.sp.fatec.utils.commons.SendEmail;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,10 +74,6 @@ public class CadiService {
 
     public Project setTeacher(Long teacherId, Long projectId) {
         return projectService.setTeacher(teacherId, projectId);
-    }
-
-    public Project setProjectStatus(Long projectId, Status status) {
-        return projectService.setStatus(projectId, status);
     }
 
     public Cadi login(Map<String, String> login) {

@@ -76,7 +76,6 @@ public class StudentController {
     @JsonView(StudentView.Student.class)
     public Student login(@RequestBody Map<String, String> login) {
         try {
-
             return service.login(login);
         } catch (Exception e) {
             throw new StudentLoginFailed();

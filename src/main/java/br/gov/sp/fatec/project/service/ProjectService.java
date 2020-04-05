@@ -65,7 +65,6 @@ public class ProjectService {
             project.setStudentResponsible(studentService.findById(project.getStudentResponsible().getId()));
         }
         project.setCreatedAt(ZonedDateTime.now());
-        project.setProgress(1);
 
         return repository.save(project);
     }
@@ -146,14 +145,6 @@ public class ProjectService {
         return repository.save(project);
     }
 
-    public Project setStatus(Long projectId, Status status) {
-        Project project = findById(projectId);
-        throwIfProjectIsNull(project, projectId);
-
-        project.setStatus(status);
-
-        return repository.save(project);
-    }
 
     public Project removeStudents(Long projectId, Long StudentId) {
         Project project = findById(projectId);
@@ -187,7 +178,6 @@ public class ProjectService {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
 
-        project.setProgress(6);
         project.getDeliver().add(deliver);
         return repository.save(project);
     }
@@ -196,7 +186,6 @@ public class ProjectService {
         Project found = findById(project.getId());
         throwIfProjectIsNull(found);
 
-        found.setProgress(update_getProgress(found));
         found.setCompleteDescription(project.getCompleteDescription());
         found.setTechnologyDescription(project.getTechnologyDescription());
         found.setTitle(project.getTitle());
@@ -204,10 +193,6 @@ public class ProjectService {
         found.setNotes(project.getNotes());
 
         return repository.save(found);
-    }
-
-    private int update_getProgress(Project project) {
-        return project.getCompleteDescription() != null && project.getCompleteDescription() != null && project.getProgress() < 2 ? 3 : project.getProgress();
     }
 
     public Project setMeetingPossibleDate(List<Date> possibleDate, Long projectId) {
@@ -223,8 +208,6 @@ public class ProjectService {
                 .build();
 
         project.setMeeting(meeting);
-        project.setProgress(5);
-
         return repository.save(project);
     }
 
@@ -248,13 +231,7 @@ public class ProjectService {
     public Project approve(Long id) {
         Project project = findById(id);
         throwIfProjectIsNull(project);
-
-        project.setProgress(approve_getProgress(project));
         return repository.save(project);
-    }
-
-    public int approve_getProgress(Project project) {
-        return project.getCompleteDescription() != null && project.getTechnologyDescription() != null ? 4 : 2;
     }
 
 //    private String generateCode() {

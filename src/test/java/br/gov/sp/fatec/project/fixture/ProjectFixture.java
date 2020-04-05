@@ -20,7 +20,6 @@ public class ProjectFixture {
     private static final String CLOUD_LINK = "cloud.com";
     private static final String REPOSITORY_LINK = "repository.com";
     private static final String COMMENT = "Comentario da entrega";
-    private static final int PROGRESS = 1;
     private static final Long ID = 1L;
 
     public static Project newProject() {
@@ -29,8 +28,6 @@ public class ProjectFixture {
                 .entrepreneur(newEntrepreneur())
                 .id(ID)
                 .deliver(getDeliver())
-//                .progress(PROGRESS)
-                .status(newStatus())
                 .meeting(newMeeting())
                 .shortDescription(SHORT_DESCRIPTION)
                 .studentResponsible(newStudentNoProject(ID, true))
@@ -47,8 +44,6 @@ public class ProjectFixture {
                 .entrepreneur(newEntrepreneur())
                 .id(id)
                 .deliver(getDeliver())
-//                .progress(PROGRESS)
-                .status(newStatus())
                 .meeting(newMeeting())
                 .shortDescription(SHORT_DESCRIPTION)
                 .studentResponsible(newStudentNoProject(ID, true))
@@ -109,14 +104,6 @@ public class ProjectFixture {
                 .zip("1234-123")
                 .number(0)
                 .id(ID)
-                .build();
-    }
-
-    public static Status newStatus() {
-        return Status.builder()
-                .denied(false)
-                .id(1L)
-                .reason("Not acceptable")
                 .build();
     }
 

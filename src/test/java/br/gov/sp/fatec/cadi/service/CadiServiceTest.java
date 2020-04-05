@@ -4,10 +4,8 @@ import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.exception.CadiException.*;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -146,15 +144,6 @@ public class CadiServiceTest {
         Project project = newProject();
         when(projectService.setTeacher(1L, project.getId())).thenReturn(project);
         service.setTeacher(1L, project.getId());
-    }
-
-    @Test
-    public void setProjectStatus_shouldSucceed() {
-        Project project = newProject();
-        Status status = newStatus();
-
-        when(projectService.setStatus(project.getId(), status)).thenReturn(project);
-        service.setProjectStatus(project.getId(), status);
     }
 
     @Test
