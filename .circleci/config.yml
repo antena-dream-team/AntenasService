@@ -11,7 +11,13 @@ jobs:
     #working_directory: ~/AccountSystem
 
     steps:
-      # git pull
+      - telegram_entry/notify:
+        context: ANTENA
+        message: "[CircleCI]: starting CI commit ${CIRCLE_SHA1} by ${CIRCLE_USERNAME}"
+        telegram-chat-id: TELEGRAM_CHAT_ID
+        telegram-bot-token: TELEGRAM_BOT_TOKEN
+
+     # git pull
       - checkout
             
       # Download and cache dependencies
@@ -47,12 +53,6 @@ workflows:
   version: 2
   build:
       jobs:
-         - telegram_entry/notify:
-            context: ANTENA
-            message: "[CircleCI]: starting CI commit ${CIRCLE_SHA1} by ${CIRCLE_USERNAME}"
-            telegram-chat-id: TELEGRAM_CHAT_ID
-            telegram-bot-token: TELEGRAM_BOT_TOKEN
-
          - build:
             requires:
               - telegram_entry/notify
