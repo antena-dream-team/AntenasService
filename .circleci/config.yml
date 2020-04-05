@@ -16,9 +16,9 @@ jobs:
       - checkout
 
       - telegram_entry/notify:
-        message: "[CircleCI]: starting CI commit ${CIRCLE_SHA1} by ${CIRCLE_USERNAME}"
-        telegram-chat-id: TELEGRAM_CHAT_ID
-        telegram-bot-token: TELEGRAM_BOT_TOKEN
+          message: "[CircleCI]: starting CI commit ${CIRCLE_SHA1} by ${CIRCLE_USERNAME}"
+          telegram-chat-id: TELEGRAM_CHAT_ID
+          telegram-bot-token: TELEGRAM_BOT_TOKEN
            
       # Download and cache dependencies
       - restore_cache:
@@ -54,8 +54,6 @@ workflows:
   build:
       jobs:
          - build:
-            requires:
-              - telegram_entry/notify
             context: ANTENA
             filters:
               branches:
