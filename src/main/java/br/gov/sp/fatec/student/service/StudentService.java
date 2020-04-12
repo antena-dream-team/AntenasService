@@ -83,12 +83,17 @@ public class StudentService {
     }
 
     public Project setSolution(Deliver deliver, Long projectId) {
+        // todo - pegar id do aluno responsavel
         Project project = projectService.findById(projectId);
         throwIfProjectIsNull(project);
 
-        if (project.getStudentResponsible() != null && !project.getStudentResponsible().getId().equals(deliver.getStudentResponsible().getId())) {
+        if (!project.getStudentResponsible().getId().equals(deliver.getStudentResponsible().getId())) {
             throw new PostSolutionFailedException();
         }
+
+        deliver.setStudents(project.getStudents());
+        deliver.setStudentResponsible(project.getStudentResponsible());
+        deliver.getProjects().add(project);
 
         return projectService.setSolution(projectId, deliver);
     }

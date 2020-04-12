@@ -51,6 +51,9 @@ public class Project {
     private String notes;
 
     @JsonView({ProjectView.Project.class})
+    private int progress;
+
+    @JsonView({ProjectView.Project.class})
     @OneToOne
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
     private Meeting meeting;
@@ -78,7 +81,7 @@ public class Project {
    private List<Student> students = new ArrayList<>();
 
     @JsonView({ProjectView.Project.class})
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "project_deliver",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "deliver_id"))
