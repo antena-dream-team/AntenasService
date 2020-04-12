@@ -11,9 +11,11 @@ jobs:
     #working_directory: ~/AccountSystem
 
     steps:
-      # git pull
+ 
+     # git pull
       - checkout
-            
+
+          
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -49,14 +51,17 @@ workflows:
       jobs:
          - telegram_entry/notify:
             context: ANTENA
+            filters:
+              branches:
+                only:
+                  - master
             message: "[CircleCI]: starting CI commit ${CIRCLE_SHA1} by ${CIRCLE_USERNAME}"
             telegram-chat-id: TELEGRAM_CHAT_ID
             telegram-bot-token: TELEGRAM_BOT_TOKEN
-
          - build:
+            context: ANTENA
             requires:
               - telegram_entry/notify
-            context: ANTENA
             filters:
               branches:
                 only:
