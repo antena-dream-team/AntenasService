@@ -84,10 +84,4 @@ public class CadiController {
                                    @RequestBody List<Date> possibleDate) {
         return service.setMeetingPossibleDate(possibleDate, projectId);
     }
-
-    @PutMapping(value = "/approve/{id}")
-    @JsonView(ProjectView.Project.class)
-    public Project approve(@PathVariable("id") Long id) {
-        return projectService.approve(id);
-    }
 }

@@ -97,4 +97,13 @@ public class ProjectControllerTest {
         mockMvc.perform(post(URL + "/add-student/" + project.getId() + "/" + 1L))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void approve_shouldSucceed() throws Exception {
+        Project project = newProject();
+        when(service.approve(project.getId())).thenReturn(project);
+
+        mockMvc.perform(put(URL + "/approve/" + project.getId()))
+                .andExpect(status().isOk());
+    }
 }

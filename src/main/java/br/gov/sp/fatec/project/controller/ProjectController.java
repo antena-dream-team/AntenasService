@@ -50,4 +50,10 @@ public class ProjectController {
     public Project addStudent(@PathVariable("projectId") Long projectId, @PathVariable("studentId") Long studentId) {
         return service.addStudent(projectId, studentId);
     }
+
+    @PutMapping(value = "/approve/{id}")
+    @JsonView(ProjectView.Project.class)
+    public Project approve(@PathVariable("id") Long id) {
+        return service.approve(id);
+    }
 }

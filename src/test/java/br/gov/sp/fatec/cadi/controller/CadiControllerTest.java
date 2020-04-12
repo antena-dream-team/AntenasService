@@ -167,12 +167,4 @@ public class CadiControllerTest {
                 .content(Objects.requireNonNull(toJSON(possibleDate))))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    public void approve_shouldSucceed() throws Exception {
-        Project project = newProject();
-        when(projectService.approve(project.getId())).thenReturn(project);
-        mockMvc.perform(put(URL + "/approve/" + project.getId()))
-                .andExpect(status().isOk());
-    }
 }
