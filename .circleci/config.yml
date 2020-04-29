@@ -1,32 +1,28 @@
-version: 2.1 # use CircleCI 2.1
+version: 2.1
 orbs:
     telegram_entry: woltsu/telegram@0.0.9
     telegram: uniqueck/telegram-orb@0.0.1
 
 jobs:
   build:
-    docker: # run the steps with Docker
-          - image: circleci/openjdk:11-jdk-stretch 
-
-    #working_directory: ~/AccountSystem
-
+    docker:
+      - image: circleci/openjdk:11-jdk-stretch 
+    
     steps:
- 
-     # git pull
       - checkout
 
           
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - sample-springboot-api-{{ checksum "pom.xml" }}
+          - antena-project-backend-{{ checksum "pom.xml" }}
 
       - run: mvn dependency:go-offline
 
       - save_cache:
           paths:
             - ~/.m2
-          key: sample-springboot-api-{{ checksum "pom.xml" }}
+          key: antena-project-backend-{{ checksum "pom.xml" }}
         
       # package into a jar
       - run: mvn clean package 
@@ -42,14 +38,15 @@ jobs:
       # store raw contents of src code
       - store_artifacts:
           path: target/classes
-          destination: sample-springboot-api
+          destination: antena-project-backend
+      
       - telegram/status
 
 workflows:
   version: 2
   build:
       jobs:
-         - telegram_entry/notify:
+        - telegram_entry/notify:
             context: ANTENA
             filters:
               branches:
@@ -58,7 +55,8 @@ workflows:
             message: "Starting CI commit ${CIRCLE_SHA1} on ${CIRCLE_PROJECT_REPONAME} made by ${CIRCLE_USERNAME}"
             telegram-chat-id: TELEGRAM_CHAT_ID
             telegram-bot-token: TELEGRAM_BOT_TOKEN
-         - build:
+
+        - build:
             context: ANTENA
             requires:
               - telegram_entry/notify
