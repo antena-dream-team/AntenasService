@@ -40,7 +40,7 @@ jobs:
           path: target/classes
           destination: antena-project-backend
       
-      - telegram/status
+      - telegram/status 
 
 workflows:
   version: 2
