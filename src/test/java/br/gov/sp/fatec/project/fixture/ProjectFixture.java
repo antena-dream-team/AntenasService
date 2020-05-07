@@ -23,57 +23,61 @@ public class ProjectFixture {
     private static final Long ID = 1L;
 
     public static Project newProject() {
-        return  Project.builder()
-                .completeDescription(COMPLETE_DESCRIPTION)
-                .entrepreneur(newEntrepreneur())
-                .id(ID)
-                .deliver(getDeliver())
-                .meeting(newMeeting())
-                .shortDescription(SHORT_DESCRIPTION)
-                .studentResponsible(newStudentNoProject(ID, true))
-                .students(getStudents())
-                .teacher(newTeacher())
-                .technologyDescription(TECHNOLOGY_DESCRIPTION)
-                .title(TITLE)
-                .build();
+        Project project = new Project();
+        project.setId(ID);
+        project.setCompleteDescription(COMPLETE_DESCRIPTION);
+        project.setEntrepreneur(newEntrepreneur());
+        project.setDeliver(getDeliver());
+        project.setMeeting(newMeeting());
+        project.setShortDescription(SHORT_DESCRIPTION);
+        project.setStudentResponsible(newStudentNoProject(ID, true));
+        project.setStudents(getStudents());
+        project.setTeacher(newTeacher());
+        project.setTechnologyDescription(TECHNOLOGY_DESCRIPTION);
+        project.setTitle(TITLE);
+
+        return project;
     }
 
     public static Project newProject(Long id) {
-        return  Project.builder()
-                .completeDescription(COMPLETE_DESCRIPTION)
-                .entrepreneur(newEntrepreneur())
-                .id(id)
-                .deliver(getDeliver())
-                .meeting(newMeeting())
-                .shortDescription(SHORT_DESCRIPTION)
-                .studentResponsible(newStudentNoProject(ID, true))
-                .students(getStudents())
-                .teacher(newTeacher())
-                .technologyDescription(TECHNOLOGY_DESCRIPTION)
-                .title(TITLE)
-                .build();
+        Project project = new Project();
+        project.setId(id);
+        project.setCompleteDescription(COMPLETE_DESCRIPTION);
+        project.setEntrepreneur(newEntrepreneur());
+        project.setDeliver(getDeliver());
+        project.setMeeting(newMeeting());
+        project.setShortDescription(SHORT_DESCRIPTION);
+        project.setStudentResponsible(newStudentNoProject(ID, true));
+        project.setStudents(getStudents());
+        project.setTeacher(newTeacher());
+        project.setTechnologyDescription(TECHNOLOGY_DESCRIPTION);
+        project.setTitle(TITLE);
+
+        return project;
     }
 
     public static Deliver newDeliver() {
-        return Deliver.builder()
-                .id(ID)
-                .cloudLink(CLOUD_LINK)
-                .comment(COMMENT)
-                .repositoryLink(REPOSITORY_LINK)
-                .studentResponsible(newStudent())
-                .students(getStudents())
-                .build();
+        Deliver deliver = new Deliver();
+        deliver.setId(ID);
+        deliver.setStudentResponsible(newStudent());
+        deliver.setCloudLink(CLOUD_LINK);
+        deliver.setStudents(getStudents());
+        deliver.setComment(COMMENT);
+        deliver.setRepositoryLink(REPOSITORY_LINK);
+
+        return deliver;
     }
 
     public static Deliver newDeliver(Long id) {
-        return Deliver.builder()
-                .id(id)
-                .cloudLink(CLOUD_LINK)
-                .comment(COMMENT)
-                .repositoryLink(REPOSITORY_LINK)
-                .studentResponsible(newStudentNoProject())
-                .students(getStudents())
-                .build();
+        Deliver deliver = new Deliver();
+        deliver.setId(id);
+        deliver.setStudentResponsible(newStudentNoProject());
+        deliver.setCloudLink(CLOUD_LINK);
+        deliver.setStudents(getStudents());
+        deliver.setComment(COMMENT);
+        deliver.setRepositoryLink(REPOSITORY_LINK);
+
+        return deliver;
     }
 
     public static List<Deliver> getDeliver() {
@@ -87,31 +91,34 @@ public class ProjectFixture {
     }
 
     public static Meeting newMeeting() {
-        return Meeting.builder()
-                .address(newAddress())
-                .chosenDate(new java.util.Date())
-                .possibleDate(getPossibleDate())
-                .id(ID)
-                .build();
+        Meeting meeting = new Meeting();
+        meeting.setId(ID);
+        meeting.setAddress(newAddress());
+        meeting.setChosenDate(new java.util.Date());
+        meeting.setPossibleDate(getPossibleDate());
+
+        return meeting;
     }
 
     public static Address newAddress() {
-        return Address.builder()
-                .city("SJC")
-                .neighborhood("vila do chaves")
-                .place("vila")
-                .street("rua dos bobos")
-                .zip("1234-123")
-                .number(0)
-                .id(ID)
-                .build();
+        Address address = new Address();
+        address.setId(ID);
+        address.setCity("SJC");
+        address.setNeighborhood("vila do chaves");
+        address.setPlace("Barril do chaves");
+        address.setStreet("rua dos bobos");
+        address.setNumber(0);
+        address.setZip("1234-123");
+
+        return address;
     }
 
     public static Date newDate(Long id) {
-        return Date.builder()
-                .id(id)
-                .dateTime(new java.util.Date())
-                .build();
+        Date date = new Date();
+        date.setId(id);
+        date.setDateTime(new java.util.Date());
+
+        return date;
     }
 
     public static List<Date> getPossibleDate() {

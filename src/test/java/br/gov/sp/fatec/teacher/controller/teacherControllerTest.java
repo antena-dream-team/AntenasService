@@ -127,7 +127,6 @@ public class teacherControllerTest {
 
         project.setStudents(studentList);
 
-        when(service.setStudentsToProject(studentList, project.getId(), teacher.getId())).thenReturn(project);
         mockMvc.perform(post(URL + "/set-students/" + project.getId() + "/" +  teacher.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(studentList))))

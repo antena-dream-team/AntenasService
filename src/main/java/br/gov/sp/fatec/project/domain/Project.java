@@ -95,4 +95,124 @@ public class Project {
     @Column(nullable = false)
     @JsonView({ProjectView.Project.class})
     private ZonedDateTime createdAt = ZonedDateTime.now();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getCompleteDescription() {
+        return completeDescription;
+    }
+
+    public void setCompleteDescription(String completeDescription) {
+        this.completeDescription = completeDescription;
+    }
+
+    public String getTechnologyDescription() {
+        return technologyDescription;
+    }
+
+    public void setTechnologyDescription(String technologyDescription) {
+        this.technologyDescription = technologyDescription;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public Meeting getMeeting() {
+        return meeting;
+    }
+
+    public void setMeeting(Meeting meeting) {
+        this.meeting = meeting;
+    }
+
+    public Cadi getCadi() {
+        return cadi;
+    }
+
+    public void setCadi(Cadi cadi) {
+        this.cadi = cadi;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public Entrepreneur getEntrepreneur() {
+        return entrepreneur;
+    }
+
+    public void setEntrepreneur(Entrepreneur entrepreneur) {
+        this.entrepreneur = entrepreneur;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public List<Deliver> getDeliver() {
+        return deliver;
+    }
+
+    public void setDeliver(List<Deliver> deliver) {
+        this.deliver = deliver;
+    }
+
+    public Student getStudentResponsible() {
+        return studentResponsible;
+    }
+
+    public void setStudentResponsible(Student studentResponsible) {
+        this.studentResponsible = studentResponsible;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

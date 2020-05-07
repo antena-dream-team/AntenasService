@@ -23,5 +23,21 @@ public class Date {
 
     @JsonView({ProjectView.Project.class})
     private java.util.Date dateTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public java.util.Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(java.util.Date dateTime) {
+        this.dateTime = dateTime;
+    }
 }
 

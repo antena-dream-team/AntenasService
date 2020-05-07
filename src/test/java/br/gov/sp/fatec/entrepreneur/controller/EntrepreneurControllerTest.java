@@ -171,7 +171,6 @@ public class EntrepreneurControllerTest {
     @Test
     public void update_shouldSucceed() throws Exception {
         Project project = newProject();
-        when(projectService.update(project)).thenReturn(project);
 
         mockMvc.perform(put(URL + "/update")
                 .contentType(MediaType.APPLICATION_JSON)

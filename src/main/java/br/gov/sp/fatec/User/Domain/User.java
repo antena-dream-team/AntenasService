@@ -1,9 +1,10 @@
-package br.gov.sp.fatec.cadi.domain;
+package br.gov.sp.fatec.User.Domain;
 
-import br.gov.sp.fatec.cadi.view.CadiView;
+import br.gov.sp.fatec.project.view.ProjectView;
+import br.gov.sp.fatec.teacher.view.TeacherView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,30 +14,24 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Table(name = "cadi")
-public class Cadi {
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({CadiView.Cadi.class})
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
     private Long id;
-    
-    @JsonView({CadiView.Cadi.class})
-    private String email;
 
-    private String password;
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
+    protected String email;
 
-    @JsonView({CadiView.Cadi.class})
-    private String name;
+    protected String password;
 
-    @JsonView({CadiView.Cadi.class})
-    private String cpf;
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
+    protected String name;
 
-    @JsonView({CadiView.Cadi.class})
-    private String position;
-
-    @JsonView({CadiView.Cadi.class})
-    private boolean active;
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
+    protected Boolean active;
 
     public Long getId() {
         return id;
@@ -70,27 +65,11 @@ public class Cadi {
         this.name = name;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public boolean isActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 }

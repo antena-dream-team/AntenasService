@@ -18,45 +18,45 @@ public class StudentFixture {
     private static final Boolean ACTIVE = true;
 
     public static Student newStudent(Long id, boolean active) {
-        return Student.builder()
-                .active(active)
-                .email(EMAIL)
-                .name(NAME)
-                .password(PASSWORD)
-                .id(id)
-                .projects(getProjectList())
-                .build();
+        Student student = new Student();
+        student.setId(id);
+        student.setActive(active);
+        student.setEmail(EMAIL);
+        student.setPassword(PASSWORD);
+        student.setProjects(getProjectList());
+
+        return student;
     }
 
     public static Student newStudent() {
-        return Student.builder()
-                .active(ACTIVE)
-                .email(EMAIL)
-                .name(NAME)
-                .password(PASSWORD)
-                .id(ID)
-                .projects(getProjectList())
-                .build();
+        Student student = new Student();
+        student.setId(ID);
+        student.setActive(ACTIVE);
+        student.setEmail(EMAIL);
+        student.setPassword(PASSWORD);
+        student.setProjects(getProjectList());
+
+        return student;
     }
 
     public static Student newStudentNoProject(Long id, boolean active) {
-        return Student.builder()
-                .active(active)
-                .email(EMAIL)
-                .name(NAME)
-                .password(PASSWORD)
-                .id(id)
-                .build();
+        Student student = new Student();
+        student.setId(id);
+        student.setActive(active);
+        student.setEmail(EMAIL);
+        student.setPassword(PASSWORD);
+
+        return student;
     }
 
     public static Student newStudentNoProject() {
-        return Student.builder()
-                .active(ACTIVE)
-                .email(EMAIL)
-                .name(NAME)
-                .password(PASSWORD)
-                .id(ID)
-                .build();
+        Student student = new Student();
+        student.setId(ID);
+        student.setActive(ACTIVE);
+        student.setEmail(EMAIL);
+        student.setPassword(PASSWORD);
+
+        return student;
     }
 
     private static List<Project> getProjectList() {

@@ -209,9 +209,8 @@ public class ProjectService {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
 
-        Meeting meeting = Meeting.builder()
-                .possibleDate(possibleDate)
-                .build();
+        Meeting meeting = new Meeting();
+        meeting.setPossibleDate(possibleDate);
 
         project.setMeeting(meeting);
         project.setProgress(5);
