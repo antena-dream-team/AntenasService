@@ -64,3 +64,11 @@ workflows:
               branches:
                 only:
                   - master
+        - deploy-approval:
+            type: approval
+            requires:
+              - build
+            filters:
+              branches:
+                only:
+                  - master
