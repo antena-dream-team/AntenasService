@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.User.Domain;
 
+import br.gov.sp.fatec.entrepreneur.view.EntrepreneurView;
 import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.teacher.view.TeacherView;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -19,18 +20,18 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class})
     private Long id;
 
-    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class})
     protected String email;
 
     protected String password;
 
-    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class})
     protected String name;
 
-    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class})
     protected Boolean active;
 
     public Long getId() {
