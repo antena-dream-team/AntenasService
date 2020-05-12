@@ -1,6 +1,7 @@
 version: 2.1
 
 orbs:
+    aws-ecr: circleci/aws-ecr@6.5.0
     telegram_entry: woltsu/telegram@0.0.9
     telegram: uniqueck/telegram-orb@0.0.1
 
@@ -72,3 +73,28 @@ workflows:
               branches:
                 only:
                   - master
+
+        - aws-ecr/build-and-push-image:
+            context: ANTENA
+            requires:
+              - deploy-approval
+
+            filters:
+              branches:
+                only:
+                  - master
+
+            account-url: AWS_ECR_ACCOUNT_URL
+            aws-access-key-id: AWS_ACCESS_KEY_ID
+            aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+            profile-name: ${ECR_BUILD_PROFILE}
+            region: AWS_REGION
+            repo: "mateusmsouza"
+            tag: "${CIRCLE_SHA1},$(if [ ${CIRCLE_BRANCH} == 'develop' ]; then echo 'staging'; else echo 'latest'; fi)"
+
+        - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          family: 'mateusmsouza-service'
+          cluster-name: 'mateusmsouza-cluster'
+          container-image-name-updates: 'container=mateusmsouza-service,tag=${CIRCLE_SHA1}'
