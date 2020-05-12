@@ -3,6 +3,7 @@ version: 2.1
 orbs:
     telegram_entry: woltsu/telegram@0.0.9
     telegram: uniqueck/telegram-orb@0.0.1
+    sonarcloud: sonarsource/sonarcloud@1.0.1
 
 jobs:
   build:
@@ -11,12 +12,12 @@ jobs:
     
     steps:
       - checkout
-     
+
       # Download and cache dependencies
       - restore_cache:
           keys:
           - antena-project-backend-{{ checksum "pom.xml" }}
-
+            
       - run: mvn dependency:go-offline
 
       - save_cache:
@@ -39,7 +40,7 @@ jobs:
       - store_artifacts:
           path: target/classes
           destination: antena-project-backend
-      
+     # - sonarcloud/scan
       - telegram/status 
 
 workflows:
