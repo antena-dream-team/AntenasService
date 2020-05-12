@@ -51,11 +51,6 @@ public class TeacherController {
         return service.findById(id);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
-        service.deactivate(id);
-    }
-
     @PutMapping(value = "/{id}")
     @JsonView(TeacherView.Teacher.class)
     public Teacher update(@PathVariable("id") Long id,
@@ -63,26 +58,22 @@ public class TeacherController {
         return  service.save(teacher);
     }
 
-    @PostMapping(value = "/set-students/{projectId}")
+    // todo - se ja houverem alunos, sobrescrever ou so adicionar mais? depende de como vai funcionar o front. está sobrescrevendo
+    @PostMapping(value = "/set-students/{projectId}/{teacherId}")
     @JsonView(ProjectView.Project.class)
     public Project setStudents(@PathVariable("projectId") Long projectId,
+                               @PathVariable("teacherId") Long teacherId,
                                @RequestBody List<Student> studentList) {
 
-        // todo - checar se o professor pode adicionar os alunos
-        // todo - se ja ouverem alunos, sobrescrever ou so adicionar mais? depende de como vai funcionar o front. está sobrescrevendo
-
-        return service.setStudentsToProject(studentList, projectId);
+        return service.setStudentsToProject(studentList, projectId, teacherId);
     }
-
-    @PostMapping(value = "/set-student-responsible/{projectId}/{studentId}")
+    @PostMapping(value = "/set-student-responsible/{projectId}/{studentId}/{teacherId}")
     @JsonView(ProjectView.Project.class)
     public Project setResponsibleStudent(@PathVariable("projectId") Long projectId,
+                                         @PathVariable("teacherId") Long teacherId,
                                          @PathVariable("studentId") Long studentId) {
 
-        // todo - checar se o professor pode adicionar o aluno
-        // todo - fazer com que o projeto fique na lista de projetos do aluno ???
-
-        return service.setStudentsResponsibleToProject(studentId, projectId);
+        return service.setStudentsResponsibleToProject(studentId, projectId, teacherId);
     }
 
     @GetMapping(value = "/list-project-by-teacher/{teacherId}")

@@ -1,12 +1,10 @@
 package br.gov.sp.fatec.cadi.controller;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
-import br.gov.sp.fatec.cadi.exception.CadiException.CadiLoginFailed;
 import br.gov.sp.fatec.cadi.service.CadiService;
 import br.gov.sp.fatec.cadi.view.CadiView;
 import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.project.view.ProjectView;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -50,12 +48,6 @@ public class CadiController {
         return service.findById(id);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) {
-        // todo - remover do projeto se desativar
-        service.deactivate(id);
-    }
-
     @GetMapping(value = "/activate/{b64}")
     public void activate(@PathVariable("b64") String b64) {
         service.activate(b64);
@@ -79,13 +71,6 @@ public class CadiController {
     public Project setTeacher(@PathVariable("teacherId") Long teacherId,
                               @PathVariable("projectId") Long projectId) {
         return service.setTeacher(teacherId, projectId);
-    }
-
-    @PutMapping(value = "/set-project-status/{projectId}")
-    @JsonView(ProjectView.Project.class)
-    public Project setStatus(@PathVariable("projectId") Long projectId,
-                             @RequestBody Status status) {
-        return service.setProjectStatus(projectId, status);
     }
 
     @PostMapping(value = "/login")

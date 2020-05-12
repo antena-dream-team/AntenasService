@@ -20,8 +20,7 @@ import java.util.*;
 
 import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,22 +45,6 @@ public class EntrepreneurServiceTest {
         Entrepreneur saved = service.save(entrepreneur);
 
         assertEquals(entrepreneur.getId(), saved.getId());
-    }
-
-    @Test
-    public void deactivate_shouldSucceed() throws NotFoundException {
-        Entrepreneur entrepreneur = newEntrepreneur();
-        when(repository.save(entrepreneur)).thenReturn(entrepreneur);
-        when(repository.getOne(entrepreneur.getId())).thenReturn(entrepreneur);
-
-        service.deactivate(entrepreneur.getId());
-
-        assertFalse(entrepreneur.isActive());
-    }
-
-    @Test(expected = EntrepreneurNotFoundException.class)
-    public void deactivate_shouldFail() {
-        service.deactivate(1L);
     }
 
     @Test
@@ -200,6 +183,7 @@ public class EntrepreneurServiceTest {
 
         when(repository.findByEmail((String) base64.get("email"))).thenReturn(entrepreneur);
         service.activate(b64);
+        assertTrue(entrepreneur.isActive());
     }
 
     @Test(expected = EntrepreneurNotFoundException.class)

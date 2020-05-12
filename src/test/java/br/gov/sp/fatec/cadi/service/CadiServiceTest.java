@@ -4,10 +4,8 @@ import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.exception.CadiException.*;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,8 +19,7 @@ import java.util.*;
 
 import static br.gov.sp.fatec.cadi.fixture.CadiFixture.newCadi;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -48,22 +45,6 @@ public class CadiServiceTest {
         Cadi saved = service.save(cadi);
 
         assertEquals(cadi.getId(), saved.getId());
-    }
-
-    @Test
-    public void deactivate_shouldSucceed() {
-        Cadi cadi = newCadi();
-        when(repository.save(cadi)).thenReturn(cadi);
-        when(repository.getOne(cadi.getId())).thenReturn(cadi);
-
-        service.deactivate(cadi.getId());
-
-        assertFalse(cadi.isActive());
-    }
-
-    @Test(expected = CadiNotFoundException.class)
-    public void deactivate_shouldFail() {
-        service.deactivate(1L);
     }
 
     @Test
@@ -144,6 +125,7 @@ public class CadiServiceTest {
         when(repository.findByEmail((String) base64.get("email"))).thenReturn(cadi);
         when(repository.save(cadi)).thenReturn(cadi);
         service.activate(b64);
+        assertTrue(cadi.isActive());
     }
 
     @Test(expected = CadiNotFoundException.class)
@@ -162,15 +144,6 @@ public class CadiServiceTest {
         Project project = newProject();
         when(projectService.setTeacher(1L, project.getId())).thenReturn(project);
         service.setTeacher(1L, project.getId());
-    }
-
-    @Test
-    public void setProjectStatus_shouldSucceed() {
-        Project project = newProject();
-        Status status = newStatus();
-
-        when(projectService.setStatus(project.getId(), status)).thenReturn(project);
-        service.setProjectStatus(project.getId(), status);
     }
 
     @Test

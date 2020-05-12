@@ -45,11 +45,6 @@ public class StudentController {
         return service.findById(id);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deactivate(@PathVariable("id") Long id) throws NotFoundException {
-        // todo - remover do projeto se desativar
-        service.deactivate(id);
-    }
 
     @PutMapping(value = "/{id}")
     @JsonView(StudentView.Student.class)
@@ -66,7 +61,7 @@ public class StudentController {
 
     @GetMapping(value = "/get-projects/{id}")
     @JsonView(ProjectView.Project.class)
-    public List<Project> findProjectByStudent(@PathVariable("id") Long id) {
+    public  Map<String, List<Project>> findProjectByStudent(@PathVariable("id") Long id) {
         return service.findProjectByStudent(id);
     }
 
@@ -81,7 +76,6 @@ public class StudentController {
     @JsonView(StudentView.Student.class)
     public Student login(@RequestBody Map<String, String> login) {
         try {
-
             return service.login(login);
         } catch (Exception e) {
             throw new StudentLoginFailed();

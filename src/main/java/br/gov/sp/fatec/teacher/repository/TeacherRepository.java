@@ -12,5 +12,4 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, JpaSpec
     Teacher findByEmailAndPassword(String email, String password);
 
     Teacher findByEmail(String email);
-
 }

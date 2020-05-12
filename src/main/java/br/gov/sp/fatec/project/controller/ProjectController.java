@@ -3,6 +3,7 @@ package br.gov.sp.fatec.project.controller;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.project.view.ProjectView;
+import br.gov.sp.fatec.student.domain.Student;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class ProjectController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(ProjectView.Project.class)
-    public Project create (@RequestBody br.gov.sp.fatec.project.domain.Project project) {
+    public Project create (@RequestBody Project project) {
         return service.save(project);
     }
 
@@ -44,5 +45,15 @@ public class ProjectController {
         service.delete(id);
     }
 
+    @PostMapping(value = "add-student/{projectId}/{studentId}")
+    @JsonView(ProjectView.Project.class)
+    public Project addStudent(@PathVariable("projectId") Long projectId, @PathVariable("studentId") Long studentId) {
+        return service.addStudent(projectId, studentId);
+    }
 
+    @PutMapping(value = "/approve/{id}")
+    @JsonView(ProjectView.Project.class)
+    public Project approve(@PathVariable("id") Long id) {
+        return service.approve(id);
+    }
 }

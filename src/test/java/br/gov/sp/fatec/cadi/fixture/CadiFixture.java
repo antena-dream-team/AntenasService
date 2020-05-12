@@ -15,26 +15,28 @@ public class CadiFixture {
     private static final Long ID = 1l;
 
     public static Cadi newCadi() {
-        return Cadi.builder()
-                .active(ACTIVE)
-                .cpf(CPF)
-                .email(EMAIL)
-                .id(ID)
-                .position(POSITION)
-                .name(NAME)
-                .password(PASSWORD)
-                .build();
+        Cadi cadi = new Cadi();
+        cadi.setId(ID);
+        cadi.setActive(ACTIVE);
+        cadi.setCpf(CPF);
+        cadi.setEmail(EMAIL);
+        cadi.setPassword(PASSWORD);
+        cadi.setPosition(POSITION);
+        cadi.setName(NAME);
+
+        return cadi;
     }
 
     public static Cadi newCadi(Long id, Boolean active) {
-        return Cadi.builder()
-                .active(active)
-                .cpf(CPF)
-                .email(EMAIL)
-                .id(id)
-                .position(POSITION)
-                .name(NAME)
-                .password(PASSWORD)
-                .build();
+        Cadi cadi = new Cadi();
+        cadi.setId(id);
+        cadi.setActive(active);
+        cadi.setCpf(CPF);
+        cadi.setEmail(EMAIL);
+        cadi.setPassword(PASSWORD);
+        cadi.setPosition(POSITION);
+        cadi.setName(NAME);
+
+        return cadi;
     }
 }

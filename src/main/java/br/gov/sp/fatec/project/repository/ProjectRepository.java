@@ -16,4 +16,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, JpaSpec
 
     List<Project> findByEntrepreneurId(Long id);
 
+    List<Project> findByStudentResponsibleId(Long id);
+
 }

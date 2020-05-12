@@ -14,28 +14,28 @@ public class EntrepreneurFixture {
     private static final Long ID = 1l;
 
     public static Entrepreneur newEntrepreneur() {
-        return Entrepreneur.builder()
-                .active(ACTIVE)
-                .company(COMPANY)
-                .cpf(CPF)
-                .email(EMAIL)
-                .name(NAME)
-                .password(PASSWORD)
-                .telephone(TELEPHONE)
-                .id(ID)
-                .build();
+        Entrepreneur entrepreneur = new Entrepreneur();
+        entrepreneur.setId(ID);
+        entrepreneur.setActive(ACTIVE);
+        entrepreneur.setEmail(EMAIL);
+        entrepreneur.setCpf(CPF);
+        entrepreneur.setName(NAME);
+        entrepreneur.setPassword(PASSWORD);
+        entrepreneur.setTelephone(TELEPHONE);
+
+        return entrepreneur;
     }
 
     public static Entrepreneur newEntrepreneur(Long id, Boolean active) {
-        return Entrepreneur.builder()
-                .active(active)
-                .company(COMPANY)
-                .cpf(CPF)
-                .email(EMAIL)
-                .name(NAME)
-                .password(PASSWORD)
-                .telephone(TELEPHONE)
-                .id(id)
-                .build();
+        Entrepreneur entrepreneur = new Entrepreneur();
+        entrepreneur.setId(id);
+        entrepreneur.setActive(active);
+        entrepreneur.setEmail(EMAIL);
+        entrepreneur.setCpf(CPF);
+        entrepreneur.setName(NAME);
+        entrepreneur.setPassword(PASSWORD);
+        entrepreneur.setTelephone(TELEPHONE);
+
+        return entrepreneur;
     }
 }

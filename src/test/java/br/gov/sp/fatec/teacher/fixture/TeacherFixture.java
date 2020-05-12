@@ -11,22 +11,24 @@ public class TeacherFixture {
     private static final Boolean ACTIVE = true;
 
     public static Teacher newTeacher(Long id, boolean active) {
-        return Teacher.builder()
-                .active(active)
-                .email(EMAIL)
-                .name(NAME)
-                .password(PASSWORD)
-                .id(id)
-                .build();
+        Teacher teacher = new Teacher();
+        teacher.setId(id);
+        teacher.setActive(active);
+        teacher.setName(NAME);
+        teacher.setEmail(EMAIL);
+        teacher.setPassword(PASSWORD);
+
+        return teacher;
     }
 
     public static Teacher newTeacher() {
-        return Teacher.builder()
-                .active(ACTIVE)
-                .email(EMAIL)
-                .name(NAME)
-                .password(PASSWORD)
-                .id(ID)
-                .build();
+        Teacher teacher = new Teacher();
+        teacher.setId(ID);
+        teacher.setActive(ACTIVE);
+        teacher.setName(NAME);
+        teacher.setEmail(EMAIL);
+        teacher.setPassword(PASSWORD);
+
+        return teacher;
     }
 }

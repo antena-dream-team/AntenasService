@@ -54,51 +54,165 @@ public class Project {
     private int progress;
 
     @JsonView({ProjectView.Project.class})
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
     private Meeting meeting;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "cadi_id", referencedColumnName = "id")
     private Cadi cadi;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private Teacher teacher;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "entrepreneur_id", referencedColumnName = "id")
     private Entrepreneur entrepreneur;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "status_id", referencedColumnName = "id")
-    private Status status;
-
-    @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "project_student",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
    private List<Student> students = new ArrayList<>();
 
-//    todo - testar sem o cascade dps
     @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "project_deliver",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "deliver_id"))
     private List<Deliver> deliver = new ArrayList<>();
 
     @JsonView({ProjectView.Project.class})
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Student studentResponsible;
 
     @CreatedDate
     @Column(nullable = false)
     @JsonView({ProjectView.Project.class})
     private ZonedDateTime createdAt = ZonedDateTime.now();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getCompleteDescription() {
+        return completeDescription;
+    }
+
+    public void setCompleteDescription(String completeDescription) {
+        this.completeDescription = completeDescription;
+    }
+
+    public String getTechnologyDescription() {
+        return technologyDescription;
+    }
+
+    public void setTechnologyDescription(String technologyDescription) {
+        this.technologyDescription = technologyDescription;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public Meeting getMeeting() {
+        return meeting;
+    }
+
+    public void setMeeting(Meeting meeting) {
+        this.meeting = meeting;
+    }
+
+    public Cadi getCadi() {
+        return cadi;
+    }
+
+    public void setCadi(Cadi cadi) {
+        this.cadi = cadi;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public Entrepreneur getEntrepreneur() {
+        return entrepreneur;
+    }
+
+    public void setEntrepreneur(Entrepreneur entrepreneur) {
+        this.entrepreneur = entrepreneur;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public List<Deliver> getDeliver() {
+        return deliver;
+    }
+
+    public void setDeliver(List<Deliver> deliver) {
+        this.deliver = deliver;
+    }
+
+    public Student getStudentResponsible() {
+        return studentResponsible;
+    }
+
+    public void setStudentResponsible(Student studentResponsible) {
+        this.studentResponsible = studentResponsible;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

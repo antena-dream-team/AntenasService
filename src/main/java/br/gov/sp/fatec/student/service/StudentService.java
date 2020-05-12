@@ -4,6 +4,7 @@ import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.exception.StudentException.PostSolutionFailedException;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
@@ -12,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfStudentIsInactive;
+import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfProjectIsNull;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfStudentIsNull;
 
 @Service
@@ -37,14 +40,6 @@ public class StudentService {
         return repository.save(student);
     }
 
-    public void deactivate(Long id) throws NotFoundException {
-        Student found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfStudentIsNull(found, id);
-
-        found.setActive(false);
-        repository.save(found);
-    }
-
     public List<Student> findAll() {
         return repository.findAll();
     }
@@ -60,6 +55,9 @@ public class StudentService {
     public Student findById(Long id) {
         Student found = repository.getOne(id);
         NotFoundException.throwIfStudentIsNull(found, id);
+
+//        found.setProjects(findProjectByStudent(id));
+//        System.out.println(found);
         return found;
     }
 
@@ -75,14 +73,28 @@ public class StudentService {
         return found;
     }
 
-    public List<Project> findProjectByStudent(Long studentId) {
-        return projectService.getProjectByStudent(studentId);
+    public Map<String, List<Project>>  findProjectByStudent(Long studentId) {
+
+        Map<String, List<Project>> projects = new HashMap<>();
+        projects.put("responsible", projectService.getProjectByStudentResponsible(studentId));
+        projects.put("team", projectService.getProjectByStudent(studentId));
+
+        return projects;
     }
 
     public Project setSolution(Deliver deliver, Long projectId) {
-        // todo - quem pode postar uma solução?
-//        Long projectId = Long.valueOf(deliver.get("projectId"));
-//        String link = deliver.get("link");
+        // todo - pegar id do aluno responsavel
+        Project project = projectService.findById(projectId);
+        throwIfProjectIsNull(project);
+
+        if (!project.getStudentResponsible().getId().equals(deliver.getStudentResponsible().getId())) {
+            throw new PostSolutionFailedException();
+        }
+
+        deliver.setStudents(project.getStudents());
+        deliver.setStudentResponsible(project.getStudentResponsible());
+        deliver.getProjects().add(project);
+
         return projectService.setSolution(projectId, deliver);
     }
 

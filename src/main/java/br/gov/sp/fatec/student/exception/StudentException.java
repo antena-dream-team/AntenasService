@@ -25,4 +25,10 @@ public class StudentException {
             super("Student - login failed");
         }
     }
+
+    public static class PostSolutionFailedException extends RuntimeException {
+        public PostSolutionFailedException() {
+            super("You have no permission to post solution to this project");
+        }
+    }
 }

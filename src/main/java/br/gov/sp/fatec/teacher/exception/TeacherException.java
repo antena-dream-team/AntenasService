@@ -23,4 +23,10 @@ public class TeacherException {
             super("Teacher - login failed");
         }
     }
+
+    public static class CannotAddOrRemoveStudentsToThisProject extends RuntimeException {
+        public CannotAddOrRemoveStudentsToThisProject() {
+            super("This teacher has no permission to add or remove students to this project");
+        }
+    }
 }

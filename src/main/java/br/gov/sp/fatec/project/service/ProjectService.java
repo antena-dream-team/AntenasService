@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -77,7 +78,6 @@ public class ProjectService {
         return repository.getOne(id);
     }
 
-    // todo - desativar em vez de deletar
     public void delete(Long id) {
         Project project = findById(id);
         throwIfProjectIsNull(project, id);
@@ -94,6 +94,11 @@ public class ProjectService {
         throwIfStudentIsInactive(student);
 
         project.setStudentResponsible(student);
+
+//        if (student.getProjects() == null) {
+//            student.setProjects(new ArrayList<>());
+//        }
+//        addStudent(projectId, studentId);
         return repository.save(project);
     }
 
@@ -116,14 +121,12 @@ public class ProjectService {
         return repository.save(project);
     }
 
-    // todo - fazer endpoint
-    public Project addStudents(Long projectId, Long studentId) {
+    public Project addStudent(Long projectId, Long studentId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
 
-
         Student student = studentService.findById(studentId);
-        throwIfStudentIsNull(student, student.getId());
+        throwIfStudentIsNull(student, studentId);
         throwIfStudentIsInactive(student);
 
         project.getStudents().add(student);
@@ -139,15 +142,6 @@ public class ProjectService {
         throwIfTeacherIsInactive(teacher);
 
         project.setTeacher(teacher);
-
-        return repository.save(project);
-    }
-
-    public Project setStatus(Long projectId, Status status) {
-        Project project = findById(projectId);
-        throwIfProjectIsNull(project, projectId);
-
-        project.setStatus(status);
 
         return repository.save(project);
     }
@@ -172,6 +166,10 @@ public class ProjectService {
         return repository.findByStudentsId(studentId);
     }
 
+    public List<Project> getProjectByStudentResponsible(Long studentId) {
+        return repository.findByStudentResponsibleId(studentId);
+    }
+
     public List<Project> getProjectByEntrepreneur(Long entrepreneurId) {
         return repository.findByEntrepreneurId(entrepreneurId);
     }
@@ -187,7 +185,7 @@ public class ProjectService {
 
     public Project update(Project project) {
         Project found = findById(project.getId());
-        throwIfProjectIsNull(project);
+        throwIfProjectIsNull(found);
 
         found.setProgress(update_getProgress(found));
         found.setCompleteDescription(project.getCompleteDescription());
@@ -200,7 +198,7 @@ public class ProjectService {
     }
 
     private int update_getProgress(Project project) {
-        return project.getCompleteDescription() != null && project.getCompleteDescription() != null && project.getProgress() < 2 ? 3 : project.getProgress();
+        return project.getCompleteDescription() != null && project.getTechnologyDescription() != null && project.getProgress() == 2 ? 3 : project.getProgress();
     }
 
     public Project setMeetingPossibleDate(List<Date> possibleDate, Long projectId) {
@@ -211,9 +209,8 @@ public class ProjectService {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
 
-        Meeting meeting = Meeting.builder()
-                .possibleDate(possibleDate)
-                .build();
+        Meeting meeting = new Meeting();
+        meeting.setPossibleDate(possibleDate);
 
         project.setMeeting(meeting);
         project.setProgress(5);

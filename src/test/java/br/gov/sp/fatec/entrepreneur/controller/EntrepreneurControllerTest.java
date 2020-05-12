@@ -3,6 +3,7 @@ package br.gov.sp.fatec.entrepreneur.controller;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.project.domain.Project;
+import br.gov.sp.fatec.project.service.ProjectService;
 import org.assertj.core.util.Lists;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -35,6 +36,9 @@ public class EntrepreneurControllerTest {
 
     @Mock
     private EntrepreneurService service;
+
+    @Mock
+    private ProjectService projectService;
 
     private MockMvc mockMvc;
 
@@ -108,15 +112,6 @@ public class EntrepreneurControllerTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws Exception {
-        Entrepreneur entrepreneur = newEntrepreneur();
-        entrepreneur.setActive(false);
-
-        mockMvc.perform(delete(URL + "/" + entrepreneur.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void login_shouldSucceed() throws Exception {
         Entrepreneur entrepreneur = newEntrepreneur();
 
@@ -170,6 +165,16 @@ public class EntrepreneurControllerTest {
         String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
 
         mockMvc.perform(get(URL + "/activate/" + b64))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void update_shouldSucceed() throws Exception {
+        Project project = newProject();
+
+        mockMvc.perform(put(URL + "/update")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Objects.requireNonNull(toJSON(project))))
                 .andExpect(status().isOk());
     }
 }

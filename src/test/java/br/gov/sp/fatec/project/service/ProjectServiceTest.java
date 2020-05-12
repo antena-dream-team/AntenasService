@@ -7,7 +7,6 @@ import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.domain.Status;
 import br.gov.sp.fatec.project.exception.ProjectException.*;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
@@ -319,25 +318,6 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void setStatus_shouldSucceed() {
-        Project project = newProject();
-        Status status = project.getStatus();
-
-        when(repository.getOne(project.getId())).thenReturn(project);
-        when(repository.save(project)).thenReturn(project);
-
-        Project returned = service.setStatus(project.getId(), status);
-        assertNotNull(returned);
-    }
-
-    @Test(expected = ProjectNotFoundException.class)
-    public void setStatus_shouldFail() {
-        Project project = newProject();
-        Status status = project.getStatus();
-        service.setStatus(project.getId(), status);
-    }
-
-    @Test
     public void removeStudents_shouldSucceed() {
         Project project = newProject();
         Student student = newStudent();
@@ -464,6 +444,69 @@ public class ProjectServiceTest {
 
         Project returned = service.setMeetingChosenDate(123L, project.getId());
         assertNotNull(returned);
+    }
+
+    @Test
+    public void addStudent_shouldSucceed() {
+        Project project = newProject();
+        Student student = newStudent();
+
+        when(service.findById(project.getId())).thenReturn(project);
+        when(studentService.findById(student.getId())).thenReturn(student);
+        when(repository.save(project)).thenReturn(project);
+
+        service.addStudent(project.getId(), student.getId());
+    }
+
+    @Test(expected = ProjectNotFoundException.class)
+    public void addStudent_shouldFail_projectNotFound() {
+        Project project = newProject();
+        Student student = newStudent();
+
+        service.addStudent(project.getId(), student.getId());
+    }
+
+    @Test(expected = StudentNotFoundException.class)
+    public void addStudent_shouldFail_studentNotFound() {
+        Project project = newProject();
+        Student student = newStudent();
+
+        when(service.findById(project.getId())).thenReturn(project);
+        service.addStudent(project.getId(), student.getId());
+    }
+
+    @Test(expected = StudentInactiveException.class)
+    public void addStudent_shouldFail_studentInactive() {
+        Project project = newProject();
+        Student student = newStudent();
+        student.setActive(false);
+
+        when(service.findById(project.getId())).thenReturn(project);
+        when(studentService.findById(student.getId())).thenReturn(student);
+        service.addStudent(project.getId(), student.getId());
+    }
+
+    @Test
+    public void update_shouldSucceed() {
+        Project project = newProject();
+        when(service.findById(project.getId())).thenReturn(project);
+        when(repository.save(project)).thenReturn(project);
+        service.update(project);
+    }
+
+    @Test(expected = ProjectNotFoundException.class)
+    public void update_shouldFail_projectNotFound() {
+        Project project = newProject();
+        service.update(project);
+    }
+
+    @Test
+    public void approve_shouldSucceed() {
+        Project project = newProject();
+        when(service.findById(project.getId())).thenReturn(project);
+        when(repository.save(project)).thenReturn(project);
+
+        service.approve(project.getId());
     }
 }
 

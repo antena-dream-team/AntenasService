@@ -117,17 +117,9 @@ public class teacherControllerTest {
     }
 
     @Test
-    public void deactivate_shouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        teacher.setActive(false);
-
-        mockMvc.perform(delete(URL + "/" + teacher.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void setStudents_shouldSucceed() throws Exception {
         Project project = newProject();
+        Teacher teacher = newTeacher();
 
         List<Student> studentList = Lists.newArrayList(newStudent(1L, true),
                 newStudent(2L, true),
@@ -135,8 +127,7 @@ public class teacherControllerTest {
 
         project.setStudents(studentList);
 
-        when(service.setStudentsToProject(studentList, project.getId())).thenReturn(project);
-        mockMvc.perform(post(URL + "/set-students/" + project.getId())
+        mockMvc.perform(post(URL + "/set-students/" + project.getId() + "/" +  teacher.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(studentList))))
                 .andExpect(status().isOk());
@@ -146,10 +137,12 @@ public class teacherControllerTest {
     public void setResponsibleStudent_shouldSucceed() throws Exception {
         Project project = newProject();
         Student student = newStudent(1L, true);
+        Teacher teacher = newTeacher();
+
         project.setStudentResponsible(student);
 
-        when(service.setStudentsResponsibleToProject(student.getId(), project.getId())).thenReturn(project);
-        mockMvc.perform(post(URL + "/set-student-responsible/" + project.getId() + "/" + student.getId()))
+        when(service.setStudentsResponsibleToProject(student.getId(), project.getId(), teacher.getId())).thenReturn(project);
+        mockMvc.perform(post(URL + "/set-student-responsible/" + project.getId() + "/" + student.getId() + "/" + teacher.getId()))
                 .andExpect(status().isOk());
     }
 

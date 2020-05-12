@@ -4,6 +4,7 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
+import br.gov.sp.fatec.teacher.exception.TeacherException.CannotAddOrRemoveStudentsToThisProject;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import java.util.Base64;
 import java.util.List;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfTeacherIsInactive;
+import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfProjectIsNull;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfTeacherIsNull;
 
 @Service
@@ -34,16 +36,6 @@ public class TeacherService {
         sendEmail.sendMail(teacher.getEmail(), "teacher");
 
         return repository.save(teacher);
-    }
-
-    public Teacher deactivate(Long id) {
-        Teacher found = repository.getOne(id);
-        throwIfTeacherIsNull(found, id);
-
-        found.setActive(false);
-        repository.save(found);
-
-        return found;
     }
 
     public List<Teacher> findAll() {
@@ -71,12 +63,14 @@ public class TeacherService {
         return repository.save(found);
     }
 
-    public Project setStudentsToProject(List<Student> studentList, Long projectId) {
+    public Project setStudentsToProject(List<Student> studentList, Long projectId, Long teacherId) {
+        checkIfCanAddStudentToProject(teacherId, projectId);
         return projectService.setStudents(projectId, studentList);
     }
 
-    public Project setStudentsResponsibleToProject(Long studentId, Long projectId){
-            return projectService.setStudentResponsible(projectId, studentId);
+    public Project setStudentsResponsibleToProject(Long studentId, Long projectId, Long teacherId) {
+        checkIfCanAddStudentToProject(teacherId, projectId);
+        return projectService.setStudentResponsible(projectId, studentId);
     }
 
     public List<Project> listProjectByTeacher(Long teacherId) {
@@ -104,5 +98,18 @@ public class TeacherService {
 
         found.setActive(true);
         repository.save(found);
+    }
+
+    private void checkIfCanAddStudentToProject(Long teacherId, Long projectId) {
+        Teacher teacher = findById(teacherId);
+        throwIfTeacherIsNull(teacher, teacherId);
+        throwIfTeacherIsInactive(teacher);
+
+        Project project = projectService.findById(projectId);
+        throwIfProjectIsNull(project);
+
+        if (project.getTeacher() == null || !project.getTeacher().getId().equals(teacher.getId())) {
+            throw new CannotAddOrRemoveStudentsToThisProject();
+        }
     }
 }
