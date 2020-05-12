@@ -88,12 +88,13 @@ workflows:
             account-url: AWS_ECR_ACCOUNT_URL
             aws-access-key-id: AWS_ACCESS_KEY_ID
             aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-            profile-name: ${ECR_BUILD_PROFILE}
+            profile-name: "CircleCI"
             region: AWS_REGION
             repo: "mateusmsouza"
             tag: "${CIRCLE_SHA1},$(if [ ${CIRCLE_BRANCH} == 'develop' ]; then echo 'staging'; else echo 'latest'; fi)"
 
         - aws-ecs/deploy-service-update:
+            context: ANTENA
             requires:
               - aws-ecr/build-and-push-image
             family: 'mateusmsouza-service'
