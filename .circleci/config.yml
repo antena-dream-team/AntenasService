@@ -40,7 +40,7 @@ jobs:
       - store_artifacts:
           path: target/classes
           destination: antena-project-backend
-     # - sonarcloud/scan
+      - sonarcloud/scan
       - telegram/status 
 
 workflows:
