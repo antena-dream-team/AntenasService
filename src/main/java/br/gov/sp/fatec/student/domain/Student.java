@@ -1,15 +1,16 @@
 package br.gov.sp.fatec.student.domain;
 
+import br.gov.sp.fatec.User.Domain.User;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.view.StudentView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,26 +19,27 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "student")
-public class Student {
+public class Student extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView({ProjectView.Project.class, StudentView.Student.class})
     private Long id;
 
-    @JsonView({ProjectView.Project.class, StudentView.Student.class})
-    private String email;
-
-    private String password;
-
-    @JsonView({ProjectView.Project.class, StudentView.Student.class})
-    private String name;
-
-    @JsonView({ProjectView.Project.class, StudentView.Student.class})
-    private boolean active;
-
     @JsonView({StudentView.Student.class})
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_student",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> user = new ArrayList<>();
+
     private List<br.gov.sp.fatec.project.domain.Project> projects = new LinkedList<>();
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
 
     public Long getId() {
         return id;
@@ -47,43 +49,11 @@ public class Student {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public List<User> getUser() {
+        return user;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
+    public void setUser(List<User> user) {
+        this.user = user;
     }
 }
