@@ -97,11 +97,11 @@ workflows:
         #       branches:
         #         only:
         #           - master
-        - deploy_aws_ec2:
-            context: ANTENA
-            requires:
-              - build
-            filters:
-              branches:
-                only:
-                 - master
+        #- deploy_aws_ec2:
+        #    context: ANTENA
+        #    requires:
+        #      - build
+        #    filters:
+        #      branches:
+        #        only:
+        #         - master
