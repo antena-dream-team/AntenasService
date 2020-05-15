@@ -49,14 +49,16 @@ jobs:
       image: ubuntu-1604:201903-01
     
     steps:
-      - add_ssh_keys:
-          fingerprints:
-           - "a6:78:87:79:cf:d6:72:1d:92:96:10:2c:2c:db:d3:c2"
+      - run:
+          name: Create aws pem file
+          command: |
+            echo $AWS_SSH >> ${HOME}/circleci.pem;
+            chmod 0600 ${HOME}/circleci.pem
       
       - run:
           name: Executing the Deploy in AWS EC2 - Production Environment
           command: |
-            ssh -tt ec2-18-229-131-56.sa-east-1.compute.amazonaws.com \<<-'ENDSSH'
+            ssh -i "${HOME}/circleci.pem" -tt ec2-18-229-131-56.sa-east-1.compute.amazonaws.com \<<-'ENDSSH'
               ls
               pwd
               docker ps
@@ -93,6 +95,7 @@ workflows:
         #         only:
         #           - master
         - deploy_aws_ec2:
+            context: ANTENA
             requires:
               - build
             filters:
