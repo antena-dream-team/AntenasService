@@ -51,15 +51,6 @@ jobs:
       image: ubuntu-1604:201903-01
     
     steps:
-      - telegram_entry/notify:
-            filters:
-              branches:
-                only:
-                  - master
-            message: "Starting CD to AWS EC2"
-            telegram-chat-id: TELEGRAM_CHAT_ID
-            telegram-bot-token: TELEGRAM_BOT_TOKEN
-
       - add_ssh_keys:
           fingerprints:
             - "a6:78:87:79:cf:d6:72:1d:92:96:10:2c:2c:db:d3:c2"
@@ -80,7 +71,7 @@ workflows:
               branches:
                 only:
                   - master
-            message: "Starting CI commit ${CIRCLE_SHA1} on ${CIRCLE_PROJECT_REPONAME} made by ${CIRCLE_USERNAME}"
+            message: "Starting CI/CD commit ${CIRCLE_SHA1} on ${CIRCLE_PROJECT_REPONAME} made by ${CIRCLE_USERNAME}"
             telegram-chat-id: TELEGRAM_CHAT_ID
             telegram-bot-token: TELEGRAM_BOT_TOKEN
 
