@@ -53,6 +53,9 @@ jobs:
           fingerprints:
            - "a6:78:87:79:cf:d6:72:1d:92:96:10:2c:2c:db:d3:c2"
       - run:
+          name: print envs
+          command: printenv
+      - run:
           name: Executing the Deploy in AWS EC2 - Production Environment
           command: |
             ssh -tt ec2-18-229-131-56.sa-east-1.compute.amazonaws.com \<<-'ENDSSH'
