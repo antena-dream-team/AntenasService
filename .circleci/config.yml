@@ -42,9 +42,7 @@ jobs:
           destination: antena-project-backend
           
       #- sonarcloud/scan
-      - telegram/status:
-            success_message: "Deployment complete!"
-            failure_message: "Deployment failed."
+      - telegram/status
 
   deploy_aws_ec2:
     machine:
