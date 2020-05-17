@@ -41,7 +41,7 @@ jobs:
           path: target/classes
           destination: antena-project-backend
           
-      #- sonarcloud/scan
+      - sonarcloud/scan
       - telegram/status
 
   deploy_aws_ec2:
