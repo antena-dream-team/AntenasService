@@ -31,22 +31,6 @@ public class Cadi extends User {
     @JsonView({CadiView.Cadi.class})
     private String position;
 
-    @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "user_cadi",
-            joinColumns = @JoinColumn(name = "cadi_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> user = new ArrayList<>();
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCpf() {
         return cpf;

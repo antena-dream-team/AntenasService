@@ -26,9 +26,7 @@ public class Teacher extends User {
     private Long id;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "user_teacher",
-            joinColumns = @JoinColumn(name = "teacher_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> user = new ArrayList<>();;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }

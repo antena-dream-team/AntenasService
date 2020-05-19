@@ -32,8 +32,7 @@ public class CadiController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(CadiView.Cadi.class)
     private Cadi create (@RequestBody Cadi cadi) {
-
-        return (service.save(cadi));
+        return service.save(cadi);
     }
 
     @GetMapping(produces =  APPLICATION_JSON_VALUE)

@@ -26,34 +26,13 @@ public class Student extends User {
     private Long id;
 
     @JsonView({StudentView.Student.class})
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "user_student",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> user = new ArrayList<>();
-
-    private List<br.gov.sp.fatec.project.domain.Project> projects = new LinkedList<>();
+    @ManyToMany(mappedBy = "students")
+    private List<Project> projects = new LinkedList<>();
 
     public List<Project> getProjects() {
         return projects;
     }
     public void setProjects(List<Project> projects) {
         this.projects = projects;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public List<User> getUser() {
-        return user;
-    }
-
-    public void setUser(List<User> user) {
-        this.user = user;
     }
 }

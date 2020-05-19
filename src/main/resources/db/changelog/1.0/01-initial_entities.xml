@@ -22,148 +22,37 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="AS-07" author="danielly">
+        <createTable tableName="student">
+            <column name="id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
     <changeSet id="AS-01" author="danielly">
         <createTable tableName="teacher">
             <column name="id" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="AS-02" author="danielly">
-        <createTable tableName="user_teacher">
-            <column name="id" type="BIGINT"/>
-            <column name="teacher_id" type="BIGINT"/>
             <column name="user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 
-    <!-- STUDENT -->
 
-    <changeSet id="AS-07" author="giovanna">
-        <createTable tableName="student">
-            <column name="id" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="AS-08" author="giovanna">
-        <createTable tableName="user_student">
-            <column name="id" type="BIGINT"/>
-            <column name="student_id" type="BIGINT"/>
-            <column name="user_id" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-
-    <!-- CADI -->
-
-    <changeSet id="AS-13" author="giovanna">
+    <changeSet id="AS-13" author="danielly">
         <createTable tableName="cadi">
             <column name="id" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="AS-52" author="giovanna">
-        <createTable tableName="user_cadi">
-            <column name="id" type="BIGINT"/>
-            <column name="cadi_id" type="BIGINT"/>
+            <column name="cpf" type="VARCHAR(20)"/>
+            <column name="position" type="VARCHAR(50)"/>
             <column name="user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-
-    <!-- TEACHER -->
-
-    <changeSet author="danielly" id="AS-18">
-        <addPrimaryKey columnNames="id" tableName="teacher" constraintName="teacher_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="teacher" columnDataType="BIGINT"/>
-    </changeSet>
-
-
-    <changeSet author="danielly" id="AS-05">
-        <addPrimaryKey columnNames="id" tableName="user" constraintName="user_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user" columnDataType="BIGINT"/>
-    </changeSet>
-
-    <changeSet author="danielly" id="AS-03">
-        <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="user_teacher" constraintName="teacher_user_fk"
-                                 referencedColumnNames="id" referencedTableName="teacher"/>
-    </changeSet>
-
-    <changeSet author="danielly" id="AS-04">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_teacher" constraintName="user_teacher_fk"
-                                 referencedColumnNames="id" referencedTableName="user"/>
-    </changeSet>
-
-
-
-    <changeSet author="danielly" id="AS-06">
-        <addPrimaryKey columnNames="id" tableName="user_teacher" constraintName="user_teacher_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user_teacher" columnDataType="BIGINT"/>
-    </changeSet>
-
-    <!-- STUDENT -->
-
-
-    <changeSet author="giovanna" id="AS-21">
-        <addPrimaryKey columnNames="id" tableName="student" constraintName="student_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student" columnDataType="BIGINT"/>
-    </changeSet>
-
-    <changeSet author="giovanna" id="AS-47">
-        <addPrimaryKey columnNames="id" tableName="user" constraintName="user_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user" columnDataType="BIGINT"/>
-    </changeSet>
-
-    <changeSet author="giovanna" id="AS-48">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_student" constraintName="student_user_fk"
-                                 referencedColumnNames="id" referencedTableName="user"/>
-    </changeSet>
-
-    <changeSet author="giovanna" id="AS-49">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_student" constraintName="user_student_fk"
-                                 referencedColumnNames="id" referencedTableName="user"/>
-    </changeSet>
-
-    <changeSet author="giovanna" id="AS-50">
-        <addPrimaryKey columnNames="id" tableName="user_student" constraintName="user_student_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user_student" columnDataType="BIGINT"/>
-    </changeSet>
-
-    <!-- cadi -->
-
-    <changeSet author="giovanna" id="AS-15">
-        <addPrimaryKey columnNames="id" tableName="cadi" constraintName="cadi_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="cadi" columnDataType="BIGINT"/>
-    </changeSet>
-
-    <changeSet author="giovanna" id="AS-53">
-        <addPrimaryKey columnNames="id" tableName="user" constraintName="user_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user" columnDataType="BIGINT"/>
-    </changeSet>
-
-    <changeSet author="giovanna" id="AS-54">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_cadi" constraintName="cadi_user_fk"
-                                 referencedColumnNames="id" referencedTableName="user"/>
-    </changeSet>
-
-    <changeSet author="giovanna" id="AS-55">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_cadi" constraintName="user_cadi_fk"
-                                 referencedColumnNames="id" referencedTableName="user"/>
-    </changeSet>
-
-    <changeSet author="giovanna" id="AS-56">
-        <addPrimaryKey columnNames="id" tableName="user_cadi" constraintName="user_cadi_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user_cadi" columnDataType="BIGINT"/>
-    </changeSet>
-
 
     <changeSet id="AS-3" author="danielly">
         <createTable tableName="entrepreneur">
             <column name="id" type="BIGINT"/>
-            <column name="email" type="VARCHAR(50)"/>
-            <column name="name" type="VARCHAR(100)"/>
             <column name="company" type="VARCHAR(100)"/>
             <column name="cpf" type="VARCHAR(100)"/>
-            <column name="password" type="VARCHAR(50)"/>
-            <column name="telephone" type="VARCHAR(100)"/>
-            <column name="active" type="BOOLEAN"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="telephone" type="VARCHAR(20)"/>
         </createTable>
     </changeSet>
 
@@ -250,6 +139,66 @@
     </changeSet>
 
 
+    <!-- USER -->
+
+    <changeSet author="danielly" id="AS-05">
+        <addPrimaryKey columnNames="id" tableName="user" constraintName="user_id"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- TEACHER -->
+
+    <changeSet author="danielly" id="AS-18">
+        <addPrimaryKey columnNames="id" tableName="teacher" constraintName="teacher_id"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="teacher" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="teacher-user-fk">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="teacher" constraintName="teacher_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+
+
+    <!-- STUDENT -->
+
+
+    <changeSet author="giovanna" id="AS-21">
+        <addPrimaryKey columnNames="id" tableName="student" constraintName="student_id"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="student" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="student-user-fk">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="student" constraintName="student_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+
+    <!-- CADI -->
+
+    <changeSet author="giovanna" id="AS-15">
+        <addPrimaryKey columnNames="id" tableName="cadi" constraintName="cadi_id"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="cadi" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="cadi-user-fk">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="student" constraintName="cadi_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+
+    <!--  ENTREPRENEUR -->
+
+    <changeSet author="danielly" id="AS-19">
+        <addPrimaryKey columnNames="id" tableName="entrepreneur" constraintName="entrepreneur_id"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="entrepreneur" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="entrepreneur-user-fk">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="entrepreneur" constraintName="entrepreneur_user_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
     <!-- ADDRESS -->
 
     <changeSet author="danielly" id="AS-16">
@@ -258,7 +207,7 @@
     </changeSet>
 
 
-    <!-- date -->
+    <!-- DATE -->
 
     <changeSet author="danielly" id="AS-17">
         <addPrimaryKey columnNames="id" tableName="date" constraintName="possible_date_id"/>
@@ -266,12 +215,6 @@
     </changeSet>
 
 
-    <!--  entrepreneur -->
-
-    <changeSet author="danielly" id="AS-19">
-        <addPrimaryKey columnNames="id" tableName="entrepreneur" constraintName="entrepreneur_id"/>
-        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="entrepreneur" columnDataType="BIGINT"/>
-    </changeSet>
     <!-- MEETING -->
 
     <changeSet author="danielly" id="AS-22">
