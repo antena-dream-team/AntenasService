@@ -41,11 +41,6 @@ jobs:
           path: target/classes
           destination: antena-project-backend
 
-      #Runs sonarcloud
-      - run:
-      name: Analyze on SonarCloud
-      command: mvn verify sonar:sonar
-
       - telegram/status
 
   deploy_aws_ec2:
@@ -62,7 +57,7 @@ jobs:
           command: |
             ssh -A -o "StrictHostKeyChecking no" ec2-user@ec2-18-228-221-204.sa-east-1.compute.amazonaws.com "/bin/bash -c 'pwd && printenv'"
 
-      #- sonarcloud/scan
+      - sonarcloud/scan
       - telegram/status
 workflows:
   version: 2
@@ -70,7 +65,7 @@ workflows:
       jobs:
         - build:
           context: SonarCloud
-
+          
         - telegram_entry/notify:
             context: ANTENA
             filters:
