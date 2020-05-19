@@ -25,14 +25,12 @@
     <changeSet id="AS-07" author="danielly">
         <createTable tableName="student">
             <column name="id" type="BIGINT"/>
-            <column name="user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 
     <changeSet id="AS-01" author="danielly">
         <createTable tableName="teacher">
             <column name="id" type="BIGINT"/>
-            <column name="user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 
@@ -42,7 +40,6 @@
             <column name="id" type="BIGINT"/>
             <column name="cpf" type="VARCHAR(20)"/>
             <column name="position" type="VARCHAR(50)"/>
-            <column name="user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 
@@ -51,7 +48,6 @@
             <column name="id" type="BIGINT"/>
             <column name="company" type="VARCHAR(100)"/>
             <column name="cpf" type="VARCHAR(100)"/>
-            <column name="user_id" type="BIGINT"/>
             <column name="telephone" type="VARCHAR(20)"/>
         </createTable>
     </changeSet>
@@ -142,7 +138,7 @@
     <!-- USER -->
 
     <changeSet author="danielly" id="AS-05">
-        <addPrimaryKey columnNames="id" tableName="user" constraintName="user_id"/>
+        <addPrimaryKey columnNames="id" tableName="user" constraintName="user_pk"/>
         <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user" columnDataType="BIGINT"/>
     </changeSet>
 
@@ -154,7 +150,7 @@
     </changeSet>
 
     <changeSet author="danielly" id="teacher-user-fk">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="teacher" constraintName="teacher_user_fk"
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="teacher" constraintName="teacher_user_fk"
                                  referencedColumnNames="id" referencedTableName="user"/>
     </changeSet>
 
@@ -166,7 +162,7 @@
     </changeSet>
 
     <changeSet author="danielly" id="student-user-fk">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="student" constraintName="student_user_fk"
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="student" constraintName="student_user_fk"
                                  referencedColumnNames="id" referencedTableName="user"/>
     </changeSet>
 
@@ -179,7 +175,7 @@
     </changeSet>
 
     <changeSet author="danielly" id="cadi-user-fk">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="cadi" constraintName="cadi_user_fk"
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="cadi" constraintName="cadi_user_fk"
                                  referencedColumnNames="id" referencedTableName="user"/>
     </changeSet>
 
@@ -192,7 +188,7 @@
     </changeSet>
 
     <changeSet author="danielly" id="entrepreneur-user-fk">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="entrepreneur" constraintName="entrepreneur_user_fk"
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="entrepreneur" constraintName="entrepreneur_user_fk"
                                  referencedColumnNames="id" referencedTableName="user"/>
     </changeSet>
 

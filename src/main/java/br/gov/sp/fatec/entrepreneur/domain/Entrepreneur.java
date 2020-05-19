@@ -16,11 +16,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "entrepreneur")
+@PrimaryKeyJoinColumn(name = "id")
 public class Entrepreneur extends User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({EntrepreneurView.Entrepreneur.class, ProjectView.Project.class})
-    private Long id;
 
     @JsonView({EntrepreneurView.Entrepreneur.class, ProjectView.Project.class})
     private String cpf;

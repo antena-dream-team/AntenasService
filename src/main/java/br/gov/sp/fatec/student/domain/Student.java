@@ -19,11 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "student")
+@PrimaryKeyJoinColumn(name = "id")
 public class Student extends User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ProjectView.Project.class, StudentView.Student.class})
-    private Long id;
 
     @JsonView({StudentView.Student.class})
     @ManyToMany(mappedBy = "students")

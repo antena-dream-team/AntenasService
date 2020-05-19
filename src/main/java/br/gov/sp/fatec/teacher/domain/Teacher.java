@@ -17,16 +17,8 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "teacher")
+@PrimaryKeyJoinColumn(name = "id")
 public class Teacher extends User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class})
-    private Long id;
 
-    @JsonView({ProjectView.Project.class})
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
 }

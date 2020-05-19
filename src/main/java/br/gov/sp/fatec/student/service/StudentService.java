@@ -111,6 +111,7 @@ public class StudentService {
         return student;
     }
 
+    // todo - adicionar retorno para quando der erro
     public void activate(String b64) {
         JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
         Student found = repository.findByEmail(jsonObject.get("email").toString());

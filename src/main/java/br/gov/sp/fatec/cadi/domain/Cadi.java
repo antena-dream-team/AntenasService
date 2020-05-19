@@ -19,11 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "cadi")
+@PrimaryKeyJoinColumn(name = "id")
 public class Cadi extends User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({CadiView.Cadi.class})
-    private Long id;
 
     @JsonView({CadiView.Cadi.class})
     private String cpf;
