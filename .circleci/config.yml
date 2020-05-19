@@ -13,11 +13,6 @@ jobs:
     steps:
       - checkout
 
-      #Runs sonarcloud
-      - run:
-        name: Analyze on SonarCloud
-        command: mvn verify sonar:sonar
-
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -46,6 +41,11 @@ jobs:
           path: target/classes
           destination: antena-project-backend
 
+      #Runs sonarcloud
+      - run:
+      name: Analyze on SonarCloud
+      command: mvn verify sonar:sonar
+
       - telegram/status
 
   deploy_aws_ec2:
@@ -70,7 +70,7 @@ workflows:
       jobs:
         - build:
           context: SonarCloud
-          
+
         - telegram_entry/notify:
             context: ANTENA
             filters:
