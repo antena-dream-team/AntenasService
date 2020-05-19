@@ -158,10 +158,7 @@
                                  referencedColumnNames="id" referencedTableName="user"/>
     </changeSet>
 
-
-
     <!-- STUDENT -->
-
 
     <changeSet author="giovanna" id="AS-21">
         <addPrimaryKey columnNames="id" tableName="student" constraintName="student_id"/>
@@ -182,7 +179,7 @@
     </changeSet>
 
     <changeSet author="danielly" id="cadi-user-fk">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="student" constraintName="cadi_user_fk"
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="cadi" constraintName="cadi_user_fk"
                                  referencedColumnNames="id" referencedTableName="user"/>
     </changeSet>
 
