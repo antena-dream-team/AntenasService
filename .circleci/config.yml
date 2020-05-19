@@ -12,7 +12,6 @@ jobs:
     
     steps:
       - checkout
-      - sonarcloud/scan
 
       # Download and cache dependencies
       - restore_cache:
@@ -58,14 +57,12 @@ jobs:
           command: |
             ssh -A -o "StrictHostKeyChecking no" ec2-user@ec2-18-228-221-204.sa-east-1.compute.amazonaws.com "/bin/bash -c 'pwd && printenv'"
 
+      #- sonarcloud/scan
       - telegram/status
 workflows:
   version: 2
   build:
       jobs:
-        - build:
-          context: sonarcloud
-          
         - telegram_entry/notify:
             context: ANTENA
             filters:
