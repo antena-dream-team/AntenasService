@@ -34,7 +34,7 @@ jobs:
 
       - run:
             name: push image to Dockerhub
-            command: mvn clean compile jib:build -Dimage=mateusmsouza4/antenas-project:$CIRCLE_BUILD_NUM
+            command: mvn clean compile jib:build -Dimage=mateusmsouza4/antenas-project
 
       # store raw contents of src code
       - store_artifacts:
