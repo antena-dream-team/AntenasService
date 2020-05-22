@@ -116,62 +116,7 @@ public class teacherControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    public void setStudents_shouldSucceed() throws Exception {
-        Project project = newProject();
-        Teacher teacher = newTeacher();
 
-        List<Student> studentList = Lists.newArrayList(newStudent(1L, true),
-                newStudent(2L, true),
-                newStudent(3L, true));
-
-        project.setStudents(studentList);
-
-        mockMvc.perform(post(URL + "/set-students/" + project.getId() + "/" +  teacher.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(toJSON(studentList))))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void setResponsibleStudent_shouldSucceed() throws Exception {
-        Project project = newProject();
-        Student student = newStudent(1L, true);
-        Teacher teacher = newTeacher();
-
-        project.setStudentResponsible(student);
-
-        when(service.setStudentsResponsibleToProject(student.getId(), project.getId(), teacher.getId())).thenReturn(project);
-        mockMvc.perform(post(URL + "/set-student-responsible/" + project.getId() + "/" + student.getId() + "/" + teacher.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void listProjectByTeacher_shouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        List<Project> projectList = Lists.newArrayList(
-                newProject(1L),
-                newProject(2L),
-                newProject(3L));
-
-        for(Project project : projectList) {
-            project.setTeacher(teacher);
-        }
-
-        when(service.listProjectByTeacher(teacher.getId())).thenReturn(projectList);
-        mockMvc.perform(get(URL + "/list-project-by-teacher/" + teacher.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void removeStudent_shouldSucceed() throws Exception {
-        Project project = newProject();
-        Student student = newStudent();
-        when(service.removeStudent(project.getId(), student.getId())).thenReturn(project);
-
-        mockMvc.perform(delete(URL + "/remove-student/" + project.getId() + "/" + student.getId()))
-                .andExpect(status().isOk());
-    }
 
     @Test
     public void login_shouldSucceed() throws Exception {

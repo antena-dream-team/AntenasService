@@ -7,6 +7,7 @@ import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
+import br.gov.sp.fatec.teacher.exception.TeacherException;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,7 +86,8 @@ public class ProjectService {
         repository.delete(project);
     }
 
-    public Project setStudentResponsible(Long projectId, Long studentId) {
+    public Project setStudentResponsible(Long projectId, Long studentId, Long teacherId) {
+        checkIfCanAddStudentToProject(teacherId, projectId);
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
 
@@ -102,8 +104,22 @@ public class ProjectService {
         return repository.save(project);
     }
 
+    private void checkIfCanAddStudentToProject(Long teacherId, Long projectId) {
+        Teacher teacher = teacherService.findById(teacherId);
+        throwIfTeacherIsNull(teacher, teacherId);
+        throwIfTeacherIsInactive(teacher);
+
+        Project project = findById(projectId);
+        throwIfProjectIsNull(project);
+
+        if (project.getTeacher() == null || !project.getTeacher().getId().equals(teacher.getId())) {
+            throw new TeacherException.CannotAddOrRemoveStudentsToThisProject();
+        }
+    }
+
     // serve para editar também. ele sobrescreve. Só deve ser passado todos os alunos
-    public Project setStudents(Long projectId, List<Student> studentList) {
+    public Project setStudents(Long projectId, List<Student> studentList, Long teacherId) {
+        checkIfCanAddStudentToProject(teacherId, projectId);
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
 
@@ -146,7 +162,7 @@ public class ProjectService {
         return repository.save(project);
     }
 
-    public Project removeStudents(Long projectId, Long StudentId) {
+    public Project removeStudent(Long projectId, Long StudentId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
 

@@ -201,13 +201,13 @@ public class ProjectServiceTest {
         when(studentService.findById(student.getId())).thenReturn(student);
         when(repository.save(project)).thenReturn(project);
 
-        Project returned = service.setStudentResponsible(project.getId(), student.getId());
+        Project returned = service.setStudentResponsible(project.getId(), student.getId(), project.getTeacher().getId());
         assertNotNull(returned);
     }
 
     @Test(expected = ProjectNotFoundException.class)
     public void setStudentResponsible_shouldFail_projectNotFound() {
-        service.setStudentResponsible(1L, 1L);
+        service.setStudentResponsible(1L, 1L, 1L);
     }
 
     @Test(expected = StudentNotFoundException.class)
@@ -216,7 +216,7 @@ public class ProjectServiceTest {
         Student student = newStudent();
 
         when(repository.getOne(project.getId())).thenReturn(project);
-        service.setStudentResponsible(project.getId(), student.getId());
+        service.setStudentResponsible(project.getId(), student.getId(), project.getTeacher().getId());
     }
 
     @Test(expected = StudentInactiveException.class)
@@ -228,7 +228,7 @@ public class ProjectServiceTest {
         when(repository.getOne(project.getId())).thenReturn(project);
         when(studentService.findById(student.getId())).thenReturn(student);
 
-        service.setStudentResponsible(project.getId(), student.getId());
+        service.setStudentResponsible(project.getId(), student.getId(), project.getTeacher().getId());
     }
 
     @Test
@@ -240,7 +240,7 @@ public class ProjectServiceTest {
         when(repository.save(project)).thenReturn(project);
         when(repository.getOne(project.getId())).thenReturn(project);
 
-        Project returned = service.setStudents(project.getId(), studentList);
+        Project returned = service.setStudents(project.getId(), studentList, project.getTeacher().getId());
         assertNotNull(returned);
     }
 
@@ -248,7 +248,7 @@ public class ProjectServiceTest {
     public void setStudents_shouldFail_projectNotFound() {
         Project project = newProject();
         List<Student> studentList = project.getStudents();
-        service.setStudents(project.getId(), studentList);
+        service.setStudents(project.getId(), studentList, project.getTeacher().getId());
     }
 
     @Test(expected = StudentNotFoundException.class)
@@ -258,7 +258,7 @@ public class ProjectServiceTest {
 
         when(repository.getOne(project.getId())).thenReturn(project);
 
-        service.setStudents(project.getId(), studentList);
+        service.setStudents(project.getId(), studentList, project.getTeacher().getId());
     }
 
     @Test(expected = StudentInactiveException.class)
@@ -271,7 +271,7 @@ public class ProjectServiceTest {
         when(studentService.findById(studentList.get(0).getId())).thenReturn(studentList.get(0));
         when(repository.getOne(project.getId())).thenReturn(project);
 
-        Project returned = service.setStudents(project.getId(), studentList);
+        Project returned = service.setStudents(project.getId(), studentList, project.getTeacher().getId());
         assertNotNull(returned);
     }
 
@@ -326,13 +326,13 @@ public class ProjectServiceTest {
         when(studentService.findById(student.getId())).thenReturn(student);
         when(repository.save(project)).thenReturn(project);
 
-        Project returned = service.removeStudents(project.getId(), student.getId());
+        Project returned = service.removeStudent(project.getId(), student.getId());
         assertNotNull(returned);
     }
 
     @Test(expected = ProjectNotFoundException.class)
     public void removeStudents_shouldFail_projectNotFound() {
-       service.removeStudents(1L, 1L);
+       service.removeStudent(1L, 1L);
     }
 
     @Test(expected = StudentNotFoundException.class)
@@ -340,7 +340,7 @@ public class ProjectServiceTest {
         Project project = newProject();
         Student student = newStudent();
         when(repository.getOne(project.getId())).thenReturn(project);
-        service.removeStudents(project.getId(), student.getId());
+        service.removeStudent(project.getId(), student.getId());
     }
 
     @Test
