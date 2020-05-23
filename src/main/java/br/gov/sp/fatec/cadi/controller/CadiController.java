@@ -65,12 +65,6 @@ public class CadiController {
         return service.findActive();
     }
 
-    @PutMapping(value = "/set-teacher/{projectId}/{teacherId}")
-    @JsonView(ProjectView.Project.class)
-    public Project setTeacher(@PathVariable("teacherId") Long teacherId,
-                              @PathVariable("projectId") Long projectId) {
-        return service.setTeacher(teacherId, projectId);
-    }
 
     @PostMapping(value = "/login")
     @JsonView(CadiView.Cadi.class)
@@ -78,11 +72,7 @@ public class CadiController {
         return service.login(login);
     }
 
-    @PostMapping(value = "/set-possible-date/{projectId}")
-    public Project setPossibleDate(@PathVariable("projectId") Long projectId,
-                                   @RequestBody List<Date> possibleDate) {
-        return service.setMeetingPossibleDate(possibleDate, projectId);
-    }
+
 
     @PutMapping(value = "/approve/{id}")
     @JsonView(ProjectView.Project.class)

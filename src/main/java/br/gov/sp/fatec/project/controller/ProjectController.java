@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.project.controller;
 
+import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
@@ -117,5 +118,18 @@ public class ProjectController {
     public Project setMeetingChosenDate(@PathVariable("dateId") Long dateId,
                                         @PathVariable("projectId") Long projectId) {
         return service.setMeetingChosenDate(dateId, projectId);
+    }
+
+    @PostMapping(value = "/set-possible-date/{projectId}")
+    public Project setPossibleDate(@PathVariable("projectId") Long projectId,
+                                   @RequestBody List<Date> possibleDate) {
+        return service.setMeetingPossibleDate(possibleDate, projectId);
+    }
+
+    @PutMapping(value = "/set-teacher/{projectId}/{teacherId}")
+    @JsonView(ProjectView.Project.class)
+    public Project setTeacher(@PathVariable("teacherId") Long teacherId,
+                              @PathVariable("projectId") Long projectId) {
+        return service.setTeacher(teacherId, projectId);
     }
 }
