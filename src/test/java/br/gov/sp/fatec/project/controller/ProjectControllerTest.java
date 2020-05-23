@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.project.controller;
 
+import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
@@ -16,7 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
@@ -137,7 +140,7 @@ public class ProjectControllerTest {
         }
 
         when(service.getProjectByTeacher(teacher.getId())).thenReturn(projectList);
-        mockMvc.perform(get(URL + "/list-project-by-teacher/" + teacher.getId()))
+        mockMvc.perform(get(URL + "/list-by-teacher/" + teacher.getId()))
                 .andExpect(status().isOk());
     }
 
@@ -145,9 +148,11 @@ public class ProjectControllerTest {
     public void removeStudent_shouldSucceed() throws Exception {
         Project project = newProject();
         Student student = newStudent();
+        Teacher teacher = project.getTeacher();
+
         when(service.removeStudent(project.getId(), student.getId())).thenReturn(project);
 
-        mockMvc.perform(delete(URL + "/remove-student/" + project.getId() + "/" + student.getId()))
+        mockMvc.perform(delete(URL + "/remove-student/" + project.getId() + "/" + student.getId() + "/" + teacher.getId()))
                 .andExpect(status().isOk());
     }
 
@@ -165,6 +170,36 @@ public class ProjectControllerTest {
         mockMvc.perform(post(URL + "/set-students/" + project.getId() + "/" +  teacher.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(studentList))))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void listProjectByStudent_shouldSucceed() throws Exception {
+        List<Student> studentList =  Lists.newArrayList(newStudent());
+        List<Project> projectList = Lists.newArrayList(
+                newProject(1L),
+                newProject(2L),
+                newProject(3L));
+
+        Map<String, List<Project>> projects = new HashMap<>();
+        projects.put("responsible", null);
+        projects.put("team", projectList);
+
+        when(service.findProjectByStudent(studentList.get(0).getId())).thenReturn(projects);
+        mockMvc.perform(get(URL + "/get-projects/" + studentList.get(0).getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deliverSolution_shouldSucceed() throws Exception {
+        Project project = newProject();
+        Deliver deliver = project.getDeliver().get(0);
+
+        when(service.setSolution(deliver, project.getId())).thenReturn(project);
+        mockMvc.perform(post(URL + "/deliver/" + project.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Objects.requireNonNull(toJSON(deliver))))
                 .andExpect(status().isOk());
     }
 }

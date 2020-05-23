@@ -3,8 +3,10 @@ package br.gov.sp.fatec.project.service;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.project.domain.*;
+import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
+import br.gov.sp.fatec.student.exception.StudentException;
 import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.exception.TeacherException;
@@ -13,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.*;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.*;
@@ -261,6 +261,31 @@ public class ProjectService {
 
     public int approve_getProgress(Project project) {
         return project.getCompleteDescription() != null && project.getTechnologyDescription() != null ? 4 : 2;
+    }
+
+    public Map<String, List<Project>> findProjectByStudent(Long studentId) {
+
+        Map<String, List<Project>> projects = new HashMap<>();
+        projects.put("responsible", getProjectByStudentResponsible(studentId));
+        projects.put("team", getProjectByStudent(studentId));
+
+        return projects;
+    }
+
+    public Project setSolution(Deliver deliver, Long projectId) {
+        // todo - pegar id do aluno responsavel
+        Project project = findById(projectId);
+        throwIfProjectIsNull(project);
+
+        if (!project.getStudentResponsible().getId().equals(deliver.getStudentResponsible().getId())) {
+            throw new StudentException.PostSolutionFailedException();
+        }
+
+        deliver.setStudents(project.getStudents());
+        deliver.setStudentResponsible(project.getStudentResponsible());
+        deliver.getProjects().add(project);
+
+        return setSolution(projectId, deliver);
     }
 
 //    private String generateCode() {

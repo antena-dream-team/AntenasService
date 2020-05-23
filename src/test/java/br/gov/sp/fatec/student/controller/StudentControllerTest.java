@@ -110,23 +110,6 @@ public class StudentControllerTest {
     }
 
     @Test
-    public void listProjectByStudent_shouldSucceed() throws Exception {
-        List<Student> studentList =  Lists.newArrayList(newStudent());
-        List<Project> projectList = Lists.newArrayList(
-                newProject(1L),
-                newProject(2L),
-                newProject(3L));
-
-        Map<String, List<Project>> projects = new HashMap<>();
-        projects.put("responsible", null);
-        projects.put("team", projectList);
-
-        when(service.findProjectByStudent(studentList.get(0).getId())).thenReturn(projects);
-        mockMvc.perform(get(URL + "/get-projects/" + studentList.get(0).getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void login_shouldSucceed() throws Exception {
         Student student = newStudent();
 
@@ -143,18 +126,6 @@ public class StudentControllerTest {
         mockMvc.perform(post(URL + "/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(String.valueOf(loginObject)))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void deliverSolution_shouldSucceed() throws Exception {
-        Project project = newProject();
-        Deliver deliver = project.getDeliver().get(0);
-
-        when(service.setSolution(deliver, project.getId())).thenReturn(project);
-        mockMvc.perform(post(URL + "/deliver/" + project.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(toJSON(deliver))))
                 .andExpect(status().isOk());
     }
 

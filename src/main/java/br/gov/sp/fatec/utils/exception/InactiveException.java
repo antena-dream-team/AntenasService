@@ -20,7 +20,7 @@ public class InactiveException {
         }
     }
     public static void throwIfTeacherIsInactive(Teacher teacher) throws TeacherInactiveException {
-        if (!teacher.getActive()) {
+        if (!teacher.isActive()) {
             throw new TeacherInactiveException(teacher.getId());
         }
     }

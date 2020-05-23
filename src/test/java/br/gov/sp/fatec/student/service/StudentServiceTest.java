@@ -117,50 +117,6 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void findProjectByStudent_shouldSucceed() {
-        List<Student> studentList = Lists.newArrayList(newStudent());
-        List<Project> projectList = Lists.newArrayList(
-                newProject(1L),
-                newProject(2L),
-                newProject(3L));
-
-        for(Project project : projectList) {
-            project.setStudents(studentList);
-        }
-
-        when(projectService.getProjectByStudent(studentList.get(0).getId())).thenReturn(projectList);
-        service.findProjectByStudent(studentList.get(0).getId());
-    }
-
-    @Test
-    public void setSolution_shouldSucceed() {
-        Project project = newProject();
-        Deliver deliver = newDeliver();
-
-        when(projectService.findById(project.getId())).thenReturn(project);
-        when(projectService.setSolution(project.getId(), deliver)).thenReturn(project);
-        service.setSolution(deliver, project.getId());
-    }
-
-    @Test(expected = ProjectNotFoundException.class)
-    public void setSolution_shouldFail_projectNotFound() {
-        Project project = newProject();
-        Deliver deliver = newDeliver();
-
-        service.setSolution(deliver, project.getId());
-    }
-
-    @Test(expected = PostSolutionFailedException.class)
-    public void setSolution_shouldFail_studentNotInProject() {
-        Project project = newProject();
-        project.getStudentResponsible().setId(2L);
-        Deliver deliver = newDeliver();
-
-        when(projectService.findById(project.getId())).thenReturn(project);
-        service.setSolution(deliver, project.getId());
-    }
-
-    @Test
     public void login_shouldSucceed() {
         Student student = newStudent();
 

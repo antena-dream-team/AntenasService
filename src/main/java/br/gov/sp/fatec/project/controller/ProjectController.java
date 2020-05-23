@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.project.controller;
 
+import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.project.view.ProjectView;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -89,5 +91,18 @@ public class ProjectController {
                                  @PathVariable("teacherId") Long teacherId) {
         return service.removeStudent(projectId, studentId);
 
+    }
+
+    @GetMapping(value = "/get-projects/{id}")
+    @JsonView(ProjectView.Project.class)
+    public Map<String, List<Project>> findProjectByStudent(@PathVariable("id") Long id) {
+        return service.findProjectByStudent(id);
+    }
+
+    @PostMapping(value = "/deliver/{projectId}")
+    @JsonView(ProjectView.Project.class)
+    public Project deliverSolution(@PathVariable("projectId") Long projectId,
+                                   @RequestBody Deliver deliver) {
+        return service.setSolution(deliver, projectId);
     }
 }
