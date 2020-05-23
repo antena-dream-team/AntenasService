@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+
 @Table(name = "cadi")
 @PrimaryKeyJoinColumn(name = "id")
 public class Cadi extends User {

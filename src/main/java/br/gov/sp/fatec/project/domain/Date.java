@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "date")
 public class Date {
     @Id

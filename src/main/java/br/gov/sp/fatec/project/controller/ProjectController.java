@@ -105,4 +105,17 @@ public class ProjectController {
                                    @RequestBody Deliver deliver) {
         return service.setSolution(deliver, projectId);
     }
+
+    @GetMapping(value = "/list-by-entrepreneur/{entrepreneurId}")
+    @JsonView(ProjectView.Project.class)
+    public List<Project> getProjectByEntrepreneur(@PathVariable("id") Long id) {
+        return service.getProjectByEntrepreneur(id);
+    }
+
+    @PostMapping(value = "/set-chosen-date/{projectId}/{dateId}")
+    @JsonView(ProjectView.Project.class)
+    public Project setMeetingChosenDate(@PathVariable("dateId") Long dateId,
+                                        @PathVariable("projectId") Long projectId) {
+        return service.setMeetingChosenDate(dateId, projectId);
+    }
 }

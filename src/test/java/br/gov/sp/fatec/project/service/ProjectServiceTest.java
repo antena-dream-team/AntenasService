@@ -27,6 +27,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
+import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newDeliver;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
@@ -555,7 +556,6 @@ public class ProjectServiceTest {
         when(service.findById(project.getId())).thenReturn(project);
         service.setSolution(deliver, project.getId());
     }
-
 }
 
 
