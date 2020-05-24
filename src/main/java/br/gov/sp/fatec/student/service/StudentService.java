@@ -27,8 +27,8 @@ public class StudentService {
     @Autowired
     private StudentRepository repository;
 
-    @Autowired
-    private ProjectService projectService;
+//    @Autowired
+//    private ProjectService projectService;
 
     @Autowired
     private SendEmail sendEmail;
@@ -73,31 +73,6 @@ public class StudentService {
         return found;
     }
 
-    public Map<String, List<Project>>  findProjectByStudent(Long studentId) {
-
-        Map<String, List<Project>> projects = new HashMap<>();
-        projects.put("responsible", projectService.getProjectByStudentResponsible(studentId));
-        projects.put("team", projectService.getProjectByStudent(studentId));
-
-        return projects;
-    }
-
-    public Project setSolution(Deliver deliver, Long projectId) {
-        // todo - pegar id do aluno responsavel
-        Project project = projectService.findById(projectId);
-        throwIfProjectIsNull(project);
-
-        if (!project.getStudentResponsible().getId().equals(deliver.getStudentResponsible().getId())) {
-            throw new PostSolutionFailedException();
-        }
-
-        deliver.setStudents(project.getStudents());
-        deliver.setStudentResponsible(project.getStudentResponsible());
-        deliver.getProjects().add(project);
-
-        return projectService.setSolution(projectId, deliver);
-    }
-
     public Student login(Map<String, String> login) {
         String password = login.get("password");
         String email = login.get("email");
@@ -111,6 +86,7 @@ public class StudentService {
         return student;
     }
 
+    // todo - adicionar retorno para quando der erro
     public void activate(String b64) {
         JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
         Student found = repository.findByEmail(jsonObject.get("email").toString());

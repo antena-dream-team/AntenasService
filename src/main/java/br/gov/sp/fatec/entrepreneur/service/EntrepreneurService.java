@@ -2,11 +2,8 @@ package br.gov.sp.fatec.entrepreneur.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
-import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +20,6 @@ public class EntrepreneurService {
 
     @Autowired
     private EntrepreneurRepository repository;
-
-    @Autowired
-    private ProjectService projectService;
 
     @Autowired
     private SendEmail sendEmail;
@@ -87,13 +81,5 @@ public class EntrepreneurService {
         throwIfEntrepreneurIsInactive(entrepreneur);
 
         return entrepreneur;
-    }
-
-    public List<Project> getProjectByEntrepreneur(Long entrepreneurId) {
-        return projectService.getProjectByEntrepreneur(entrepreneurId);
-    }
-
-    public Project setMeetingChosenDate(Long dateId, Long projectId) {
-        return projectService.setMeetingChosenDate(dateId, projectId);
     }
 }

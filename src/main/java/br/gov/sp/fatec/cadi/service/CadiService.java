@@ -24,9 +24,6 @@ public class CadiService {
     private CadiRepository repository;
 
     @Autowired
-    private ProjectService projectService;
-
-    @Autowired
     private SendEmail sendEmail;
 
     public Cadi save(Cadi cadi) {
@@ -72,10 +69,6 @@ public class CadiService {
         return repository.save(found);
     }
 
-    public Project setTeacher(Long teacherId, Long projectId) {
-        return projectService.setTeacher(teacherId, projectId);
-    }
-
     public Cadi login(Map<String, String> login) {
         String password = login.get("password");
         String email = login.get("email");
@@ -87,9 +80,5 @@ public class CadiService {
         throwIfCadiIsInactive(cadi);
 
         return cadi;
-    }
-
-    public Project setMeetingPossibleDate(List<Date> dates, Long projectId) {
-        return projectService.setMeetingPossibleDate(dates, projectId);
     }
 }

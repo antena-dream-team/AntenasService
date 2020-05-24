@@ -150,28 +150,7 @@ public class EntrepreneurServiceTest {
         service.login(login);
     }
 
-    @Test
-    public void getProjectByEntrepreneur_shouldSucceed() {
-        Entrepreneur entrepreneur = newEntrepreneur();
-        List<Project> projectList = Lists.newArrayList(
-                newProject(1L),
-                newProject(2L),
-                newProject(3L));
 
-        for(Project project : projectList) {
-            project.setEntrepreneur(entrepreneur);
-        }
-
-        when(projectService.getProjectByEntrepreneur(entrepreneur.getId())).thenReturn(projectList);
-        service.getProjectByEntrepreneur(entrepreneur.getId());
-    }
-
-    @Test
-    public void setMeetingChosenDate_shouldSucceed() {
-        Project project = newProject();
-        when (projectService.setMeetingChosenDate(1L, project.getId())).thenReturn(project);
-        service.setMeetingChosenDate(1L, project.getId());
-    }
 
     @Test
     public void activate_shouldSucceed() throws JSONException {

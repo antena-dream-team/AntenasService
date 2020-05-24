@@ -140,22 +140,6 @@ public class CadiServiceTest {
     }
 
     @Test
-    public void setTeacher_shouldSucceed() {
-        Project project = newProject();
-        when(projectService.setTeacher(1L, project.getId())).thenReturn(project);
-        service.setTeacher(1L, project.getId());
-    }
-
-    @Test
-    public void setMeetingPossibleDate() {
-        Project project = newProject();
-        List<br.gov.sp.fatec.project.domain.Date> possibleDate = getPossibleDate();
-
-        when(projectService.setMeetingPossibleDate(possibleDate, project.getId())).thenReturn(project);
-        service.setMeetingPossibleDate(possibleDate, project.getId());
-    }
-
-    @Test
     public void login_shouldSucceed() {
         Cadi cadi = newCadi();
 

@@ -25,9 +25,6 @@ public class TeacherService {
     private TeacherRepository repository;
 
     @Autowired
-    private ProjectService projectService;
-
-    @Autowired
     private SendEmail sendEmail;
 
     public Teacher save(Teacher teacher) {
@@ -56,29 +53,11 @@ public class TeacherService {
         Teacher found = repository.getOne(id);
         throwIfTeacherIsNull(found, id);
 
-        found.setActive(teacher.getActive());
+        found.setActive(teacher.isActive());
         found.setName(teacher.getName());
         found.setEmail(teacher.getEmail());
 
         return repository.save(found);
-    }
-
-    public Project setStudentsToProject(List<Student> studentList, Long projectId, Long teacherId) {
-        checkIfCanAddStudentToProject(teacherId, projectId);
-        return projectService.setStudents(projectId, studentList);
-    }
-
-    public Project setStudentsResponsibleToProject(Long studentId, Long projectId, Long teacherId) {
-        checkIfCanAddStudentToProject(teacherId, projectId);
-        return projectService.setStudentResponsible(projectId, studentId);
-    }
-
-    public List<Project> listProjectByTeacher(Long teacherId) {
-        return projectService.getProjectByTeacher(teacherId);
-    }
-
-    public Project removeStudent(Long projectId, Long studentId) {
-        return projectService.removeStudents(projectId, studentId);
     }
 
     public Teacher login(String email, String password) {
@@ -98,18 +77,5 @@ public class TeacherService {
 
         found.setActive(true);
         repository.save(found);
-    }
-
-    private void checkIfCanAddStudentToProject(Long teacherId, Long projectId) {
-        Teacher teacher = findById(teacherId);
-        throwIfTeacherIsNull(teacher, teacherId);
-        throwIfTeacherIsInactive(teacher);
-
-        Project project = projectService.findById(projectId);
-        throwIfProjectIsNull(project);
-
-        if (project.getTeacher() == null || !project.getTeacher().getId().equals(teacher.getId())) {
-            throw new CannotAddOrRemoveStudentsToThisProject();
-        }
     }
 }

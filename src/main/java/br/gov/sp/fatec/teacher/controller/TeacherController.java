@@ -58,37 +58,6 @@ public class TeacherController {
         return  service.save(teacher);
     }
 
-    // todo - se ja houverem alunos, sobrescrever ou so adicionar mais? depende de como vai funcionar o front. está sobrescrevendo
-    @PostMapping(value = "/set-students/{projectId}/{teacherId}")
-    @JsonView(ProjectView.Project.class)
-    public Project setStudents(@PathVariable("projectId") Long projectId,
-                               @PathVariable("teacherId") Long teacherId,
-                               @RequestBody List<Student> studentList) {
-
-        return service.setStudentsToProject(studentList, projectId, teacherId);
-    }
-    @PostMapping(value = "/set-student-responsible/{projectId}/{studentId}/{teacherId}")
-    @JsonView(ProjectView.Project.class)
-    public Project setResponsibleStudent(@PathVariable("projectId") Long projectId,
-                                         @PathVariable("teacherId") Long teacherId,
-                                         @PathVariable("studentId") Long studentId) {
-
-        return service.setStudentsResponsibleToProject(studentId, projectId, teacherId);
-    }
-
-    @GetMapping(value = "/list-project-by-teacher/{teacherId}")
-    @JsonView(ProjectView.Project.class)
-    public List<Project> listProjectByTeacher(@PathVariable("teacherId") Long teacherId) {
-        return service.listProjectByTeacher(teacherId);
-    }
-
-    @DeleteMapping(value = "/remove-student/{projectId}/{studentId}")
-    @JsonView(ProjectView.Project.class)
-    public Project removeStudent(@PathVariable("projectId") Long projectId,
-                                 @PathVariable("studentId") Long studentId) {
-        return service.removeStudent(projectId, studentId);
-    }
-
     @PostMapping(value = "/login")
     @JsonView(TeacherView.Teacher.class)
     public Teacher login(@RequestBody Map<String, String> login) {

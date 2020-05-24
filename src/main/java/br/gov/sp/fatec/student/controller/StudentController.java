@@ -59,19 +59,6 @@ public class StudentController {
         return service.findActive();
     }
 
-    @GetMapping(value = "/get-projects/{id}")
-    @JsonView(ProjectView.Project.class)
-    public  Map<String, List<Project>> findProjectByStudent(@PathVariable("id") Long id) {
-        return service.findProjectByStudent(id);
-    }
-
-    @PostMapping(value = "/deliver/{projectId}")
-    @JsonView(ProjectView.Project.class)
-    public Project deliverSolution(@PathVariable("projectId") Long projectId,
-                                   @RequestBody Deliver deliver) {
-        return service.setSolution(deliver, projectId);
-    }
-
     @PostMapping(value = "/login")
     @JsonView(StudentView.Student.class)
     public Student login(@RequestBody Map<String, String> login) {

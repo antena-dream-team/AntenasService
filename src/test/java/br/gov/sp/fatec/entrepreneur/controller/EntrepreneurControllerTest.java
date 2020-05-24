@@ -132,31 +132,6 @@ public class EntrepreneurControllerTest {
     }
 
     @Test
-    public void setMeetingChosenDate_shouldSucceed() throws Exception {
-        Project project = newProject();
-        when(service.setMeetingChosenDate(1L, project.getId())).thenReturn(project);
-        mockMvc.perform(post(URL + "/set-chosen-date/" + 1L + "/" + project.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void getProjectByEntrepreneur_shouldSucceet() throws Exception {
-        Entrepreneur entrepreneur = newEntrepreneur();
-        List<Project> projectList = Lists.newArrayList(
-                newProject(1L),
-                newProject(2L),
-                newProject(3L));
-
-        for(Project project : projectList) {
-            project.setEntrepreneur(entrepreneur);
-        }
-
-        when(service.getProjectByEntrepreneur(entrepreneur.getId())).thenReturn(projectList);
-        mockMvc.perform(get(URL + "/get-project/" + entrepreneur.getId()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void activate_shouldSucceed() throws Exception {
         Entrepreneur entrepreneur = newEntrepreneur();
         JSONObject base64 = new JSONObject();
