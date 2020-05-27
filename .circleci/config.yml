@@ -7,7 +7,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:11-jdk-stretch 
+      - image: circleci/openjdk:11-jdk-stretch
     
     steps:
       - checkout
@@ -44,8 +44,8 @@ jobs:
   
   sonar_cloud:
       # Run SonarCloud
-      machine:
-        image: ubuntu-1604:201903-01
+      docker:
+        - image: circleci/openjdk:11-jdk-stretch
       
       steps:
         - checkout
