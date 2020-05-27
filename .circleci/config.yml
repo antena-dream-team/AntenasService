@@ -86,7 +86,7 @@ workflows:
 
             
         - sonar_cloud:
-            context: SonarCloud
+            context: ANTENA
             requires:
               - telegram_entry/notify
 
