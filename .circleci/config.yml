@@ -19,4 +19,4 @@ orbs:
       main:
         jobs:
           - build:
-              context: SonarCloud
+              context: AntenasService
