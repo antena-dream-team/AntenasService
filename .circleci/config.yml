@@ -64,12 +64,6 @@ jobs:
       - telegram/status
 
 workflows:
-  main:
-    jobs:
-      - build:
-          context: SonarCloud
-
-workflows:
   version: 2
   build:
       jobs:
