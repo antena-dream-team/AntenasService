@@ -12,11 +12,6 @@ jobs:
     steps:
       - checkout
 
-      # Run SonarCloud
-      - run:
-        name: Analyze on SonarCloud
-        command: mvn verify sonar:sonar
-
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -46,6 +41,17 @@ jobs:
           destination: antena-project-backend
 
       - telegram/status
+  
+  sonar_cloud:
+      # Run SonarCloud
+      machine:
+        image: ubuntu-1604:201903-01
+      
+      steps:
+        - checkout
+        - run:
+              name: Analyze on SonarCloud
+              command: mvn verify sonar:sonar
 
   deploy_aws_ec2:
     machine:
@@ -77,13 +83,15 @@ workflows:
             telegram-bot-token: TELEGRAM_BOT_TOKEN
 
             
-        - build:
+        - sonar_cloud:
             context: SonarCloud
+            requires:
+              - telegram_entry/notify
 
         - build:
             context: ANTENA
             requires:
-              - telegram_entry/notify
+              - sonar_cloud
             filters:
               branches:
                 only:
