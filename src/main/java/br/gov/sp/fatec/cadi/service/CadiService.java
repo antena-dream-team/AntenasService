@@ -2,14 +2,12 @@ package br.gov.sp.fatec.cadi.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
-import br.gov.sp.fatec.project.domain.Date;
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +16,7 @@ import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfCadiIsIna
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfCadiIsNull;
 
 @Service
+@Transactional
 public class CadiService {
 
     @Autowired

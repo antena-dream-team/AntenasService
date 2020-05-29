@@ -3,7 +3,6 @@ package br.gov.sp.fatec.utils.commons;
 import br.gov.sp.fatec.utils.exception.Exception.SendEmailFailedException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
