@@ -1,4 +1,4 @@
-package br.gov.sp.fatec.login.Domain;
+package br.gov.sp.fatec.login.domain;
 
 import lombok.NoArgsConstructor;
 

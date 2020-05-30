@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "authorization")
 public class Authorization implements GrantedAuthority {
+
     private static final long serialVersionUID = 3078636239920155012L;
 
     @Id

@@ -1,6 +1,6 @@
 package br.gov.sp.fatec.security;
 
-import br.gov.sp.fatec.User.Domain.User;
+import br.gov.sp.fatec.user.domain.User;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;

@@ -1,7 +1,7 @@
-package br.gov.sp.fatec.login.Controller;
+package br.gov.sp.fatec.login.controller;
 
-import br.gov.sp.fatec.login.Domain.Login;
-import br.gov.sp.fatec.User.Domain.User;
+import br.gov.sp.fatec.login.domain.Login;
+import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.security.JwtUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;

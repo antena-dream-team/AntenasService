@@ -1,4 +1,4 @@
-package br.gov.sp.fatec.User.Domain;
+package br.gov.sp.fatec.user.domain;
 
 import br.gov.sp.fatec.entrepreneur.view.EntrepreneurView;
 import br.gov.sp.fatec.project.view.ProjectView;
@@ -45,6 +45,14 @@ public class User implements UserDetails {
             inverseJoinColumns = { @JoinColumn(name = "authorization_id") })
     @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class})
     private List<Authorization> authorizations;
+
+    public List<Authorization> getAuthorizations() {
+        return authorizations;
+    }
+
+    public void setAuthorizations(List<Authorization> authorizations) {
+        this.authorizations = authorizations;
+    }
 
     public Long getId() {
         return id;
