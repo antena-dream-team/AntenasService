@@ -1,4 +1,25 @@
 -------------------------------------------------------------------------------
 Test set: br.gov.sp.fatec.cadi.controller.CadiControllerTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.262 s - in br.gov.sp.fatec.cadi.controller.CadiControllerTest
+Tests run: 7, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.779 s <<< FAILURE! - in br.gov.sp.fatec.cadi.controller.CadiControllerTest
+login_shouldSucceed(br.gov.sp.fatec.cadi.controller.CadiControllerTest)  Time elapsed: 0.115 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<405>
+	at br.gov.sp.fatec.cadi.controller.CadiControllerTest.login_shouldSucceed(CadiControllerTest.java:146)
+
+create_shouldSucceed(br.gov.sp.fatec.cadi.controller.CadiControllerTest)  Time elapsed: 0.112 s  <<< FAILURE!
+org.mockito.exceptions.verification.junit.ArgumentsAreDifferent: 
+
+Argument(s) are different! Wanted:
+service.save(
+    Cadi(cpf=111.111.111-11, position=professor)
+);
+-> at br.gov.sp.fatec.cadi.controller.CadiControllerTest.create_shouldSucceed(CadiControllerTest.java:65)
+Actual invocation has different arguments:
+service.save(
+    Cadi(cpf=111.111.111-11, position=professor),
+    "http://localhost/dev/cadi/activate/"
+);
+-> at br.gov.sp.fatec.cadi.controller.CadiController.create(CadiController.java:41)
+
+	at br.gov.sp.fatec.cadi.controller.CadiControllerTest.create_shouldSucceed(CadiControllerTest.java:65)
+

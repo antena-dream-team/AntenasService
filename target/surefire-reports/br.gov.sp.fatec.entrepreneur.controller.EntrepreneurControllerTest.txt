@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: br.gov.sp.fatec.entrepreneur.controller.EntrepreneurControllerTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.13 s - in br.gov.sp.fatec.entrepreneur.controller.EntrepreneurControllerTest
+Tests run: 8, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.157 s <<< FAILURE! - in br.gov.sp.fatec.entrepreneur.controller.EntrepreneurControllerTest
+login_shouldSucceed(br.gov.sp.fatec.entrepreneur.controller.EntrepreneurControllerTest)  Time elapsed: 0.527 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<405>
+	at br.gov.sp.fatec.entrepreneur.controller.EntrepreneurControllerTest.login_shouldSucceed(EntrepreneurControllerTest.java:131)
+

@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: br.gov.sp.fatec.student.controller.StudentControllerTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.984 s - in br.gov.sp.fatec.student.controller.StudentControllerTest
+Tests run: 6, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.692 s <<< FAILURE! - in br.gov.sp.fatec.student.controller.StudentControllerTest
+login_shouldSucceed(br.gov.sp.fatec.student.controller.StudentControllerTest)  Time elapsed: 0.124 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<405>
+	at br.gov.sp.fatec.student.controller.StudentControllerTest.login_shouldSucceed(StudentControllerTest.java:129)
+
