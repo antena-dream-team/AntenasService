@@ -36,8 +36,9 @@ public class CadiController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(CadiView.Cadi.class)
-    private Cadi create (@RequestBody Cadi cadi) {
-        return service.save(cadi);
+    private Cadi create (@RequestBody Cadi cadi, UriComponentsBuilder uriComponentsBuilder) {
+        String url =  uriComponentsBuilder.path("/dev/cadi/activate/").build().toUriString();
+        return service.save(cadi, url);
     }
 
     @GetMapping(produces =  APPLICATION_JSON_VALUE)
@@ -69,15 +70,6 @@ public class CadiController {
     public List<Cadi> findActive() {
         return service.findActive();
     }
-
-
-    @PostMapping(value = "/login")
-    @JsonView(CadiView.Cadi.class)
-    public Cadi login(@RequestBody Map<String, String> login) {
-        return service.login(login);
-    }
-
-
 
     @PutMapping(value = "/approve/{id}")
     @JsonView(ProjectView.Project.class)

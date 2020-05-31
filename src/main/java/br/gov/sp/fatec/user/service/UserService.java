@@ -38,7 +38,7 @@ public class UserService {
         if(authorization == null) {
             // Cria nova
             authorization = new Authorization();
-            authorization.setNome(authorizationName);
+            authorization.setName(authorizationName);
             authorizationRepository.save(authorization);
         }
         User user = new User();
@@ -80,7 +80,7 @@ public class UserService {
         if(!authorizations.isEmpty()) {
             for(Authorization aut: authorizations) {
                 // Se nao existe, cria
-                if(aut.getId() == null && authorizationRepository.findByName(aut.getNome()) == null) {
+                if(aut.getId() == null && authorizationRepository.findByName(aut.getName()) == null) {
                     authorizationRepository.save(aut);
                 }
             }

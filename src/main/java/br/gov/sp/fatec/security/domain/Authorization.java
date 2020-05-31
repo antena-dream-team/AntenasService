@@ -1,5 +1,11 @@
 package br.gov.sp.fatec.security.domain;
 
+import br.gov.sp.fatec.cadi.view.CadiView;
+import br.gov.sp.fatec.entrepreneur.view.EntrepreneurView;
+import br.gov.sp.fatec.project.view.ProjectView;
+import br.gov.sp.fatec.student.view.StudentView;
+import br.gov.sp.fatec.teacher.view.TeacherView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -12,11 +18,11 @@ public class Authorization implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-//    @JsonView({View.UsuarioCompleto.class, View.Autorizacao.class})
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})
     private Long id;
 
     @Column(unique=true, length = 20, nullable = false)
-//    @JsonView({View.UsuarioResumo.class, View.UsuarioResumoAlternativo.class, View.Autorizacao.class})
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})
     private String name;
 
     public Long getId() {
@@ -27,12 +33,12 @@ public class Authorization implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getNome() {
+    public String getName() {
         return name;
     }
 
-    public void setNome(String nome) {
-        this.name = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -43,5 +49,7 @@ public class Authorization implements GrantedAuthority {
     public void setAuthority(String authority) {
         this.name = authority;
     }
+
+
 
 }

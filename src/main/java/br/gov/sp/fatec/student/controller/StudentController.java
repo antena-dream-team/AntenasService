@@ -60,16 +60,6 @@ public class StudentController {
         return service.findActive();
     }
 
-    @PostMapping(value = "/login")
-    @JsonView(StudentView.Student.class)
-    public Student login(@RequestBody Map<String, String> login) {
-        try {
-            return service.login(login);
-        } catch (Exception e) {
-            throw new StudentLoginFailed();
-        }
-    }
-
     @GetMapping(value = "/activate/{b64}")
     public void activate(@PathVariable("b64") String b64) {
         service.activate(b64);

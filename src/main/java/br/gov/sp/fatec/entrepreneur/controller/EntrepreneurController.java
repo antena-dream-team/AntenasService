@@ -59,14 +59,6 @@ public class EntrepreneurController {
         return service.findActive();
     }
 
-    @PostMapping(value = "/login")
-    @JsonView(EntrepreneurView.Entrepreneur.class)
-    public Entrepreneur login(@RequestBody Map<String, String> login) {
-        return service.login(login);
-    }
-
-
-
     @GetMapping(value = "/activate/{b64}")
     public void activate(@PathVariable("b64") String b64) {
         service.activate(b64);

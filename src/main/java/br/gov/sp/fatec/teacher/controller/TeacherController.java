@@ -58,19 +58,6 @@ public class TeacherController {
                    @RequestBody Teacher teacher) {
         return  service.save(teacher);
     }
-
-    @PostMapping(value = "/login")
-    @JsonView(TeacherView.Teacher.class)
-    public Teacher login(@RequestBody Map<String, String> login) {
-        try {
-            String password = login.get("password");
-            String email = login.get("email");
-            return service.login(email, password);
-        } catch (Exception e) {
-            throw new TeacherLoginFailed();
-        }
-    }
-
     @GetMapping(value = "/activate/{b64}")
     public void activate(@PathVariable("b64") String b64) {
         service.activate(b64);

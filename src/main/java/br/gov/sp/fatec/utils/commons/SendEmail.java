@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Base64;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class SendEmail {
     private JavaMailSender javaMailSender;
 
     @Async
-    public void sendMail(String email, String module) {
+    public void sendMail(String email,String url) {
 
         try {
             JSONObject base64 = new JSONObject();
@@ -28,8 +29,9 @@ public class SendEmail {
             base64.put("email", email);
 
             String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
-            String link = "http://127.0.0.1:8080/dev/" + module + "/activate/" + b64;
-
+//            String link = "http://127.0.0.1:8080/dev/" + module + "/activate/" + b64;
+//            String link = uriComponentsBuilder.path("/dev/" + module + "/activate/" + b64).build().toUriString();
+            String link = url + b64;
             var mailMessage = new SimpleMailMessage();
 
             mailMessage.setTo(email);
