@@ -1,10 +1,6 @@
 package br.gov.sp.fatec.student.service;
 
-import br.gov.sp.fatec.project.domain.Deliver;
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
-import br.gov.sp.fatec.student.exception.StudentException.PostSolutionFailedException;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
@@ -12,23 +8,20 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfStudentIsInactive;
-import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfProjectIsNull;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfStudentIsNull;
 
 @Service
+@Transactional
 public class StudentService {
 
     @Autowired
     private StudentRepository repository;
-
-//    @Autowired
-//    private ProjectService projectService;
 
     @Autowired
     private SendEmail sendEmail;

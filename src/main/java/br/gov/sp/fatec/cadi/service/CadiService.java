@@ -2,22 +2,23 @@ package br.gov.sp.fatec.cadi.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
-import br.gov.sp.fatec.project.domain.Date;
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.service.ProjectService;
+import br.gov.sp.fatec.utils.commons.Md5;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+import static br.gov.sp.fatec.utils.commons.Md5.md5;
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfCadiIsInactive;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfCadiIsNull;
 
 @Service
+@Transactional
 public class CadiService {
 
     @Autowired
@@ -26,10 +27,16 @@ public class CadiService {
     @Autowired
     private SendEmail sendEmail;
 
-    public Cadi save(Cadi cadi) {
+    public Cadi save(Cadi cadi, String url) {
         cadi.setActive(false);
-        cadi.setPassword(Base64.getEncoder().encodeToString(cadi.getPassword().getBytes()));
-        sendEmail.sendMail(cadi.getEmail(), "cadi");
+        cadi.setPassword(md5(cadi.getPassword()));
+        sendEmail.sendMail(cadi.getEmail(), url);
+        return repository.save(cadi);
+    }
+
+    public Cadi save(Cadi cadi) {
+//        cadi.setActive(false);
+//        cadi.setPassword(md5(cadi.getPassword()));
         return repository.save(cadi);
     }
 

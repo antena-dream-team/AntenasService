@@ -17,6 +17,7 @@ import java.util.Map;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
+@CrossOrigin
 @RequestMapping("dev/entrepreneur")
 public class EntrepreneurController {
 
@@ -57,14 +58,6 @@ public class EntrepreneurController {
     public List<Entrepreneur> findActive() {
         return service.findActive();
     }
-
-    @PostMapping(value = "/login")
-    @JsonView(EntrepreneurView.Entrepreneur.class)
-    public Entrepreneur login(@RequestBody Map<String, String> login) {
-        return service.login(login);
-    }
-
-
 
     @GetMapping(value = "/activate/{b64}")
     public void activate(@PathVariable("b64") String b64) {

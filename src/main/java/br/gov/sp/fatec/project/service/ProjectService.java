@@ -2,8 +2,10 @@ package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
-import br.gov.sp.fatec.project.domain.*;
 import br.gov.sp.fatec.project.domain.Date;
+import br.gov.sp.fatec.project.domain.Deliver;
+import br.gov.sp.fatec.project.domain.Meeting;
+import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.exception.StudentException;
@@ -14,13 +16,18 @@ import br.gov.sp.fatec.teacher.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.*;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.*;
 
 @Service
+@Transactional
 public class ProjectService {
 
     @Autowired
