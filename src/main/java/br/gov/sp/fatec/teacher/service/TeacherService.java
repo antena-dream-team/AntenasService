@@ -1,24 +1,21 @@
 package br.gov.sp.fatec.teacher.service;
 
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.service.ProjectService;
-import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
-import br.gov.sp.fatec.teacher.exception.TeacherException.CannotAddOrRemoveStudentsToThisProject;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Base64;
 import java.util.List;
 
 import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfTeacherIsInactive;
-import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfProjectIsNull;
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfTeacherIsNull;
 
 @Service
+@Transactional
 public class TeacherService {
 
     @Autowired

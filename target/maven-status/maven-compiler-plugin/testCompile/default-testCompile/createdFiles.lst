@@ -1,0 +1,14 @@
+br/gov/sp/fatec/teacher/controller/teacherControllerTest.class
+br/gov/sp/fatec/student/controller/StudentControllerTest.class
+br/gov/sp/fatec/cadi/fixture/CadiFixture.class
+br/gov/sp/fatec/cadi/service/CadiServiceTest.class
+br/gov/sp/fatec/project/service/ProjectServiceTest.class
+br/gov/sp/fatec/student/service/StudentServiceTest.class
+br/gov/sp/fatec/teacher/fixture/TeacherFixture.class
+br/gov/sp/fatec/project/controller/ProjectControllerTest.class
+br/gov/sp/fatec/cadi/controller/CadiControllerTest.class
+br/gov/sp/fatec/project/fixture/ProjectFixture.class
+br/gov/sp/fatec/entrepreneur/controller/EntrepreneurControllerTest.class
+br/gov/sp/fatec/entrepreneur/fixture/EntrepreneurFixture.class
+br/gov/sp/fatec/entrepreneur/service/EntrepreneurServiceTest.class
+br/gov/sp/fatec/student/fixture/StudentFixture.class

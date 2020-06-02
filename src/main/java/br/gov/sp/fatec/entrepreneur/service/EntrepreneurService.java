@@ -2,12 +2,12 @@ package br.gov.sp.fatec.entrepreneur.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
-import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,7 @@ import static br.gov.sp.fatec.utils.exception.InactiveException.throwIfEntrepren
 import static br.gov.sp.fatec.utils.exception.NotFoundException.throwIfEntrepreneurIsNull;
 
 @Service
+@Transactional
 public class EntrepreneurService {
 
     @Autowired

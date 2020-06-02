@@ -1,11 +1,10 @@
 package br.gov.sp.fatec.entrepreneur.domain;
 
-import br.gov.sp.fatec.User.Domain.User;
+import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.entrepreneur.view.EntrepreneurView;
 import br.gov.sp.fatec.project.view.ProjectView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

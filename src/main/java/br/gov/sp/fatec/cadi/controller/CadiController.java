@@ -7,10 +7,14 @@ import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.project.view.ProjectView;
+import br.gov.sp.fatec.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,7 @@ import java.util.Map;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/dev/cadi")
 public class CadiController {
 
@@ -31,8 +36,9 @@ public class CadiController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(CadiView.Cadi.class)
-    private Cadi create (@RequestBody Cadi cadi) {
-        return service.save(cadi);
+    private Cadi create (@RequestBody Cadi cadi, UriComponentsBuilder uriComponentsBuilder) {
+        String url =  uriComponentsBuilder.path("/dev/cadi/activate/").build().toUriString();
+        return service.save(cadi, url);
     }
 
     @GetMapping(produces =  APPLICATION_JSON_VALUE)
@@ -64,15 +70,6 @@ public class CadiController {
     public List<Cadi> findActive() {
         return service.findActive();
     }
-
-
-    @PostMapping(value = "/login")
-    @JsonView(CadiView.Cadi.class)
-    public Cadi login(@RequestBody Map<String, String> login) {
-        return service.login(login);
-    }
-
-
 
     @PutMapping(value = "/approve/{id}")
     @JsonView(ProjectView.Project.class)

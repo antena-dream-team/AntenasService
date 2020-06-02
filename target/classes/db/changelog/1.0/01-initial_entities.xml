@@ -12,6 +12,23 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="authorization-01" author="danielly">
+        <createTable tableName="authorization">
+            <column name="id" type="BIGINT"/>
+            <column name="name" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="authorization-02" author="danielly">
+        <createTable tableName="user_authorization">
+            <column name="id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="authorization_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+
+
     <changeSet id="AS-00" author="danielly">
         <createTable tableName="user">
             <column name="id" type="BIGINT"/>
@@ -140,6 +157,30 @@
     <changeSet author="danielly" id="AS-05">
         <addPrimaryKey columnNames="id" tableName="user" constraintName="user_pk"/>
         <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- AUTHORIZATION -->
+
+    <changeSet author="danielly" id="authorization-04">
+        <addPrimaryKey columnNames="id" tableName="authorization" constraintName="authorization_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="authorization" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- USER_AUTHORIZATION -->
+
+    <changeSet author="danielly" id="authorization-05">
+        <addPrimaryKey columnNames="id" tableName="user_authorization" constraintName="user_authorization_pk"/>
+        <addAutoIncrement columnName="id" incrementBy="1" startWith="1" tableName="user_authorization" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="authorization-06">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_authorization" constraintName="user_authorization_fk"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet author="danielly" id="authorization-07">
+        <addForeignKeyConstraint baseColumnNames="authorization_id" baseTableName="user_authorization" constraintName="authorization_user_fk"
+                                 referencedColumnNames="id" referencedTableName="authorization"/>
     </changeSet>
 
     <!-- TEACHER -->

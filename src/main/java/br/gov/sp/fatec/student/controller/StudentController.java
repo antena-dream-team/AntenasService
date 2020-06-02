@@ -19,6 +19,7 @@ import java.util.Map;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
+@CrossOrigin
 @RequestMapping("dev/student")
 public class StudentController {
 
@@ -57,16 +58,6 @@ public class StudentController {
     @JsonView(StudentView.Student.class)
     public List<Student> findActive() {
         return service.findActive();
-    }
-
-    @PostMapping(value = "/login")
-    @JsonView(StudentView.Student.class)
-    public Student login(@RequestBody Map<String, String> login) {
-        try {
-            return service.login(login);
-        } catch (Exception e) {
-            throw new StudentLoginFailed();
-        }
     }
 
     @GetMapping(value = "/activate/{b64}")
