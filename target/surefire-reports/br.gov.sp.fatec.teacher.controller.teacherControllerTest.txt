@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: br.gov.sp.fatec.teacher.controller.teacherControllerTest
--------------------------------------------------------------------------------
-Tests run: 7, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 3.306 s <<< FAILURE! - in br.gov.sp.fatec.teacher.controller.teacherControllerTest
-login_shouldSucceed(br.gov.sp.fatec.teacher.controller.teacherControllerTest)  Time elapsed: 0.328 s  <<< FAILURE!
-java.lang.AssertionError: Status expected:<200> but was:<405>
-	at br.gov.sp.fatec.teacher.controller.teacherControllerTest.login_shouldSucceed(teacherControllerTest.java:135)
-
