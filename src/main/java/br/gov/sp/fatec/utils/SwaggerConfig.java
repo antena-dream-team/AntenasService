@@ -1,4 +1,4 @@
-package br.gov.sp.fatec;
+package br.gov.sp.fatec.utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
