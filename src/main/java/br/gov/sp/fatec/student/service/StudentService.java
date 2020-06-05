@@ -4,6 +4,7 @@ import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,12 +82,18 @@ public class StudentService {
 
     // todo - adicionar retorno para quando der erro
     public void activate(String b64) {
-        JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
-        Student found = repository.findByEmail(jsonObject.get("email").toString());
-        throwIfStudentIsNull(found);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
+            Student found = repository.findByEmail(jsonObject.get("email").toString());
+            throwIfStudentIsNull(found);
 
-        found.setActive(true);
-        repository.save(found);
+            found.setActive(true);
+            repository.save(found);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

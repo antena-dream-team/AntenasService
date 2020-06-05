@@ -1,25 +1,22 @@
 package br.gov.sp.fatec.student.controller;
 
-import br.gov.sp.fatec.project.domain.Deliver;
-import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.service.StudentService;
 import org.assertj.core.util.Lists;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.util.*;
 
-import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
 import static br.gov.sp.fatec.utils.commons.JSONParser.toJSON;
 import static org.mockito.Mockito.verify;
@@ -27,7 +24,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StudentControllerTest {
 
     private static final String URL = "/dev/student";
@@ -40,25 +37,12 @@ public class StudentControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+     @BeforeEach
     public void onInit() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
     }
-// todo - corrigir
-//    @Test
-//    public void create_shouldSucceed() throws Exception {
-//        Student student = newStudent();
-//        when(service.save(student)).thenReturn(student);
-//
-//        mockMvc.perform(post(URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(Objects.requireNonNull(toJSON(student))))
-//                .andExpect(status().isCreated());
-//
-//        verify(service).save(student);
-//    }
 
     @Test
     public void findAll_shouldSucceed() throws Exception {
@@ -106,26 +90,6 @@ public class StudentControllerTest {
         mockMvc.perform(put(URL + "/" + student.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(student))))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void login_shouldSucceed() throws Exception {
-        Student student = newStudent();
-
-        Map<String, String> loginMap = new HashMap<>();
-        loginMap.put("email", student.getEmail());
-        loginMap.put("password", student.getPassword());
-
-        when(service.login(loginMap)).thenReturn(student);
-
-        JSONObject loginObject = new JSONObject();
-        loginObject.put("email", student.getEmail());
-        loginObject.put("password", student.getPassword());
-
-        mockMvc.perform(post(URL + "/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(loginObject)))
                 .andExpect(status().isOk());
     }
 

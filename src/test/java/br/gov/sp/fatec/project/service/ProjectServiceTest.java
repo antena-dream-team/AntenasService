@@ -7,7 +7,8 @@ import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
 import br.gov.sp.fatec.project.domain.Date;
 import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.exception.ProjectException.*;
+import br.gov.sp.fatec.project.exception.ProjectException.DateDoesNotExistsException;
+import br.gov.sp.fatec.project.exception.ProjectException.ProjectNotFoundException;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.exception.StudentException;
@@ -19,24 +20,24 @@ import br.gov.sp.fatec.teacher.exception.TeacherException.TeacherInactiveExcepti
 import br.gov.sp.fatec.teacher.exception.TeacherException.TeacherNotFoundException;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import org.assertj.core.util.Lists;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newDeliver;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
 import static br.gov.sp.fatec.teacher.fixture.TeacherFixture.newTeacher;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ProjectServiceTest {
 
     @InjectMocks
@@ -70,32 +71,41 @@ public class ProjectServiceTest {
         assertNotNull(returned);
     }
 
-    @Test(expected = TeacherNotFoundException.class)
+    @Test
     public void save_shouldFail_teacherNotFound() {
         Project project = newProject();
-        service.save(project);
+
+        Assertions.assertThrows(TeacherNotFoundException.class, () -> {
+            service.save(project);
+        });
     }
 
-    @Test(expected = TeacherInactiveException.class)
+    @Test
     public void save_shouldFail_teacherInactive() {
         Project project = newProject();
         Teacher teacher = project.getTeacher();
         teacher.setActive(false);
 
         when(teacherService.findById(teacher.getId())).thenReturn(teacher);
-        service.save(project);
+
+        Assertions.assertThrows(TeacherInactiveException.class, () -> {
+            service.save(project);
+        });
     }
 
-    @Test(expected = EntrepreneurNotFoundException.class)
+    @Test
     public void save_shouldFail_entrepreneurNotFound() {
         Project project = newProject();
         Teacher teacher = project.getTeacher();
 
         when(teacherService.findById(teacher.getId())).thenReturn(teacher);
-        service.save(project);
+
+        Assertions.assertThrows(EntrepreneurNotFoundException.class, () -> {
+            service.save(project);
+        });
     }
 
-    @Test(expected = EntrepreneurInactiveException.class)
+    @Test
     public void save_shouldFail_entrepreneurInactive() {
         Project project = newProject();
         Teacher teacher = project.getTeacher();
@@ -104,10 +114,13 @@ public class ProjectServiceTest {
 
         when(teacherService.findById(teacher.getId())).thenReturn(teacher);
         when(entrepreneurService.findById(entrepreneur.getId())).thenReturn(entrepreneur);
-        service.save(project);
+
+        Assertions.assertThrows(EntrepreneurInactiveException.class, () -> {
+            service.save(project);
+        });
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void save_shouldFail_studentResponsibleNotFound() {
         Project project = newProject();
         Teacher teacher = project.getTeacher();
@@ -116,10 +129,12 @@ public class ProjectServiceTest {
         when(teacherService.findById(teacher.getId())).thenReturn(teacher);
         when(entrepreneurService.findById(entrepreneur.getId())).thenReturn(entrepreneur);
 
-        service.save(project);
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.save(project);
+        });
     }
 
-    @Test(expected = StudentInactiveException.class)
+    @Test
     public void save_shouldFail_studentResponsibleInactive() {
         Project project = newProject();
         Teacher teacher = project.getTeacher();
@@ -131,10 +146,12 @@ public class ProjectServiceTest {
         when(entrepreneurService.findById(entrepreneur.getId())).thenReturn(entrepreneur);
         when(studentService.findById(studentResponsible.getId())).thenReturn(studentResponsible);
 
-        service.save(project);
+        Assertions.assertThrows(StudentInactiveException.class, () -> {
+            service.save(project);
+        });
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void save_shouldFail_studentNotFound() {
         Project project = newProject();
         project.getStudents().get(0).setId(5L);
@@ -145,10 +162,12 @@ public class ProjectServiceTest {
         when(entrepreneurService.findById(entrepreneur.getId())).thenReturn(entrepreneur);
         when(studentService.findById(project.getStudents().get(0).getId())).thenReturn(null);
 
-        service.save(project);
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.save(project);
+        });
     }
 
-    @Test(expected = StudentInactiveException.class)
+    @Test
     public void save_shouldFail_studentInactive() {
         Project project = newProject();
         project.getStudents().get(0).setActive(false);
@@ -160,7 +179,9 @@ public class ProjectServiceTest {
         when(entrepreneurService.findById(entrepreneur.getId())).thenReturn(entrepreneur);
         when(studentService.findById(project.getStudents().get(0).getId())).thenReturn(project.getStudents().get(0));
 
-        service.save(project);
+        Assertions.assertThrows(StudentInactiveException.class, () -> {
+            service.save(project);
+        });
     }
 
     @Test
@@ -188,10 +209,13 @@ public class ProjectServiceTest {
         service.delete(project.getId());
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void delete_shouldFail() {
         when(repository.getOne(1L)).thenReturn(null);
-        service.delete(1L);
+
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.delete(1L);
+        });
     }
 
     @Test
@@ -208,27 +232,32 @@ public class ProjectServiceTest {
         assertNotNull(returned);
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void setStudentResponsible_shouldFail_projectNotFound() {
         Teacher teacher = newTeacher();
         Student student = newStudent();
 
         when(teacherService.findById(teacher.getId())).thenReturn(teacher);
 
-        service.setStudentResponsible(1L, student.getId(), teacher.getId());
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.setStudentResponsible(1L, student.getId(), teacher.getId());
+        });
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void setStudentResponsible_shouldFail_studentIsNull() {
         Project project = newProject();
         Student student = newStudent();
 
         when(teacherService.findById(project.getTeacher().getId())).thenReturn(project.getTeacher());
         when(repository.getOne(project.getId())).thenReturn(project);
-        service.setStudentResponsible(project.getId(), student.getId(), project.getTeacher().getId());
+
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.setStudentResponsible(project.getId(), student.getId(), project.getTeacher().getId());
+        });
     }
 
-    @Test(expected = StudentInactiveException.class)
+    @Test
     public void setStudentResponsible_shouldFail_studentInactive() {
         Project project = newProject();
         Student student = newStudent();
@@ -238,7 +267,9 @@ public class ProjectServiceTest {
         when(repository.getOne(project.getId())).thenReturn(project);
         when(studentService.findById(student.getId())).thenReturn(student);
 
-        service.setStudentResponsible(project.getId(), student.getId(), project.getTeacher().getId());
+        Assertions.assertThrows(StudentInactiveException.class, () -> {
+            service.setStudentResponsible(project.getId(), student.getId(), project.getTeacher().getId());
+        });
     }
 
     @Test
@@ -256,15 +287,18 @@ public class ProjectServiceTest {
         assertNotNull(returned);
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void setStudents_shouldFail_projectNotFound() {
         Project project = newProject();
         List<Student> studentList = project.getStudents();
         when(teacherService.findById(project.getTeacher().getId())).thenReturn(project.getTeacher());
-        service.setStudents(project.getId(), studentList, project.getTeacher().getId());
+
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.setStudents(project.getId(), studentList, project.getTeacher().getId());
+        });
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void setStudents_shouldFail_studentNotFound() {
         Project project = newProject();
         List<Student> studentList = project.getStudents();
@@ -272,10 +306,12 @@ public class ProjectServiceTest {
         when(teacherService.findById(project.getTeacher().getId())).thenReturn(project.getTeacher());
         when(repository.getOne(project.getId())).thenReturn(project);
 
-        service.setStudents(project.getId(), studentList, project.getTeacher().getId());
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.setStudents(project.getId(), studentList, project.getTeacher().getId());
+        });
     }
 
-    @Test(expected = StudentInactiveException.class)
+    @Test
     public void setStudents_shouldFail_studentInactive() {
         Project project = newProject();
         List<Student> studentList = project.getStudents();
@@ -286,8 +322,9 @@ public class ProjectServiceTest {
         when(studentService.findById(studentList.get(0).getId())).thenReturn(studentList.get(0));
         when(repository.getOne(project.getId())).thenReturn(project);
 
-        Project returned = service.setStudents(project.getId(), studentList, project.getTeacher().getId());
-        assertNotNull(returned);
+        Assertions.assertThrows(StudentInactiveException.class, () -> {
+            service.setStudents(project.getId(), studentList, project.getTeacher().getId());
+        });
     }
 
     @Test
@@ -303,23 +340,26 @@ public class ProjectServiceTest {
         assertNotNull(returned);
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void setTeacher_shouldFail_projectNotFound() {
-        service.setTeacher(1L, 1L);
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.setTeacher(1L, 1L);
+        });
     }
 
-    @Test(expected = TeacherNotFoundException.class)
+    @Test
     public void setTeacher_shouldFail_teacherNotFound() {
         Project project = newProject();
         Teacher teacher = newTeacher();
 
         when(repository.getOne(project.getId())).thenReturn(project);
 
-        Project returned = service.setTeacher(project.getId(), teacher.getId());
-        assertNotNull(returned);
+        Assertions.assertThrows(TeacherNotFoundException.class, () -> {
+            service.setTeacher(project.getId(), teacher.getId());
+        });
     }
 
-    @Test(expected = TeacherInactiveException.class)
+    @Test
     public void setTeacher_shouldFail_teacherInactive() {
         Project project = newProject();
         Teacher teacher = newTeacher();
@@ -328,8 +368,9 @@ public class ProjectServiceTest {
         when(repository.getOne(project.getId())).thenReturn(project);
         when(teacherService.findById(teacher.getId())).thenReturn(teacher);
 
-        Project returned = service.setTeacher(project.getId(), teacher.getId());
-        assertNotNull(returned);
+        Assertions.assertThrows(TeacherInactiveException.class, () -> {
+            service.setTeacher(project.getId(), teacher.getId());
+        });
     }
 
     @Test
@@ -345,17 +386,22 @@ public class ProjectServiceTest {
         assertNotNull(returned);
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void removeStudents_shouldFail_projectNotFound() {
-       service.removeStudent(1L, 1L);
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.removeStudent(1L, 1L);
+        });
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void removeStudents_shouldFail_studentNotFound() {
         Project project = newProject();
         Student student = newStudent();
         when(repository.getOne(project.getId())).thenReturn(project);
-        service.removeStudent(project.getId(), student.getId());
+
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.removeStudent(project.getId(), student.getId());
+        });
     }
 
     @Test
@@ -397,10 +443,13 @@ public class ProjectServiceTest {
         assertEquals(projectList.size(), returned.size());
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void setSolution_shouldFail() {
         Deliver deliver = newDeliver();
-        service.setSolution(1L, deliver);
+
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.setSolution(1L, deliver);
+        });
     }
 
     @Test
@@ -415,11 +464,14 @@ public class ProjectServiceTest {
         assertNotNull(returned);
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void setMeetingPossibleDate_shouldFail_projectNotFound() {
         Project project = newProject();
         List<Date> possibleDates = project.getMeeting().getPossibleDate();
-        service.setMeetingPossibleDate(possibleDates, project.getId());
+
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.setMeetingPossibleDate(possibleDates, project.getId());
+        });
     }
 
     @Test
@@ -433,20 +485,24 @@ public class ProjectServiceTest {
         assertNotNull(returned);
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void setMeetingChosenDate_shouldFail_projectNotFound() {
         Project project = newProject();
-        service.setMeetingChosenDate(project.getMeeting().getPossibleDate().get(0).getId(), project.getId());
+
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.setMeetingChosenDate(project.getMeeting().getPossibleDate().get(0).getId(), project.getId());
+        });
     }
 
-    @Test(expected = DateDoesNotExistsException.class)
+    @Test
     public void setMeetingChosenDate_shouldFail_chosenDateNotFound() {
         Project project = newProject();
 
         when(repository.getOne(project.getId())).thenReturn(project);
 
-        Project returned = service.setMeetingChosenDate(123L, project.getId());
-        assertNotNull(returned);
+        Assertions.assertThrows(DateDoesNotExistsException.class, () -> {
+            service.setMeetingChosenDate(123L, project.getId());
+        });
     }
 
     @Test
@@ -461,24 +517,29 @@ public class ProjectServiceTest {
         service.addStudent(project.getId(), student.getId());
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void addStudent_shouldFail_projectNotFound() {
         Project project = newProject();
         Student student = newStudent();
 
-        service.addStudent(project.getId(), student.getId());
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.addStudent(project.getId(), student.getId());
+        });
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void addStudent_shouldFail_studentNotFound() {
         Project project = newProject();
         Student student = newStudent();
 
         when(service.findById(project.getId())).thenReturn(project);
-        service.addStudent(project.getId(), student.getId());
+
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.addStudent(project.getId(), student.getId());
+        });
     }
 
-    @Test(expected = StudentInactiveException.class)
+    @Test
     public void addStudent_shouldFail_studentInactive() {
         Project project = newProject();
         Student student = newStudent();
@@ -486,7 +547,10 @@ public class ProjectServiceTest {
 
         when(service.findById(project.getId())).thenReturn(project);
         when(studentService.findById(student.getId())).thenReturn(student);
-        service.addStudent(project.getId(), student.getId());
+
+        Assertions.assertThrows(StudentInactiveException.class, () -> {
+            service.addStudent(project.getId(), student.getId());
+        });
     }
 
     @Test
@@ -497,10 +561,11 @@ public class ProjectServiceTest {
         service.update(project);
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void update_shouldFail_projectNotFound() {
-        Project project = newProject();
-        service.update(project);
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.update(newProject());
+        });
     }
 
     @Test
@@ -539,22 +604,27 @@ public class ProjectServiceTest {
         service.setSolution(deliver, project.getId());
     }
 
-    @Test(expected = ProjectNotFoundException.class)
+    @Test
     public void setSolution_shouldFail_projectNotFound() {
         Project project = newProject();
         Deliver deliver = newDeliver();
 
-        service.setSolution(deliver, project.getId());
+        Assertions.assertThrows(ProjectNotFoundException.class, () -> {
+            service.setSolution(deliver, project.getId());
+        });
     }
 
-    @Test(expected = StudentException.PostSolutionFailedException.class)
+    @Test
     public void setSolution_shouldFail_studentNotInProject() {
         Project project = newProject();
         project.getStudentResponsible().setId(2L);
         Deliver deliver = newDeliver();
 
         when(service.findById(project.getId())).thenReturn(project);
-        service.setSolution(deliver, project.getId());
+
+        Assertions.assertThrows(StudentException.PostSolutionFailedException.class, () -> {
+            service.setSolution(deliver, project.getId());
+        });
     }
 }
 

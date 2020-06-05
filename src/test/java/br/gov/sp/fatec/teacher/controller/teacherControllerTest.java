@@ -1,22 +1,19 @@
 package br.gov.sp.fatec.teacher.controller;
 
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import org.assertj.core.util.Lists;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Base64;
@@ -24,8 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
-import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
 import static br.gov.sp.fatec.teacher.fixture.TeacherFixture.newTeacher;
 import static br.gov.sp.fatec.utils.commons.JSONParser.toJSON;
 import static org.mockito.Mockito.verify;
@@ -33,8 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class teacherControllerTest {
 
     private static final String URL = "/dev/teacher";
@@ -47,7 +41,7 @@ public class teacherControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @BeforeEach
     public void onInit() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
@@ -113,25 +107,6 @@ public class teacherControllerTest {
         mockMvc.perform(put(URL + "/" + teacher.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(teacher))))
-                .andExpect(status().isOk());
-    }
-
-
-
-    @Test
-    public void login_shouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        when(service.login(teacher.getEmail(), teacher.getPassword())).thenReturn(teacher);
-
-        JSONObject login = new JSONObject();
-        login.put("email", teacher.getEmail());
-        login.put("password", teacher.getPassword());
-
-        when(service.login(teacher.getEmail(), teacher.getPassword())).thenReturn(teacher);
-
-        mockMvc.perform(post(URL + "/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(login)))
                 .andExpect(status().isOk());
     }
 

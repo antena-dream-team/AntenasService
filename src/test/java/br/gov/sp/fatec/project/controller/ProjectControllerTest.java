@@ -6,12 +6,13 @@ import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ProjectControllerTest {
 
     private static final String URL = "/dev/project";
@@ -44,25 +45,12 @@ public class ProjectControllerTest {
     @Mock
     private ProjectService service;
 
-    @Before
+     @BeforeEach
     public void onInit() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
     }
-// todo - corrigir
-//    @Test
-//    public void create_shouldSucceed() throws Exception {
-//        Project project = newProject();
-//        when(service.save(project)).thenReturn(project);
-//
-//        mockMvc.perform(post(URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(Objects.requireNonNull(toJSON(project))))
-//                .andExpect(status().isCreated());
-//
-//        verify(service).save(project);
-//    }
 
     @Test
     public void findAll_shouldSucceed() throws Exception {

@@ -6,12 +6,13 @@ import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import org.assertj.core.util.Lists;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EntrepreneurControllerTest {
     private static final String URL = "/dev/entrepreneur";
 
@@ -42,7 +43,7 @@ public class EntrepreneurControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+     @BeforeEach
     public void onInit() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
@@ -108,26 +109,6 @@ public class EntrepreneurControllerTest {
         mockMvc.perform(put(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(toJSON(entrepreneur))))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void login_shouldSucceed() throws Exception {
-        Entrepreneur entrepreneur = newEntrepreneur();
-
-        Map<String, String> loginMap = new HashMap<>();
-        loginMap.put("email", entrepreneur.getEmail());
-        loginMap.put("password", entrepreneur.getPassword());
-
-        when(service.login(loginMap)).thenReturn(entrepreneur);
-
-        JSONObject loginObject = new JSONObject();
-        loginObject.put("email", entrepreneur.getEmail());
-        loginObject.put("password", entrepreneur.getPassword());
-
-        mockMvc.perform(post(URL + "/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(loginObject)))
                 .andExpect(status().isOk());
     }
 
