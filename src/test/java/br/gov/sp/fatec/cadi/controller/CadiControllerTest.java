@@ -2,35 +2,35 @@ package br.gov.sp.fatec.cadi.controller;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.service.CadiService;
-import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
-import jdk.jshell.spi.ExecutionControl;
 import org.assertj.core.util.Lists;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import static br.gov.sp.fatec.cadi.fixture.CadiFixture.newCadi;
-import static br.gov.sp.fatec.project.fixture.ProjectFixture.*;
-import static br.gov.sp.fatec.teacher.fixture.TeacherFixture.newTeacher;
 import static br.gov.sp.fatec.utils.commons.JSONParser.toJSON;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CadiControllerTest {
 
     private static final String URL = "/dev/cadi";
@@ -46,26 +46,12 @@ public class CadiControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+     @BeforeEach
     public void onInit() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
     }
-
-    // todo - teste para criação de conta
-//    @Test
-//    public void create_shouldSucceed() throws Exception {
-//        Cadi cadi = newCadi();
-//        when(service.save(cadi)).thenReturn(cadi);
-//
-//        mockMvc.perform(post(URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(Objects.requireNonNull(toJSON(cadi))))
-//                .andExpect(status().isCreated());
-//
-//        verify(service).save(cadi);
-//    }
 
     @Test
     public void findAll_shouldSucceed() throws Exception {
@@ -127,25 +113,4 @@ public class CadiControllerTest {
         mockMvc.perform(get(URL + "/activate/" + b64))
                 .andExpect(status().isOk());
     }
-
-    // todo - teste de login
-//    @Test
-//    public void login_shouldSucceed() throws Exception {
-//        Cadi cadi = newCadi();
-//
-//        Map<String, String> loginMap = new HashMap<>();
-//        loginMap.put("email", cadi.getEmail());
-//        loginMap.put("password", cadi.getPassword());
-//
-//        when(service.login(loginMap)).thenReturn(cadi);
-//
-//        JSONObject loginObject = new JSONObject();
-//        loginObject.put("email", cadi.getEmail());
-//        loginObject.put("password", cadi.getPassword());
-//
-//        mockMvc.perform(post(URL + "/login")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(String.valueOf(loginObject)))
-//                .andExpect(status().isOk());
-//    }
 }

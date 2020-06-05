@@ -1,28 +1,29 @@
 package br.gov.sp.fatec.cadi.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
-import br.gov.sp.fatec.cadi.exception.CadiException.*;
+import br.gov.sp.fatec.cadi.exception.CadiException.CadiInactiveException;
+import br.gov.sp.fatec.cadi.exception.CadiException.CadiNotFoundException;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
-import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
 import static br.gov.sp.fatec.cadi.fixture.CadiFixture.newCadi;
-import static br.gov.sp.fatec.project.fixture.ProjectFixture.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CadiServiceTest {
 
     @InjectMocks
@@ -87,9 +88,11 @@ public class CadiServiceTest {
         assertEquals(cadi.getId(), found.getId());
     }
 
-    @Test(expected = CadiNotFoundException.class)
+    @Test
     public void findById_shouldFail() {
-        service.findById(1L);
+        Assertions.assertThrows(CadiNotFoundException.class, () -> {
+            service.findById(1L);
+        });
     }
 
     @Test
@@ -106,12 +109,14 @@ public class CadiServiceTest {
         assertEquals(updated.getEmail(), returned.getEmail());
     }
 
-    @Test(expected = CadiNotFoundException.class)
+    @Test
     public void update_shouldFail() {
         Cadi updated = newCadi();
         updated.setEmail("newEmail@test.com");
 
-        service.update(2L, updated);
+        Assertions.assertThrows(CadiNotFoundException.class, () -> {
+            service.update(2L, updated);
+        });
     }
 
     @Test
@@ -128,7 +133,7 @@ public class CadiServiceTest {
         assertTrue(cadi.isActive());
     }
 
-    @Test(expected = CadiNotFoundException.class)
+    @Test
     public void activate_shouldFail() throws JSONException {
         Cadi cadi = newCadi();
         JSONObject base64 = new JSONObject();
@@ -136,7 +141,9 @@ public class CadiServiceTest {
         base64.put("email", cadi.getEmail());
         String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
 
-        service.activate(b64);
+        Assertions.assertThrows(CadiNotFoundException.class, () -> {
+            service.activate(b64);
+        });
     }
 
     @Test
@@ -152,7 +159,7 @@ public class CadiServiceTest {
         service.login(login);
     }
 
-    @Test(expected = CadiNotFoundException.class)
+    @Test
     public void login_shouldFail_notFound() {
         Cadi cadi = newCadi();
 
@@ -160,10 +167,12 @@ public class CadiServiceTest {
         login.put("email", cadi.getEmail());
         login.put("password", cadi.getPassword());
 
-        service.login(login);
+        Assertions.assertThrows(CadiNotFoundException.class, () -> {
+            service.login(login);
+        });
     }
 
-    @Test(expected = CadiInactiveException.class)
+    @Test
     public void login_shouldFail_Inactive() {
         Cadi cadi = newCadi();
         cadi.setActive(false);
@@ -174,6 +183,9 @@ public class CadiServiceTest {
 
         when(repository.findByEmailAndPassword(cadi.getEmail(), Base64.getEncoder().encodeToString(cadi.getPassword().getBytes())))
                 .thenReturn(cadi);
-        service.login(login);
+
+        Assertions.assertThrows(CadiInactiveException.class, () -> {
+            service.login(login);
+        });
     }
 }

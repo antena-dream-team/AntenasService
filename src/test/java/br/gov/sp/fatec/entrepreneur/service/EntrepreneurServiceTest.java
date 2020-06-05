@@ -1,29 +1,29 @@
 package br.gov.sp.fatec.entrepreneur.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
-import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.*;
+import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.EntrepreneurInactiveException;
+import br.gov.sp.fatec.entrepreneur.exception.EntrepreneurException.EntrepreneurNotFoundException;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
-import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.utils.commons.SendEmail;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
 import static br.gov.sp.fatec.entrepreneur.fixture.EntrepreneurFixture.newEntrepreneur;
-import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EntrepreneurServiceTest {
     @InjectMocks
     private EntrepreneurService service;
@@ -87,9 +87,11 @@ public class EntrepreneurServiceTest {
         assertEquals(entrepreneur.getId(), found.getId());
     }
 
-    @Test(expected = EntrepreneurNotFoundException.class)
+    @Test
     public void findById_shouldFail() {
-        service.findById(1L);
+        Assertions.assertThrows(EntrepreneurNotFoundException.class, () -> {
+            service.findById(1L);
+        });
     }
 
     @Test
@@ -106,12 +108,13 @@ public class EntrepreneurServiceTest {
         assertEquals(updated.getEmail(), returned.getEmail());
     }
 
-    @Test(expected = EntrepreneurNotFoundException.class)
+    @Test
     public void update_shouldFail() {
         Entrepreneur updated = newEntrepreneur();
-        updated.setEmail("newEmail@test.com");
 
-        service.update(2L, updated);
+        Assertions.assertThrows(EntrepreneurNotFoundException.class, () -> {
+            service.update(2L, updated);
+        });
     }
 
     @Test
@@ -126,7 +129,7 @@ public class EntrepreneurServiceTest {
         service.login(login);
     }
 
-    @Test(expected = EntrepreneurNotFoundException.class)
+    @Test
     public void login_shouldFail_notFound() {
         Entrepreneur entrepreneur = newEntrepreneur();
 
@@ -134,10 +137,12 @@ public class EntrepreneurServiceTest {
         login.put("email", entrepreneur.getEmail());
         login.put("password", entrepreneur.getPassword());
 
-        service.login(login);
+        Assertions.assertThrows(EntrepreneurNotFoundException.class, () -> {
+            service.login(login);
+        });
     }
 
-    @Test(expected = EntrepreneurInactiveException.class)
+    @Test
     public void login_shouldFail_Inactive() {
         Entrepreneur entrepreneur = newEntrepreneur();
         entrepreneur.setActive(false);
@@ -147,10 +152,11 @@ public class EntrepreneurServiceTest {
         login.put("password", entrepreneur.getPassword());
 
         when(repository.findByEmailAndPassword(entrepreneur.getEmail(), Base64.getEncoder().encodeToString(entrepreneur.getPassword().getBytes()))).thenReturn(entrepreneur);
-        service.login(login);
+
+        Assertions.assertThrows(EntrepreneurInactiveException.class, () -> {
+            service.login(login);
+        });
     }
-
-
 
     @Test
     public void activate_shouldSucceed() throws JSONException {
@@ -165,7 +171,7 @@ public class EntrepreneurServiceTest {
         assertTrue(entrepreneur.isActive());
     }
 
-    @Test(expected = EntrepreneurNotFoundException.class)
+    @Test
     public void activate_shouldFail() throws JSONException {
         Entrepreneur entrepreneur = newEntrepreneur();
         JSONObject base64 = new JSONObject();
@@ -173,6 +179,9 @@ public class EntrepreneurServiceTest {
         base64.put("email", entrepreneur.getEmail());
         String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
 
-        service.activate(b64);
+
+        Assertions.assertThrows(EntrepreneurNotFoundException.class, () -> {
+            service.activate(b64);
+        });
     }
 }

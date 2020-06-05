@@ -4,6 +4,7 @@ import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
 import br.gov.sp.fatec.utils.commons.Md5;
 import br.gov.sp.fatec.utils.commons.SendEmail;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,12 +69,19 @@ public class CadiService {
     }
 
     public Cadi activate(String b64) {
-        JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
-        Cadi found = repository.findByEmail(jsonObject.get("email").toString());
-        throwIfCadiIsNull(found);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
+            Cadi found = repository.findByEmail(jsonObject.get("email").toString());
+            throwIfCadiIsNull(found);
 
-        found.setActive(true);
-        return repository.save(found);
+            found.setActive(true);
+            return repository.save(found);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public Cadi login(Map<String, String> login) {

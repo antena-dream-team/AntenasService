@@ -1,32 +1,31 @@
 package br.gov.sp.fatec.student.service;
 
-import br.gov.sp.fatec.project.domain.Deliver;
 import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.exception.ProjectException.ProjectNotFoundException;
 import br.gov.sp.fatec.project.service.ProjectService;
 import br.gov.sp.fatec.student.domain.Student;
-import br.gov.sp.fatec.student.exception.StudentException.*;
+import br.gov.sp.fatec.student.exception.StudentException.StudentInactiveException;
+import br.gov.sp.fatec.student.exception.StudentException.StudentNotFoundException;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.assertj.core.util.Lists;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
-import static br.gov.sp.fatec.project.fixture.ProjectFixture.newDeliver;
 import static br.gov.sp.fatec.project.fixture.ProjectFixture.newProject;
 import static br.gov.sp.fatec.student.fixture.StudentFixture.newStudent;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
 
     @InjectMocks
@@ -92,10 +91,13 @@ public class StudentServiceTest {
         assertEquals(student.getId(), found.getId());
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void findById_shouldFail() {
         when(repository.getOne(1L)).thenReturn(null);
-        service.findById(1L);
+
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.findById(1L);
+        });
     }
 
     @Test
@@ -109,11 +111,14 @@ public class StudentServiceTest {
         assertEquals(updated.getEmail(), returned.getEmail());
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void update_shouldFail() {
         Student updated = newStudent();
         updated.setEmail("newEmail@test.com");
-        service.update(2L, updated);
+
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.update(2L, updated);
+        });
     }
 
     @Test
@@ -129,7 +134,7 @@ public class StudentServiceTest {
         service.login(login);
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void login_shouldFail_notFound() {
         Student student = newStudent();
 
@@ -137,10 +142,12 @@ public class StudentServiceTest {
         login.put("email", student.getEmail());
         login.put("password", student.getPassword());
 
-        service.login(login);
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.login(login);
+        });
     }
 
-    @Test(expected = StudentInactiveException.class)
+    @Test
     public void login_shouldFail_Inactive() {
         Student student = newStudent();
         student.setActive(false);
@@ -151,7 +158,10 @@ public class StudentServiceTest {
 
         when(repository.findByEmailAndPassword(student.getEmail(), Base64.getEncoder().encodeToString(student.getPassword().getBytes())))
                 .thenReturn(student);
-        service.login(login);
+
+        Assertions.assertThrows(StudentInactiveException.class, () -> {
+            service.login(login);
+        });
     }
 
     @Test
@@ -181,7 +191,7 @@ public class StudentServiceTest {
         assertTrue(student.isActive());
     }
 
-    @Test(expected = StudentNotFoundException.class)
+    @Test
     public void activate_shouldFail() throws JSONException {
         Student student = newStudent();
         JSONObject base64 = new JSONObject();
@@ -189,6 +199,8 @@ public class StudentServiceTest {
         base64.put("email", student.getEmail());
         String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
 
-        service.activate(b64);
+        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+            service.activate(b64);
+        });
     }
 }

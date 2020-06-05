@@ -3,6 +3,7 @@ package br.gov.sp.fatec.entrepreneur.service;
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,12 +50,18 @@ public class EntrepreneurService {
     }
 
     public void activate(String b64) {
-        JSONObject jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
-        Entrepreneur found = repository.findByEmail(jsonObject.get("email").toString());
-        throwIfEntrepreneurIsNull(found);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(new String(Base64.getDecoder().decode(b64)));
+            Entrepreneur found = repository.findByEmail(jsonObject.get("email").toString());
+            throwIfEntrepreneurIsNull(found);
 
-        found.setActive(true);
-        repository.save(found);
+            found.setActive(true);
+            repository.save(found);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Entrepreneur update(Long id, Entrepreneur entrepreneur) {
