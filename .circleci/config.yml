@@ -12,21 +12,6 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
-      #- restore_cache:
-      #    keys:
-      #    - antena-project-backend-{{ checksum "pom.xml" }}
-            
-      #- run: mvn dependency:go-offline
-
-      #- save_cache:
-      #    paths:
-      #      - ~/.m2
-      #    key: antena-project-backend-{{ checksum "pom.xml" }}
-        
-      # package into a jar
-      #- run: mvn clean package 
-      
       - run: 
             name: Login to Dockerhub
             command: docker login -u $DOCKER_USER -p $DOCKER_PASS
@@ -40,7 +25,9 @@ jobs:
           path: target/classes
           destination: antena-project-backend
 
-      - telegram/status
+      - telegram/status:
+          success_message: ${CIRCLE_JOB} succeeded completed! [.](https://img.icons8.com/color/48/000000/bmo.png)
+          failure_message: ${CIRCLE_JOB} failed :(. [.](https://img.icons8.com/color/48/000000/lumpy-space-princess.png)
   
   sonar_cloud:
       # Run SonarCloud
@@ -54,6 +41,7 @@ jobs:
               command: mvn verify sonar:sonar
         - telegram/status:
               fail_only: true
+              failure_message: ${CIRCLE_JOB} failed :(. [.](https://img.icons8.com/color/48/000000/lumpy-space-princess.png)
 
   deploy_aws_ec2:
     machine:
@@ -67,7 +55,7 @@ jobs:
       - run:
           name: Executing the Deploy in AWS EC2 - Production Environment
           command: |
-            ssh -A -o "StrictHostKeyChecking no" ec2-user@ec2-18-228-221-204.sa-east-1.compute.amazonaws.com "/bin/bash -c 'pwd && printenv'"
+            ssh -A -o "StrictHostKeyChecking no" ec2-user@ec2-18-228-221-204.sa-east-1.compute.amazonaws.com "git clone git@github.com:antena-dream-team/AntenaInfra.git && cd AntenaInfra && docker-compose up --build"
 
       - telegram/status
 workflows:
