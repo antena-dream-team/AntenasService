@@ -25,7 +25,7 @@ jobs:
       #    key: antena-project-backend-{{ checksum "pom.xml" }}
         
       # package into a jar
-      - run: mvn clean package 
+      #- run: mvn clean package 
       
       - run: 
             name: Login to Dockerhub
@@ -33,7 +33,7 @@ jobs:
 
       - run:
             name: push image to Dockerhub
-            command: mvn clean compile jib:build -Dimage=mateusmsouza4/antenas-project:$CIRCLE_BUILD_NUM
+            command: mvn clean compile jib:build -Dimage=mateusmsouza4/antenas-project:latest
 
       # store raw contents of src code
       - store_artifacts:
