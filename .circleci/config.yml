@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-    telegram_entry: woltsu/telegram@0.0.9
     telegram: uniqueck/telegram-orb@0.0.1
 
 jobs:
@@ -26,7 +25,7 @@ jobs:
           destination: antena-project-backend
 
       - telegram/status:
-          success_message: $CIRCLE_JOB commit $CIRCLE_SHA1 made by $CIRCLE_USERNAME succeeded completed! [.](https://img.icons8.com/color/144/000000/bmo.png)
+          success_message: $CIRCLE_JOB commit $CIRCLE_SHA1 made by $CIRCLE_USERNAME succeeded! [.](https://img.icons8.com/color/144/000000/bmo.png)
           failure_message: $CIRCLE_JOB commit $CIRCLE_SHA1 made by $CIRCLE_USERNAME failed :(. [.](https://img.icons8.com/color/144/000000/lumpy-space-princess.png)
   
   sonar_cloud:
@@ -40,7 +39,7 @@ jobs:
               name: Analyze on SonarCloud
               command: mvn verify sonar:sonar
         - telegram/status:
-              fail_only: true
+              success_message: Sonar Analysis completed! Can someone check me out? https://sonarcloud.io/dashboard?id=antena-dream-team_AntenasService&branch=master [.](https://img.icons8.com/flat_round/144/000000/statistics.png)
               failure_message: ${CIRCLE_JOB} failed :(. [.](https://img.icons8.com/color/144/000000/lumpy-space-princess.png)
 
   deploy_aws_ec2:
@@ -58,6 +57,7 @@ jobs:
             ssh -A -o "StrictHostKeyChecking no" $HOST_SERVER "git clone git@github.com:antena-dream-team/AntenaInfra.git && cd AntenaInfra && docker-compose up --build"
 
       - telegram/status:
+          success_message: $CIRCLE_JOB commit $CIRCLE_SHA1 made by $CIRCLE_USERNAME succeeded! [.](https://img.icons8.com/color/144/000000/bmo.png)
           failure_message: ${CIRCLE_JOB} failed :(. [.](https://img.icons8.com/color/144/000000/lumpy-space-princess.png)
 workflows:
   version: 2
