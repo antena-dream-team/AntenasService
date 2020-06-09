@@ -24,7 +24,6 @@ br/gov/sp/fatec/project/service/ProjectService.class
 br/gov/sp/fatec/cadi/view/CadiView$Cadi.class
 br/gov/sp/fatec/entrepreneur/service/EntrepreneurService.class
 br/gov/sp/fatec/project/controller/ProjectController.class
-br/gov/sp/fatec/SwaggerConfig.class
 br/gov/sp/fatec/entrepreneur/exception/EntrepreneurException$EntrepreneurInactiveException.class
 br/gov/sp/fatec/project/exception/ProjectException$DateDoesNotExistsException.class
 br/gov/sp/fatec/project/view/ProjectView.class
@@ -41,6 +40,7 @@ br/gov/sp/fatec/user/domain/User.class
 br/gov/sp/fatec/project/domain/Meeting.class
 br/gov/sp/fatec/entrepreneur/domain/Entrepreneur.class
 br/gov/sp/fatec/project/domain/Project.class
+br/gov/sp/fatec/utils/SwaggerConfig.class
 br/gov/sp/fatec/security/RestAuthenticationEntryPoint.class
 br/gov/sp/fatec/student/view/StudentView.class
 br/gov/sp/fatec/teacher/exception/TeacherException$TeacherNotFoundException.class

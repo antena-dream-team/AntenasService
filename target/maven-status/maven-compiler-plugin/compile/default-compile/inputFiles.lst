@@ -20,7 +20,6 @@
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/user/repository/UserRepository.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/project/view/ProjectView.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/teacher/service/TeacherService.java
-/home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/SwaggerConfig.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/utils/exception/NotFoundException.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/cadi/view/CadiView.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/entrepreneur/service/EntrepreneurService.java
@@ -33,6 +32,7 @@
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/teacher/repository/TeacherRepository.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/student/repository/StudentRepository.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/entrepreneur/domain/Entrepreneur.java
+/home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/utils/SwaggerConfig.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/teacher/domain/Teacher.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/login/controller/LoginController.java
 /home/daniellygj/Documents/git/AntenasService/src/main/java/br/gov/sp/fatec/user/service/UserService.java
