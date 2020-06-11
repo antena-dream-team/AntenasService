@@ -29,18 +29,19 @@ jobs:
           failure_message: $CIRCLE_JOB commit $CIRCLE_SHA1 made by $CIRCLE_USERNAME failed :(. [.](https://img.icons8.com/color/144/000000/lumpy-space-princess.png)
   
   sonar_cloud:
-      # Run SonarCloud
-      docker:
-        - image: circleci/openjdk:11-jdk-stretch
-      
-      steps:
-        - checkout
-        - run:
-              name: Analyze on SonarCloud
-              command: mvn verify sonar:sonar
-        - telegram/status:
-              success_message: Sonar Analysis completed! Can someone check me out? https://sonarcloud.io/dashboard?id=antena-dream-team_AntenasService&branch=master [.](https://img.icons8.com/flat_round/144/000000/statistics.png)
-              failure_message: ${CIRCLE_JOB} failed :(. [.](https://img.icons8.com/color/144/000000/lumpy-space-princess.png)
+    # Run SonarCloud
+    docker:
+      - image: circleci/openjdk:11-jdk-stretch
+    
+    steps:
+      - checkout
+      - run:
+            name: Analyze on SonarCloud
+            command: mvn verify sonar:sonar
+
+      - telegram/status:
+          success_message: Sonar Analysis completed! Can someone check me out? https://sonarcloud.io/dashboard?id=antena-dream-team_AntenasService&branch=master [.](https://img.icons8.com/flat_round/144/000000/statistics.png)
+          failure_message: ${CIRCLE_JOB} failed :(. [.](https://img.icons8.com/color/144/000000/lumpy-space-princess.png)
 
   deploy_aws_ec2:
     machine:
