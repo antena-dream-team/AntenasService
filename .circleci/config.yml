@@ -17,7 +17,7 @@ jobs:
 
       - run:
             name: push image to Dockerhub
-            command: mvn clean compile jib:build -Dimage=mateusmsouza4/antenas-project:latest
+            command: mvn clean compile jib:build -Djib.httpTimeout=60000 -Dimage=mateusmsouza4/antenas-project:latest
 
       # store raw contents of src code
       - store_artifacts:
