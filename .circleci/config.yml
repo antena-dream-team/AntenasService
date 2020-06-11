@@ -55,7 +55,7 @@ jobs:
       - run:
           name: Executing the Deploy in AWS EC2 - Production Environment
           command: |
-            ssh -A -o "StrictHostKeyChecking no" $HOST_SERVER "git clone https://github.com/antena-dream-team/AntenaInfra.git && cd AntenaInfra && docker-compose up --build"
+            ssh -A -o "StrictHostKeyChecking no" $HOST_SERVER "rm -rf AntenaInfra && git clone https://github.com/antena-dream-team/AntenaInfra.git && cd AntenaInfra && docker-compose up --build"
               failure_message: ${CIRCLE_JOB} failed :(. [.](https://img.icons8.com/color/144/000000/lumpy-space-princess.png)
       - telegram/status:
           success_message: deploy_aws_ec2 completed! [.](https://img.icons8.com/flat_round/144/000000/statistics.png)
