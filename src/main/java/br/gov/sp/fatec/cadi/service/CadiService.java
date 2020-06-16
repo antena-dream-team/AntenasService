@@ -59,7 +59,13 @@ public class CadiService {
         Cadi found = repository.findById(id).orElse(null);
         throwIfCadiIsNull(found, id);
 
-        found.setActive(cadi.isActive());
+       // found.setActive(cadi.isActive());
+        try{
+            found.setActive(cadi.isActive());
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         found.setName(cadi.getName());
         found.setEmail(cadi.getEmail());
         found.setCpf(cadi.getCpf());
