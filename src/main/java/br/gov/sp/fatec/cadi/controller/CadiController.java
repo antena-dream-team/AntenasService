@@ -37,7 +37,7 @@ public class CadiController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(CadiView.Cadi.class)
     private Cadi create (@RequestBody Cadi cadi, UriComponentsBuilder uriComponentsBuilder) {
-        String url =  uriComponentsBuilder.path("/dev/cadi/activate/").build().toUriString();
+        String url = uriComponentsBuilder.path("/dev/cadi/activate/").build().toUriString();
         return service.save(cadi, url);
     }
 
