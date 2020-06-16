@@ -6,6 +6,7 @@ import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
@@ -21,6 +22,9 @@ public class UserService {
 
     @Autowired
     private AuthorizationRepository authorizationRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void setUsuarioRepo(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -43,7 +47,7 @@ public class UserService {
         }
         User user = new User();
         user.setEmail(login);
-        user.setPassword(md5(password));
+        user.setPassword(passwordEncoder.encode(password));
         user.setAuthorizations(new ArrayList<>());
         user.getAuthorizations().add(authorization);
         userRepository.save(user);
@@ -81,28 +85,7 @@ public class UserService {
                 }
             }
         }
-        user.setPassword(md5(user.getPassword()));
+        user.setPassword(user.getPassword());
         return userRepository.save(user);
-    }
-
-    private String md5(String password) {
-        try {
-            MessageDigest algorithm = MessageDigest.getInstance("MD5");
-            byte messageDigest[] = algorithm.digest(password.getBytes("UTF-8"));
-
-            StringBuilder hexString = new StringBuilder();
-            hexString.append("{MD5}");
-            for (byte b : messageDigest) {
-                hexString.append(String.format("%02x", 0xFF & b));
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException exception) {
-            exception.printStackTrace();
-            // Unexpected - do nothing
-        } catch (UnsupportedEncodingException exception) {
-            exception.printStackTrace();
-            // Unexpected - do nothing
-        }
-        return password;
     }
 }
