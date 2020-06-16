@@ -33,7 +33,7 @@
         <createTable tableName="user">
             <column name="id" type="BIGINT"/>
             <column name="email" type="VARCHAR(50)"/>
-            <column name="password" type="VARCHAR(50)"/>
+            <column name="password" type="VARCHAR(200)"/>
             <column name="name" type="VARCHAR(100)"/>
             <column name="active" type="BOOLEAN"/>
         </createTable>
