@@ -56,11 +56,7 @@ public class UserService {
 
     @PreAuthorize("isAuthenticated()")
     public User buscar(Long id) {
-        Optional<User> user =  userRepository.findById(id);
-        if(user.isPresent()) {
-            return user.get();
-        }
-        return null;
+        return userRepository.findById(id).orElse(null);
     }
 
     @PreAuthorize("isAuthenticated()")
