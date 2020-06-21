@@ -33,6 +33,7 @@ public class User implements UserDetails {
     @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})
     protected String email;
 
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})
     protected String password;
 
     @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})

@@ -25,7 +25,8 @@ public class LoginController {
     public ResponseEntity<User> login(@RequestBody Login login, HttpServletResponse response) throws JsonProcessingException {
         Authentication credentials = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
         User user = (User) auth.authenticate(credentials).getPrincipal();
+        user.setPassword(null);
         response.setHeader("Token", JwtUtils.generateToken(user));
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 }
