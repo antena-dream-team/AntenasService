@@ -109,7 +109,7 @@ public class CadiServiceTest {
         assertEquals(updated.getEmail(), returned.getEmail());
     }
 
-/*    @Test
+    @Test
     public void update_shouldFail() {
         Cadi updated = newCadi();
         updated.setEmail("newEmail@test.com");
@@ -117,7 +117,7 @@ public class CadiServiceTest {
         Assertions.assertThrows(CadiNotFoundException.class, () -> {
             service.update(2L, updated);
         });
-    }*/
+    }
 
     @Test
     public void activate_shouldSucceed() throws JSONException {
