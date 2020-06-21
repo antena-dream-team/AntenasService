@@ -56,7 +56,7 @@ public class CadiService {
     }
 
     public Cadi update(Long id, Cadi cadi) {
-        Cadi found = repository.findById(id).orElse(null);
+        Cadi found = repository.findById(id).orElseGet(null);
         throwIfCadiIsNull(found, id);
 
        // found.setActive(cadi.isActive());
@@ -69,6 +69,7 @@ public class CadiService {
 
         }catch(Exception e){
             e.printStackTrace();
+
         }
  //       found.setName(cadi.getName());
  //       found.setEmail(cadi.getEmail());
