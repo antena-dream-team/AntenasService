@@ -33,6 +33,7 @@ public class User implements UserDetails {
     @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})
     protected String email;
 
+    @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})
     protected String password;
 
     @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})
@@ -40,6 +41,9 @@ public class User implements UserDetails {
 
     @JsonView({ProjectView.Project.class, TeacherView.Teacher.class, EntrepreneurView.Entrepreneur.class, CadiView.Cadi.class, StudentView.Student.class})
     protected Boolean active;
+
+    @Transient
+    private String token;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_authorization",
@@ -86,6 +90,18 @@ public class User implements UserDetails {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

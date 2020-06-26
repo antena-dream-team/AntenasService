@@ -49,19 +49,6 @@ public class teacherControllerTest {
     }
 
     @Test
-    public void create_shouldSucceed() throws Exception {
-        Teacher teacher = newTeacher();
-        when(service.save(teacher)).thenReturn(teacher);
-
-        mockMvc.perform(post(URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(toJSON(teacher))))
-                .andExpect(status().isCreated());
-
-        verify(service).save(teacher);
-    }
-
-    @Test
     public void findAll_shouldSucceed() throws Exception {
         List<Teacher> teacherList = Lists.newArrayList(newTeacher(1L, true),
                 newTeacher(2L, true),

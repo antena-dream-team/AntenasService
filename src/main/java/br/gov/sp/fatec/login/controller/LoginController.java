@@ -23,9 +23,12 @@ public class LoginController {
     @PostMapping
     @CrossOrigin(exposedHeaders = "Token")
     public ResponseEntity<User> login(@RequestBody Login login, HttpServletResponse response) throws JsonProcessingException {
-        Authentication credentials = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
+        Authentication credentials = new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
         User user = (User) auth.authenticate(credentials).getPrincipal();
-        response.setHeader("Token", JwtUtils.generateToken(user));
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        user.setPassword(null);
+        String token = JwtUtils.generateToken(user);
+        user.setToken(token);
+        response.setHeader("Token", token);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 }

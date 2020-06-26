@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -30,8 +31,9 @@ public class TeacherController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     @JsonView(TeacherView.Teacher.class)
-    public Teacher create (@RequestBody Teacher teacher) {
-        return service.save(teacher);
+    public Teacher create (@RequestBody Teacher teacher, UriComponentsBuilder uriComponentsBuilder) {
+        String url = uriComponentsBuilder.path("/dev/cadi/activate/").build().toUriString();
+        return service.save(teacher, url);
     }
 
     @GetMapping(produces =  APPLICATION_JSON_VALUE)

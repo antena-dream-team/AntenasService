@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Long> {
     public User findByName(String name);
 
+    public User findByEmail(String email);
+
     public List<User> findByNameContainsIgnoreCase(String name);
 
     public User findTop1ByNameContains(String name);

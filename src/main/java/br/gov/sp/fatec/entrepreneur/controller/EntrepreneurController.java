@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -31,8 +32,9 @@ public class EntrepreneurController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @ResponseBody
     @JsonView(EntrepreneurView.Entrepreneur.class)
-    public Entrepreneur create (@RequestBody Entrepreneur entrepreneur) {
-        return service.save(entrepreneur);
+    public Entrepreneur create (@RequestBody Entrepreneur entrepreneur, UriComponentsBuilder uriComponentsBuilder) {
+        String url = uriComponentsBuilder.path("/dev/entrepreneur/activate/").build().toUriString();
+        return service.save(entrepreneur, url);
     }
 
     @GetMapping(produces =  APPLICATION_JSON_VALUE)
