@@ -6,6 +6,7 @@ import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,11 +26,18 @@ public class TeacherService {
     @Autowired
     private SendEmail sendEmail;
 
-    public Teacher save(Teacher teacher) {
-        teacher.setActive(false);
-        teacher.setPassword(Base64.getEncoder().encodeToString(teacher.getPassword().getBytes()));
-        sendEmail.sendMail(teacher.getEmail(), "teacher");
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
+    public Teacher save(Teacher teacher, String url) {
+        teacher.setActive(false);
+        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
+        sendEmail.sendMail(teacher.getEmail(), url);
+
+        return repository.save(teacher);
+    }
+
+    public Teacher save(Teacher teacher) {
         return repository.save(teacher);
     }
 

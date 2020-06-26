@@ -7,6 +7,7 @@ import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,9 +28,12 @@ public class StudentService {
     @Autowired
     private SendEmail sendEmail;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Student save(Student student) {
         student.setActive(false);
-        student.setPassword(Base64.getEncoder().encodeToString(student.getPassword().getBytes()));
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
         sendEmail.sendMail(student.getEmail(), "student");
         return repository.save(student);
     }

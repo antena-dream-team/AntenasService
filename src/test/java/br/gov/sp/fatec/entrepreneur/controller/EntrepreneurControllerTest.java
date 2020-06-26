@@ -51,19 +51,6 @@ public class EntrepreneurControllerTest {
     }
 
     @Test
-    public void create_shouldSucceed() throws Exception {
-        Entrepreneur entrepreneur = newEntrepreneur();
-        when(service.save(entrepreneur)).thenReturn(entrepreneur);
-
-        mockMvc.perform(post(URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(toJSON(entrepreneur))))
-                .andExpect(status().isCreated());
-
-        verify(service).save(entrepreneur);
-    }
-
-    @Test
     public void findAll_shouldSucceed() throws Exception {
         List<Entrepreneur> entrepreneurList = Lists.newArrayList(newEntrepreneur(1L, true),
                 newEntrepreneur(2L, true),

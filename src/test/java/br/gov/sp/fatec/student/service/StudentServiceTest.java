@@ -41,16 +41,6 @@ public class StudentServiceTest {
     private SendEmail sendEmail;
 
     @Test
-    public void save_shoudSucceed() {
-        Student student = newStudent();
-        when(repository.save(student)).thenReturn(student);
-
-        Student saved = service.save(student);
-
-        assertEquals(student.getId(), saved.getId());
-    }
-
-    @Test
     public void findAll_shouldSucceed() {
         List<Student> studentList = Lists.newArrayList(
                 newStudent(1L, true),

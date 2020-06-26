@@ -6,6 +6,7 @@ import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,11 +27,17 @@ public class EntrepreneurService {
     @Autowired
     private SendEmail sendEmail;
 
-    public Entrepreneur save(Entrepreneur entrepreneur) {
-        entrepreneur.setActive(false);
-        entrepreneur.setPassword(Base64.getEncoder().encodeToString(entrepreneur.getPassword().getBytes()));
-        sendEmail.sendMail(entrepreneur.getEmail(), "entrepreneur");
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
+    public Entrepreneur save(Entrepreneur entrepreneur, String url) {
+        entrepreneur.setActive(false);
+        entrepreneur.setPassword(passwordEncoder.encode(entrepreneur.getPassword()));
+        sendEmail.sendMail(entrepreneur.getEmail(), url);
+
+        return repository.save(entrepreneur);
+    }
+    public Entrepreneur save(Entrepreneur entrepreneur) {
         return repository.save(entrepreneur);
     }
 
