@@ -14,6 +14,7 @@ import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.exception.TeacherException;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -42,6 +43,7 @@ public class ProjectService {
     @Autowired
     private StudentService studentService;
 
+    @PreAuthorize("hasRole('ENTREPRENEUR')")
     public Project save(Project project) {
         if (project.getTeacher() != null && project.getTeacher().getId() != null) {
             Teacher found = teacherService.findById(project.getTeacher().getId());
@@ -78,14 +80,17 @@ public class ProjectService {
         return repository.save(project);
     }
 
+    @PreAuthorize("hasAnyRole('CADI', 'ENTREPRENEUR', 'STUDENT', 'TEACHER')")
     public List<Project> findAll() {
         return repository.findAll();
     }
 
+    @PreAuthorize("hasAnyRole('CADI', 'ENTREPRENEUR', 'STUDENT', 'TEACHER')")
     public Project findById(Long id) {
         return repository.getOne(id);
     }
 
+    @PreAuthorize("hasRole('ENTREPRENEUR')")
     public void delete(Long id) {
         Project project = findById(id);
         throwIfProjectIsNull(project, id);
@@ -93,6 +98,7 @@ public class ProjectService {
         repository.delete(project);
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     public Project setStudentResponsible(Long projectId, Long studentId, Long teacherId) {
         checkIfCanAddStudentToProject(teacherId, projectId);
         Project project = findById(projectId);
@@ -124,6 +130,7 @@ public class ProjectService {
         }
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     // serve para editar também. ele sobrescreve. Só deve ser passado todos os alunos
     public Project setStudents(Long projectId, List<Student> studentList, Long teacherId) {
         checkIfCanAddStudentToProject(teacherId, projectId);
@@ -144,6 +151,7 @@ public class ProjectService {
         return repository.save(project);
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     public Project addStudent(Long projectId, Long studentId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
@@ -156,6 +164,7 @@ public class ProjectService {
         return repository.save(project);
     }
 
+    @PreAuthorize("hasRole('CADI')")
     public Project setTeacher(Long projectId, Long teacherId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
@@ -169,6 +178,7 @@ public class ProjectService {
         return repository.save(project);
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     public Project removeStudent(Long projectId, Long StudentId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
@@ -197,6 +207,7 @@ public class ProjectService {
         return repository.findByEntrepreneurId(entrepreneurId);
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
     public Project setSolution(Long projectId, Deliver deliver) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
@@ -206,6 +217,7 @@ public class ProjectService {
         return repository.save(project);
     }
 
+    @PreAuthorize("hasRole('ENTREPRENEUR')")
     public Project update(Project project) {
         Project found = findById(project.getId());
         throwIfProjectIsNull(found);
@@ -224,6 +236,7 @@ public class ProjectService {
         return project.getCompleteDescription() != null && project.getTechnologyDescription() != null && project.getProgress() == 2 ? 3 : project.getProgress();
     }
 
+    @PreAuthorize("hasRole('CADI')")
     public Project setMeetingPossibleDate(List<Date> possibleDate, Long projectId) {
         for (Date date : possibleDate) {
             throwIfDateIsNull(date);
@@ -241,6 +254,7 @@ public class ProjectService {
         return repository.save(project);
     }
 
+    @PreAuthorize("hasRole('ENTREPRENEUR')")
     public Project setMeetingChosenDate(Long possibleDateId, Long projectId) {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
@@ -258,6 +272,7 @@ public class ProjectService {
         return repository.save(project);
     }
 
+    @PreAuthorize("hasRole('CADI')")
     public Project approve(Long id) {
         Project project = findById(id);
         throwIfProjectIsNull(project);
@@ -279,6 +294,7 @@ public class ProjectService {
         return projects;
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
     public Project setSolution(Deliver deliver, Long projectId) {
         // todo - pegar id do aluno responsavel
         Project project = findById(projectId);

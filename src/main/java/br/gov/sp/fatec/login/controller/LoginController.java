@@ -1,6 +1,5 @@
 package br.gov.sp.fatec.login.controller;
 
-import antlr.Token;
 import br.gov.sp.fatec.login.domain.Login;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.security.JwtUtils;
@@ -24,7 +23,7 @@ public class LoginController {
     @PostMapping
     @CrossOrigin(exposedHeaders = "Token")
     public ResponseEntity<User> login(@RequestBody Login login, HttpServletResponse response) throws JsonProcessingException {
-        Authentication credentials = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
+        Authentication credentials = new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
         User user = (User) auth.authenticate(credentials).getPrincipal();
         user.setPassword(null);
         String token = JwtUtils.generateToken(user);
