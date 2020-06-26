@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.login.controller;
 
+import antlr.Token;
 import br.gov.sp.fatec.login.domain.Login;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.security.JwtUtils;
@@ -26,7 +27,9 @@ public class LoginController {
         Authentication credentials = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
         User user = (User) auth.authenticate(credentials).getPrincipal();
         user.setPassword(null);
-        response.setHeader("Token", JwtUtils.generateToken(user));
+        String token = JwtUtils.generateToken(user);
+        user.setToken(token);
+        response.setHeader("Token", token);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 }
