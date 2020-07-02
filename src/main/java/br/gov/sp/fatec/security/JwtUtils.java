@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class JwtUtils {
 
-    private static final String KEY = System.getenv("JWT_KEY");
+    private static final String KEY = "spring.jwt.sec";
 
     public static String generateToken(User user) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
