@@ -50,7 +50,7 @@ public class EntrepreneurService {
     }
 
     public Entrepreneur findById(Long id) {
-        Entrepreneur found = repository.getOne(id);
+        Entrepreneur found = repository.findById(id).orElse(null);
         throwIfEntrepreneurIsNull(found, id);
 
         return found;

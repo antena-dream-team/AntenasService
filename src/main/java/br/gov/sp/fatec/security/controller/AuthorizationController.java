@@ -24,7 +24,7 @@ public class AuthorizationController {
     }
 
     @RequestMapping(value = "/getById/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Authorization> pesquisarPorId(@PathVariable("id") Long id) {
+    public ResponseEntity<Authorization> findById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(authorizationService.findById(id), HttpStatus.OK);
     }
 
@@ -34,7 +34,7 @@ public class AuthorizationController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<Authorization> salvar(@RequestBody Authorization authorization, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<Authorization> Save(@RequestBody Authorization authorization, UriComponentsBuilder uriComponentsBuilder) {
         authorization = authorizationService.create(authorization);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(uriComponentsBuilder.path("/getById/" + authorization.getId()).build().toUri());

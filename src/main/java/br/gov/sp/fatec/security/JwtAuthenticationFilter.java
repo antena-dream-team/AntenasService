@@ -1,10 +1,11 @@
 package br.gov.sp.fatec.security;
 
-import br.gov.sp.fatec.user.domain.User;
+import br.gov.sp.fatec.user.dto.UserDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -25,12 +26,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             String authorization = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorization != null) {
                 User user = JwtUtils.parseToken(authorization.replaceAll("Bearer ", ""));
-                Authentication credentials = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), user.getAuthorities());
+                Authentication credentials = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(credentials);
             }
             chain.doFilter(request, response);
         }
         catch(Throwable t) {
+            t.printStackTrace();
             HttpServletResponse servletResponse = (HttpServletResponse) response;
             servletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, t.getMessage());
         }

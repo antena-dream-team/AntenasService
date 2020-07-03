@@ -17,6 +17,7 @@ public class JSONParser {
         try {
             return objectMapper.writeValueAsString(model);
         } catch (JsonProcessingException var2) {
+            var2.printStackTrace();
             LOGGER.error("ERROR WHILE PARSING MODEL TO JSON", var2);
             return null;
         }
@@ -26,6 +27,7 @@ public class JSONParser {
         try {
             return objectMapper.readValue(json, clazz);
         } catch (Exception var3) {
+            var3.printStackTrace();
             LOGGER.error("ERROR WHILE PARSING JSON TO MODEL", var3);
             return null;
         }

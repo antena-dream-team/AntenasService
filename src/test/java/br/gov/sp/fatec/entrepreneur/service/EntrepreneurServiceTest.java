@@ -80,7 +80,7 @@ public class EntrepreneurServiceTest {
     @Test
     public void findById_shouldSucceed() {
         Entrepreneur entrepreneur = newEntrepreneur();
-        when(repository.getOne(entrepreneur.getId())).thenReturn(entrepreneur);
+        when(repository.findById(entrepreneur.getId())).thenReturn(Optional.of(entrepreneur));
 
         Entrepreneur found = service.findById(entrepreneur.getId());
 

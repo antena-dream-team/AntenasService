@@ -7,22 +7,15 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface UserRepository extends CrudRepository<User, Long> {
-    public User findByName(String name);
 
-    public User findByEmail(String email);
+    List<User> findByNameContainsIgnoreCase(String name);
 
-    public List<User> findByNameContainsIgnoreCase(String name);
+    List<User> findAllByActive(Boolean active);
 
-    public User findTop1ByNameContains(String name);
+    User findByEmailAndPassword(String email, String password);
 
-    public List<User> findByIdGreaterThan(Long id);
-
-//    public List<User> findByAuthorizationName(String name);
-
-//    public List<User> findByAuthorizationNameContainsIgnoreCase(String name);
-
-//    public List<User> findByNameContainsIgnoreCaseOrAuthorizationNameContainsIgnoreCase(String nameUser, String authorizationName);
+    User findByEmail(String email);
 
     @Query("select u from User u where u.name like %?1%")
-    public List<User> buscaUser(String name);
+    public List<User> searchUser(String name);
 }
