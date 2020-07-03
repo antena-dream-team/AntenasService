@@ -51,17 +51,14 @@ public class StudentService {
     }
 
     public Student findById(Long id) {
-        Student found = repository.getOne(id);
+        Student found = repository.findById(id).orElse(null);
         NotFoundException.throwIfStudentIsNull(found, id);
-
-//        found.setProjects(findProjectByStudent(id));
-//        System.out.println(found);
         return found;
     }
 
+    // todo - pode pegar o id do aluno....?
     public Student update(Long id, Student student) {
-        Student found = repository.findById(id).orElse(null);
-        NotFoundException.throwIfStudentIsNull(found, id);
+        Student found = findById(id);
 
         found.setName(student.getName());
         found.setEmail(student.getEmail());

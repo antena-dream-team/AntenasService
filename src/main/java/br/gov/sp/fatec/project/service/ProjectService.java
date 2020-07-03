@@ -87,7 +87,9 @@ public class ProjectService {
 
     @PreAuthorize("hasAnyRole('CADI', 'ENTREPRENEUR', 'STUDENT', 'TEACHER')")
     public Project findById(Long id) {
-        return repository.getOne(id);
+        Project project =  repository.findById(id).orElse(null);
+        throwIfProjectIsNull(project, id);
+        return project;
     }
 
     @PreAuthorize("hasRole('ENTREPRENEUR')")

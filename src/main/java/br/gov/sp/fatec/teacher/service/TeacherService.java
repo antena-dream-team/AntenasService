@@ -50,13 +50,13 @@ public class TeacherService {
     }
 
     public Teacher findById(Long id) {
-        Teacher teacher = repository.getOne(id);
+        Teacher teacher = repository.findById(id).orElse(null);
         throwIfTeacherIsNull(teacher, id);
         return teacher;
     }
 
     public Teacher update(Long id, Teacher teacher) {
-        Teacher found = repository.getOne(id);
+        Teacher found = repository.findById(id).orElse(null);
         throwIfTeacherIsNull(found, id);
 
         found.setActive(teacher.isActive());

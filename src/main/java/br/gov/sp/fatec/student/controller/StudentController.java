@@ -1,25 +1,19 @@
 package br.gov.sp.fatec.student.controller;
 
-import br.gov.sp.fatec.project.domain.Deliver;
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.domain.Student;
-import br.gov.sp.fatec.student.exception.StudentException.*;
 import br.gov.sp.fatec.student.service.StudentService;
 import br.gov.sp.fatec.student.view.StudentView;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("dev/student")
 public class StudentController {
 
@@ -42,6 +36,7 @@ public class StudentController {
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @JsonView(StudentView.Student.class)
+    @CrossOrigin
     public Student findById(@PathVariable("id") Long id) {
         return service.findById(id);
     }
