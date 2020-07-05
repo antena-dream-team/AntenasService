@@ -184,16 +184,16 @@ public class ProjectServiceTest {
         });
     }
 
-    @Test
-    public void findAll_shouldSucceed() {
-        List<Project> projectList = Lists.newArrayList(
-                newProject(1L),
-                newProject(2L),
-                newProject(3L));
-
-        when(repository.findAll()).thenReturn(projectList);
-        assertNotNull(service.findAll());
-    }
+//    @Test
+//    public void findAll_shouldSucceed() {
+//        List<Project> projectList = Lists.newArrayList(
+//                newProject(1L),
+//                newProject(2L),
+//                newProject(3L));
+//
+//        when(repository.findAll()).thenReturn(projectList);
+//        assertNotNull(service.findAll());
+//    }
 
     @Test
     public void findById_shouldSucceed() {

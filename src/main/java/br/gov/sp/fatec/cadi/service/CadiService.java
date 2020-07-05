@@ -2,6 +2,7 @@ package br.gov.sp.fatec.cadi.service;
 
 import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
+import br.gov.sp.fatec.security.domain.Authorization;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,15 @@ public class CadiService {
 
     public Cadi save(Cadi cadi, String url) {
         cadi.setActive(false);
+
+        List<Authorization> authorizations = new ArrayList<>();
+        Authorization authorization = new Authorization();
+        authorization.setName("CADI");
+        authorization.setAuthority("CADI");
+        authorizations.add(authorization);
+
+        cadi.setAuthorizations(authorizations);
+
         cadi.setPassword(passwordEncoder.encode(cadi.getPassword()));
         sendEmail.sendMail(cadi.getEmail(), url);
         return repository.save(cadi);

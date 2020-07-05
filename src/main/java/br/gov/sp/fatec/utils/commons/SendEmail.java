@@ -28,8 +28,6 @@ public class SendEmail {
             base64.put("email", email);
 
             String b64 = Base64.getEncoder().encodeToString(base64.toString().getBytes());
-//            String link = "http://127.0.0.1:8080/dev/" + module + "/activate/" + b64;
-//            String link = uriComponentsBuilder.path("/dev/" + module + "/activate/" + b64).build().toUriString();
             String link = url + b64;
             SimpleMailMessage mailMessage = new SimpleMailMessage();
 

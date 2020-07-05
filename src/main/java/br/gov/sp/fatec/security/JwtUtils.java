@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.security;
 
+import br.gov.sp.fatec.security.domain.Authorization;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.user.dto.UserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,6 +9,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class JwtUtils {
@@ -21,18 +23,24 @@ public class JwtUtils {
         userWithoutPassword.setEmail(user.getUsername());
         userWithoutPassword.setName(user.getName());
         userWithoutPassword.setToken(user.getToken());
-//        userWithoutPassword.setAuthorization(user.getAuthorizations().get(0));
+        userWithoutPassword.setId(user.getId());
 
         if(!user.getAuthorities().isEmpty()) {
-            userWithoutPassword.setAuthorization(user.getAuthorities().iterator()
-                            .next().getAuthority());
+            if (userWithoutPassword.getAuthorizations() == null ) {
+                userWithoutPassword.setAuthorizations(new ArrayList<>());
+            }
+            Authorization authorization = new Authorization();
+            authorization.setName(user.getAuthorities().iterator().next().getAuthority());
+            authorization.setAuthority(user.getAuthorities().iterator().next().getAuthority());
+
+            userWithoutPassword.getAuthorizations().add(authorization);
         }
         String userJson = mapper.writeValueAsString(userWithoutPassword);
         Date now = new Date();
         Long hora = 1000L * 60L * 60L; // Uma hora
         return Jwts.builder().claim("userDetails", userJson)
                 .setIssuer("br.gov.sp.fatec")
-                .setSubject(user.getUsername())
+                .setSubject(user.getId().toString())
                 .setExpiration(new Date(now.getTime() + hora))
                 .signWith(SignatureAlgorithm.HS512, KEY)
                 .compact();
@@ -50,8 +58,8 @@ public class JwtUtils {
 
         return (org.springframework.security.core.userdetails.User) org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
-                .password("pass")
-                .authorities(user.getAuthorization())
+                .password("SECRET")
+                .authorities(user.getAuthorizations())
                 .build();
     }
 }

@@ -7,15 +7,13 @@ import br.gov.sp.fatec.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
@@ -34,14 +32,11 @@ public class UserService {
         this.authorizationRepository = authorizationRepository;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
-    public User incluirUsuario(String login, String password, String authorizationName) {
+    public User addUser (String login, String password, String authorizationName) {
         Authorization authorization = authorizationRepository.findByName(authorizationName);
-        // Se nao existe
         if(authorization == null) {
             // Cria nova
-            authorization = new Authorization();
             authorization.setName(authorizationName);
             authorizationRepository.save(authorization);
         }
@@ -54,17 +49,21 @@ public class UserService {
         return user;
     }
 
-    public List<User> buscar(String login) {
+    public List<User> search(String login) {
         return userRepository.findByNameContainsIgnoreCase(login);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     @PreAuthorize("isAuthenticated()")
-    public User buscar(Long id) {
+    public User search(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @PreAuthorize("isAuthenticated()")
-    public List<User> todos() {
+    public List<User> all() {
         List<User> retorno = new ArrayList<User>();
         for(User user: userRepository.findAll()) {
             retorno.add(user);
@@ -74,7 +73,7 @@ public class UserService {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
-    public User salvar(User user) {
+    public User save(User user) {
         List<Authorization> authorizations = user.getAuthorizations();
 
         if(!authorizations.isEmpty()) {
