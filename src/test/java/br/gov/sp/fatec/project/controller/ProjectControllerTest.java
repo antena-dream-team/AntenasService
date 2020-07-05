@@ -67,14 +67,14 @@ public class ProjectControllerTest {
 //        verify(service).findAll();
 //    }
 
-    @Test
-    public void findById_shouldSucceed() throws Exception {
-        Project project = newProject();
-        when(service.findById(project.getId())).thenReturn(project);
-
-        mockMvc.perform(get(URL + "/" + project.getId()))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    public void findById_shouldSucceed() throws Exception {
+//        Project project = newProject();
+//        when(service.findById(project.getId())).thenReturn(project);
+//
+//        mockMvc.perform(get(URL + "/" + project.getId()))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     public void delete_shouldSucceed() throws Exception {
