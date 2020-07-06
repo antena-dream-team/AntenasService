@@ -94,14 +94,6 @@ public class TeacherServiceTest {
         assertEquals(teacher.getId(), found.getId());
     }
 
-//    @Test
-//    public void findById_shouldFail() {
-//        when(repository.findById(1L)).thenReturn(null);
-//
-//        Assertions.assertThrows(TeacherNotFoundException.class, () -> {
-//            service.findById(1L);
-//        });
-//    }
 
     @Test
     public void update_shouldSucceed() {
