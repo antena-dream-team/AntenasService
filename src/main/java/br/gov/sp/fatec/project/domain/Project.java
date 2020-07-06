@@ -53,7 +53,7 @@ public class Project {
     private int progress;
 
     @JsonView({ProjectView.Project.class})
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
     private Meeting meeting;
 
@@ -68,7 +68,7 @@ public class Project {
     private Teacher teacher;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "entrepreneur_id", referencedColumnName = "id")
     private Entrepreneur entrepreneur;
 
@@ -87,7 +87,8 @@ public class Project {
     private List<Deliver> deliver = new ArrayList<>();
 
     @JsonView({ProjectView.Project.class})
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
+    @JoinColumn(name = "student_responsible_id", referencedColumnName = "id")
     private Student studentResponsible;
 
     @CreatedDate

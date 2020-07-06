@@ -2,8 +2,10 @@ package br.gov.sp.fatec.project.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.service.EntrepreneurService;
-import br.gov.sp.fatec.project.domain.*;
 import br.gov.sp.fatec.project.domain.Date;
+import br.gov.sp.fatec.project.domain.Deliver;
+import br.gov.sp.fatec.project.domain.Meeting;
+import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.project.repository.ProjectRepository;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.exception.StudentException;
@@ -17,11 +19,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Transient;
@@ -51,9 +51,6 @@ public class ProjectService {
     @Autowired
     private UserService userService;
 
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    String currentPrincipalName = authentication.getName();
-
     @Transient
     @Value("${picklejar.jwt.secret}")
     private String secret;
@@ -69,35 +66,14 @@ public class ProjectService {
     }
 //    @PreAuthorize("hasRole('REPRESENTATIVE')")
     public Project save(Project project) {
-        getUserId();
-
         Entrepreneur found = entrepreneurService.findById(getUserId());
         throwIfEntrepreneurIsNull(found);
         throwIfEntrepreneurIsInactive(found);
         project.setEntrepreneur(found);
 
-        if (project.getTeacher() != null && project.getTeacher().getId() != null) {
-            Teacher teacherFound = teacherService.findById(project.getTeacher().getId());
-            throwIfTeacherIsNull(teacherFound);
-            throwIfTeacherIsInactive(teacherFound);
-            project.setTeacher(teacherFound);
-        }
-
-        if (project.getStudents().size() > 0) {
-            List<Student> studentList = new LinkedList<>();
-            for (Student student : project.getStudents()) {
-                Student studentFound = studentService.findById(student.getId());
-                throwIfStudentIsNull(studentFound);
-                throwIfStudentIsInactive(studentFound);
-                studentList.add(studentFound);
-            }
-            project.setStudents(studentList);
-        }
         project.setCreatedAt(ZonedDateTime.now());
-        project.setProgress(1);
-        Project returnProject = repository.save(project);
-        checkIfFieldIsNull(returnProject);
-        return returnProject;
+        project.setProgress(2);
+        return repository.save(project);
     }
 
 //    @PreAuthorize("hasAnyRole('CADI', 'REPRESENTATIVE', 'STUDENT', 'TEACHER')")
@@ -112,6 +88,9 @@ public class ProjectService {
            projects = getProjectByEntrepreneur(id);
        } else if (authorization.equals("STUDENT")) {
            projects = getProjectByStudent(id);
+           for (Project project: getProjectByStudentResponsible(id)) {
+               projects.add(project);
+           }
        } else if (authorization.equals("CADI")) {
 //           projects = getProjectByStudent(id);
            projects = repository.findAll();
@@ -121,48 +100,22 @@ public class ProjectService {
 
 //        List<Project> projects = repository.findAll();
 
-        for (Project project : projects) {
-            checkIfFieldIsNull(project);
-        }
+//        for (Project project : projects) {
+//            checkIfFieldIsNull(project);
+//        }
 
         return projects;
     }
 
-    private void checkIfFieldIsNull(Project project) {
-        if (project.getStudents() == null) {
-            project.setStudents(new ArrayList<>());
-        }
 
-        if (project.getEntrepreneur() == null) {
-            project.setEntrepreneur(new Entrepreneur());
-        }
-
-        if (project.getTeacher() != null) {
-            project.setTeacher(new Teacher());
-        }
-
-        if (project.getMeeting() == null) {
-            project.setMeeting(new Meeting());
-        }
-
-        if (project.getStudentResponsible() == null) {
-            project.setStudentResponsible(new Student());
-        }
-
-        if (project.getMeeting() == null) {
-            project.setMeeting(new Meeting());
-        }
-
-        if (project.getMeeting().getAddress() == null) {
-            project.getMeeting().setAddress(new Address());
-        }
+    public List<Project> checkListProjectFieldIsNull(List<Project> projects) {
+        return projects;
     }
 
 //    @PreAuthorize("hasAnyRole('CADI', 'REPRESENTATIVE', 'STUDENT', 'TEACHER')")
     public Project findById(Long id) {
         Project project =  repository.findById(id).orElse(null);
         throwIfProjectIsNull(project, id);
-        checkIfFieldIsNull(project);
         return project;
     }
 
@@ -170,7 +123,6 @@ public class ProjectService {
     public void delete(Long id) {
         Project project = findById(id);
         throwIfProjectIsNull(project, id);
-
         repository.delete(project);
     }
 
@@ -190,13 +142,6 @@ public class ProjectService {
         throwIfStudentIsInactive(student);
 
         project.setStudentResponsible(student);
-
-//        if (student.getProjects() == null) {
-//            student.setProjects(new ArrayList<>());
-//        }
-//        addStudent(projectId, studentId);
-
-        checkIfFieldIsNull(project);
         return repository.save(project);
     }
 
@@ -229,7 +174,6 @@ public class ProjectService {
 
             students.add(found);
         }
-        checkIfFieldIsNull(project);
         project.setStudents(students);
         return repository.save(project);
     }
@@ -244,8 +188,16 @@ public class ProjectService {
         throwIfStudentIsInactive(student);
 
         project.getStudents().add(student);
-        checkIfFieldIsNull(project);
         return repository.save(project);
+    }
+
+    public void setTeacher(Project project) {
+        Teacher teacher = teacherService.findById(project.getTeacher().getId());
+        throwIfTeacherIsNull(teacher, project.getTeacher().getId());
+        throwIfTeacherIsInactive(teacher);
+
+        project.setTeacher(teacher);
+//        return repository.save(project);
     }
 
 //    @PreAuthorize("hasRole('CADI')")
@@ -258,7 +210,6 @@ public class ProjectService {
         throwIfTeacherIsInactive(teacher);
 
         project.setTeacher(teacher);
-        checkIfFieldIsNull(project);
         return repository.save(project);
     }
 
@@ -271,41 +222,27 @@ public class ProjectService {
         throwIfStudentIsNull(student, StudentId);
 
         project.getStudents().remove(student);
-        checkIfFieldIsNull(project);
         return repository.save(project);
     }
 
     public List<Project> getProjectByTeacher(Long teacherId) {
         List<Project> projects = repository.findByTeacherId(teacherId);
-        for (Project project : projects) {
-            checkIfFieldIsNull(project);
-        }
-
         return projects;
     }
 
     public List<Project> getProjectByStudent(Long studentId) {
         List<Project> projects = repository.findByStudentsId(studentId);
-        for (Project project : projects) {
-            checkIfFieldIsNull(project);
-        }
 
         return projects;
     }
 
     public List<Project> getProjectByStudentResponsible(Long studentId) {
         List<Project> projects = repository.findByStudentResponsibleId(studentId);
-        for (Project project : projects) {
-            checkIfFieldIsNull(project);
-        }
         return projects;
     }
 
     public List<Project> getProjectByEntrepreneur(Long entrepreneurId) {
         List<Project> projects = repository.findByEntrepreneurId(entrepreneurId);
-        for (Project project : projects) {
-            checkIfFieldIsNull(project);
-        }
         return projects;
     }
 
@@ -324,27 +261,43 @@ public class ProjectService {
         Project found = findById(project.getId());
         throwIfProjectIsNull(found);
 
-        found.setProgress(getProgress(found));
         found.setCompleteDescription(project.getCompleteDescription());
         found.setTechnologyDescription(project.getTechnologyDescription());
         found.setTitle(project.getTitle());
         found.setShortDescription(project.getShortDescription());
         found.setNotes(project.getNotes());
+        found.setMeeting(project.getMeeting());
+        found.setProgress(getProgress(found));
+        found.setMeeting(project.getMeeting());
+
+        if (project.getStudentResponsible() != null) {
+            Student studentResponsible = studentService.findById(project.getStudentResponsible().getId());
+            found.setStudentResponsible(studentResponsible);
+        }
+
+        found.setStudents(new ArrayList<>());
+        for (Student student : project.getStudents()) {
+            found.getStudents().add(studentService.findById(student.getId()));
+        }
+        if (project.getTeacher() != null) {
+            Teacher teacher = teacherService.findById(project.getTeacher().getId());
+            found.setTeacher(teacher);
+        }
 
         return repository.save(found);
     }
 
     private int getProgress (Project project) {
-        if (project.getCompleteDescription() != null && project.getTechnologyDescription() != null && project.getProgress() == 2) {
-            return 3;
-        } if (project.getProgress() == 3 && project.getCompleteDescription() != null && project.getTechnologyDescription() != null) {
+        if (project.getCompleteDescription() != null && project.getTechnologyDescription() != null && project.getProgress() == 3) {
             return 4;
-        } else if (project.getProgress() == 1 && project.getCompleteDescription() == null && project.getTechnologyDescription() == null) {
-            return 2;
-        } else if (project.getProgress() == 3 && project.getMeeting() != null && project.getMeeting().getPossibleDate().size() > 0) {
+        } if (project.getProgress() == 4 && project.getCompleteDescription() != null && project.getTechnologyDescription() != null) {
             return 5;
-        } else if (project.getProgress() == 5 && project.getDeliver().size() > 0) {
+        } else if (project.getProgress() == 2 && project.getCompleteDescription() == null && project.getTechnologyDescription() == null) {
+            return 3;
+        } else if (project.getProgress() == 5 && project.getMeeting() != null && project.getMeeting().getPossibleDate().size() > 0 && project.getMeeting().getChosenDate() != null) {
             return 6;
+        } else if (project.getProgress() == 6 && project.getDeliver().size() > 0) {
+            return 7;
         }
         else {
             return project.getProgress();
@@ -364,7 +317,7 @@ public class ProjectService {
         meeting.setPossibleDate(possibleDate);
 
         project.setMeeting(meeting);
-        project.setProgress(5);
+        project.setProgress(getProgress(project));
 
         return repository.save(project);
     }
@@ -383,6 +336,7 @@ public class ProjectService {
         throwIfDateIsNull(date);
 
         project.getMeeting().setChosenDate(date.getDateTime());
+        project.setProgress(getProgress(project));
 
         return repository.save(project);
     }
@@ -419,7 +373,6 @@ public class ProjectService {
         deliver.getProjects().add(project);
 
         Project returnProject = setSolution(projectId, deliver);;
-        checkIfFieldIsNull(returnProject);
         return returnProject;
     }
 

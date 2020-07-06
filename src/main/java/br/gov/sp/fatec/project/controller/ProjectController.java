@@ -36,6 +36,7 @@ public class ProjectController {
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @JsonView(ProjectView.Project.class)
     public List<Project> findAll(@PathVariable("id") Long id) {
+//        List<Project> projects = service.findAll(id);
         return service.findAll(id);
     }
 

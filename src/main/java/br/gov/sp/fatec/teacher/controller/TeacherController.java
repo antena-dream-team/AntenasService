@@ -1,13 +1,8 @@
 package br.gov.sp.fatec.teacher.controller;
 
-import br.gov.sp.fatec.project.domain.Project;
-import br.gov.sp.fatec.project.view.ProjectView;
-import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.teacher.domain.Teacher;
-import br.gov.sp.fatec.teacher.exception.TeacherException.*;
 import br.gov.sp.fatec.teacher.service.TeacherService;
 import br.gov.sp.fatec.teacher.view.TeacherView;
-import br.gov.sp.fatec.utils.exception.NotFoundException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
