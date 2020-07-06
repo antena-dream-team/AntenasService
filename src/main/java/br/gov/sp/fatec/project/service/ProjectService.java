@@ -137,7 +137,7 @@ public class ProjectService {
         Project project = findById(projectId);
         throwIfProjectIsNull(project, projectId);
 
-        Student student = studentService.findById(studentId);
+        Student student =  studentService.findById(studentId);
         throwIfStudentIsNull(student, studentId);
         throwIfStudentIsInactive(student);
 
