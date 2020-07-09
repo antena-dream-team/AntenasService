@@ -269,18 +269,23 @@ public class ProjectService {
         found.setMeeting(project.getMeeting());
         found.setProgress(getProgress(found));
         found.setMeeting(project.getMeeting());
+        found.setDeliver(project.getDeliver());
 
         if (project.getStudentResponsible() != null) {
             Student studentResponsible = studentService.findById(project.getStudentResponsible().getId());
+            throwIfStudentIsNull(studentResponsible);
             found.setStudentResponsible(studentResponsible);
         }
 
         found.setStudents(new ArrayList<>());
         for (Student student : project.getStudents()) {
-            found.getStudents().add(studentService.findById(student.getId()));
+            Student studentFound = studentService.findById(student.getId());
+            throwIfStudentIsNull(student);
+            found.getStudents().add(studentFound);
         }
         if (project.getTeacher() != null) {
             Teacher teacher = teacherService.findById(project.getTeacher().getId());
+            throwIfTeacherIsNull(teacher);
             found.setTeacher(teacher);
         }
 
