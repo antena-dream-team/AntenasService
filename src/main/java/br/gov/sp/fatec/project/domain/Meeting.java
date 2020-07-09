@@ -28,12 +28,12 @@ public class Meeting {
     private java.util.Date chosenDate;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @JsonView({ProjectView.Project.class})
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="meeting_possible_date",
             joinColumns=@JoinColumn(name="meeting_id"),
             inverseJoinColumns=@JoinColumn(name="possible_date_id"))

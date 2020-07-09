@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.teacher.service;
 
+import br.gov.sp.fatec.security.domain.Authorization;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -32,6 +34,15 @@ public class TeacherService {
     public Teacher save(Teacher teacher, String url) {
         teacher.setActive(false);
         teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
+
+        List<Authorization> authorizations = new ArrayList<>();
+        Authorization authorization = new Authorization();
+        authorization.setName("REPRESENTATIVE");
+        authorization.setAuthority("REPRESENTATIVE");
+        authorizations.add(authorization);
+
+        teacher.setAuthorizations(authorizations);
+
         sendEmail.sendMail(teacher.getEmail(), url);
 
         return repository.save(teacher);

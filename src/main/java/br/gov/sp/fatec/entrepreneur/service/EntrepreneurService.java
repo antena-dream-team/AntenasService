@@ -2,6 +2,7 @@ package br.gov.sp.fatec.entrepreneur.service;
 
 import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
+import br.gov.sp.fatec.security.domain.Authorization;
 import br.gov.sp.fatec.utils.commons.SendEmail;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,15 @@ public class EntrepreneurService {
     public Entrepreneur save(Entrepreneur entrepreneur, String url) {
         entrepreneur.setActive(false);
         entrepreneur.setPassword(passwordEncoder.encode(entrepreneur.getPassword()));
+
+        List<Authorization> authorizations = new ArrayList<>();
+        Authorization authorization = new Authorization();
+        authorization.setName("REPRESENTATIVE");
+        authorization.setAuthority("REPRESENTATIVE");
+        authorizations.add(authorization);
+
+        entrepreneur.setAuthorizations(authorizations);
+
         sendEmail.sendMail(entrepreneur.getEmail(), url);
 
         return repository.save(entrepreneur);

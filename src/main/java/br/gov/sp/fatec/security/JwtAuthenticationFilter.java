@@ -1,6 +1,5 @@
 package br.gov.sp.fatec.security;
 
-import br.gov.sp.fatec.user.dto.UserDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

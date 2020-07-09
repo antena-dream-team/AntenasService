@@ -22,7 +22,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Table(name = "project")
 public class Project {
 
@@ -54,7 +53,7 @@ public class Project {
     private int progress;
 
     @JsonView({ProjectView.Project.class})
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "meeting_id", referencedColumnName = "id")
     private Meeting meeting;
 
@@ -81,20 +80,24 @@ public class Project {
    private List<Student> students = new ArrayList<>();
 
     @JsonView({ProjectView.Project.class})
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(name = "project_deliver",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "deliver_id"))
     private List<Deliver> deliver = new ArrayList<>();
 
     @JsonView({ProjectView.Project.class})
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "student_responsible_id", referencedColumnName = "id")
     private Student studentResponsible;
 
     @CreatedDate
     @Column(nullable = false)
     @JsonView({ProjectView.Project.class})
     private ZonedDateTime createdAt = ZonedDateTime.now();
+
+    @JsonView({ProjectView.Project.class})
+    private Boolean refused;
 
     public Long getId() {
         return id;
@@ -214,5 +217,13 @@ public class Project {
 
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Boolean getRefused() {
+        return refused;
+    }
+
+    public void setRefused(Boolean refused) {
+        this.refused = refused;
     }
 }

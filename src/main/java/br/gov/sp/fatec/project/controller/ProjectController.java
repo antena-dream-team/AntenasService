@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Map;
@@ -32,17 +33,18 @@ public class ProjectController {
         return service.save(project);
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
-    @JsonView(ProjectView.Project.class)
-    public List<Project> findAll() {
-        return service.findAll();
-    }
-
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @JsonView(ProjectView.Project.class)
-    public Project findById(@PathVariable("id") Long id) {
-        return service.findById(id);
+    public List<Project> findAll(@PathVariable("id") Long id) {
+//        List<Project> projects = service.findAll(id);
+        return service.findAll(id);
     }
+
+//    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+//    @JsonView(ProjectView.Project.class)
+//    public Project findById(@PathVariable("id") Long id) {
+//        return service.findById(id);
+//    }
 
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") Long id) {
@@ -53,6 +55,12 @@ public class ProjectController {
     @JsonView(ProjectView.Project.class)
     public Project addStudent(@PathVariable("projectId") Long projectId, @PathVariable("studentId") Long studentId) {
         return service.addStudent(projectId, studentId);
+    }
+
+    @PostMapping(value = "/update")
+    @JsonView(ProjectView.Project.class)
+    public Project update(@RequestBody Project project) {
+        return service.update(project);
     }
 
     @PutMapping(value = "/approve/{id}")

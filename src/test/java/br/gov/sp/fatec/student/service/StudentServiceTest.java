@@ -76,7 +76,13 @@ public class StudentServiceTest {
                 newProject(2L),
                 newProject(3L));
 
-        when(repository.findById(student.getId())).thenReturn(Optional.of(student));
+        when(repository.findById(student.getId())).thenReturn(Optional.of(student));//    public void findById_shouldFail() {
+//        when(repository.findById(1L)).thenReturn(null);
+//
+//        Assertions.assertThrows(StudentNotFoundException.class, () -> {
+//            service.findById(1L);
+//        });
+//    }
         Student found = service.findById(student.getId());
         assertEquals(student.getId(), found.getId());
     }
