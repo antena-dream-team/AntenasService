@@ -7,6 +7,12 @@ public class Exception extends Throwable {
             super("Failed to send email");
         }
     }
+
+    public static class CreateUserFailed extends RuntimeException {
+        public CreateUserFailed() {
+            super("There is more than one user with this email");
+        }
+    }
 }
 
 

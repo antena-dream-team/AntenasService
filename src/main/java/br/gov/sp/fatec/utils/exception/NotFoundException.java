@@ -12,6 +12,8 @@ import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.exception.StudentException.StudentNotFoundException;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.exception.TeacherException.TeacherNotFoundException;
+import br.gov.sp.fatec.user.domain.User;
+import br.gov.sp.fatec.user.exception.UserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -95,6 +97,12 @@ public class NotFoundException extends Throwable {
     public static void throwIfProjectIsNull(Project project) throws ProjectNotFoundException {
         if (project == null) {
             throw new ProjectNotFoundException();
+        }
+    }
+
+    public static void throwIfUserIsNull(User user, Long id) throws UserException.userNotFoundException {
+        if (user == null) {
+            throw new UserException.userNotFoundException(id);
         }
     }
 

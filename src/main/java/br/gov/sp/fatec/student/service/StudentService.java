@@ -4,6 +4,7 @@ import br.gov.sp.fatec.security.domain.Authorization;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.repository.StudentRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
+import br.gov.sp.fatec.utils.exception.Exception;
 import br.gov.sp.fatec.utils.exception.NotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,10 @@ public class StudentService {
     private PasswordEncoder passwordEncoder;
 
     public Student save(Student student) {
+        if (repository.findByEmail(student.getEmail()) != null) {
+            throw new Exception.CreateUserFailed();
+        }
+
         student.setActive(false);
         student.setPassword(passwordEncoder.encode(student.getPassword()));
 

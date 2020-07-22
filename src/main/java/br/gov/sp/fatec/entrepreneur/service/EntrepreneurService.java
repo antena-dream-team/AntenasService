@@ -4,6 +4,7 @@ import br.gov.sp.fatec.entrepreneur.domain.Entrepreneur;
 import br.gov.sp.fatec.entrepreneur.repository.EntrepreneurRepository;
 import br.gov.sp.fatec.security.domain.Authorization;
 import br.gov.sp.fatec.utils.commons.SendEmail;
+import br.gov.sp.fatec.utils.exception.Exception;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class EntrepreneurService {
     private PasswordEncoder passwordEncoder;
 
     public Entrepreneur save(Entrepreneur entrepreneur, String url) {
+        if (repository.findByEmail(entrepreneur.getEmail()) != null) {
+            throw new Exception.CreateUserFailed();
+        }
+
         entrepreneur.setActive(false);
         entrepreneur.setPassword(passwordEncoder.encode(entrepreneur.getPassword()));
 

@@ -4,6 +4,7 @@ import br.gov.sp.fatec.security.domain.Authorization;
 import br.gov.sp.fatec.teacher.domain.Teacher;
 import br.gov.sp.fatec.teacher.repository.TeacherRepository;
 import br.gov.sp.fatec.utils.commons.SendEmail;
+import br.gov.sp.fatec.utils.exception.Exception;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class TeacherService {
     private PasswordEncoder passwordEncoder;
 
     public Teacher save(Teacher teacher, String url) {
+        if (repository.findByEmail(teacher.getEmail()) != null) {
+            throw new Exception.CreateUserFailed();
+        }
+
         teacher.setActive(false);
         teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
 

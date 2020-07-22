@@ -19,6 +19,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -258,38 +259,54 @@ public class ProjectService {
 
 //    @PreAuthorize("hasRole('REPRESENTATIVE')")
     public Project update(Project project) {
-        Project found = findById(project.getId());
-        throwIfProjectIsNull(found);
+        Project projectFound = findById(project.getId());
+        throwIfProjectIsNull(projectFound);
 
-        found.setCompleteDescription(project.getCompleteDescription());
-        found.setTechnologyDescription(project.getTechnologyDescription());
-        found.setTitle(project.getTitle());
-        found.setShortDescription(project.getShortDescription());
-        found.setNotes(project.getNotes());
-        found.setMeeting(project.getMeeting());
-        found.setProgress(getProgress(found));
-        found.setMeeting(project.getMeeting());
-        found.setDeliver(project.getDeliver());
+        Long userId = getUserId();
+        User user = userService.findById(userId);
+        throwIfUserIsNull(user, userId);
 
-        if (project.getStudentResponsible() != null) {
-            Student studentResponsible = studentService.findById(project.getStudentResponsible().getId());
-            throwIfStudentIsNull(studentResponsible);
-            found.setStudentResponsible(studentResponsible);
+        switch (user.getAuthorizations().get(0).getName()) {
+            case "REPRESENTATIVE":
+                projectFound.setCompleteDescription(project.getCompleteDescription());
+                projectFound.setTechnologyDescription(project.getTechnologyDescription());
+                projectFound.setTitle(project.getTitle());
+                projectFound.setShortDescription(project.getShortDescription());
+                projectFound.setNotes(project.getNotes());
+                break;
+            case "CADI":
+                projectFound.setMeeting(project.getMeeting());
+                projectFound.setMeeting(project.getMeeting());
+
+                if (project.getTeacher() != null) {
+                    Teacher teacher = teacherService.findById(project.getTeacher().getId());
+                    throwIfTeacherIsNull(teacher);
+                    projectFound.setTeacher(teacher);
+                }
+
+                break;
+            case "TEACHER":
+                if (project.getStudentResponsible() != null) {
+                    Student studentResponsible = studentService.findById(project.getStudentResponsible().getId());
+                    throwIfStudentIsNull(studentResponsible);
+                    projectFound.setStudentResponsible(studentResponsible);
+                }
+
+                projectFound.setStudents(new ArrayList<>());
+                for (Student student : project.getStudents()) {
+                    Student studentFound = studentService.findById(student.getId());
+                    throwIfStudentIsNull(student);
+                    projectFound.getStudents().add(studentFound);
+                }
+                break;
+            case "STUDENT":
+                projectFound.setDeliver(project.getDeliver());
+                break;
         }
 
-        found.setStudents(new ArrayList<>());
-        for (Student student : project.getStudents()) {
-            Student studentFound = studentService.findById(student.getId());
-            throwIfStudentIsNull(student);
-            found.getStudents().add(studentFound);
-        }
-        if (project.getTeacher() != null) {
-            Teacher teacher = teacherService.findById(project.getTeacher().getId());
-            throwIfTeacherIsNull(teacher);
-            found.setTeacher(teacher);
-        }
+        projectFound.setProgress(getProgress(projectFound));
 
-        return repository.save(found);
+        return repository.save(projectFound);
     }
 
     private int getProgress (Project project) {

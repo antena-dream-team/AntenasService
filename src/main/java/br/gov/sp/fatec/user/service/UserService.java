@@ -71,6 +71,10 @@ public class UserService {
         return retorno;
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public User save(User user) {

@@ -4,6 +4,7 @@ import br.gov.sp.fatec.cadi.domain.Cadi;
 import br.gov.sp.fatec.cadi.repository.CadiRepository;
 import br.gov.sp.fatec.security.domain.Authorization;
 import br.gov.sp.fatec.utils.commons.SendEmail;
+import br.gov.sp.fatec.utils.exception.Exception;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class CadiService {
     private PasswordEncoder passwordEncoder;
 
     public Cadi save(Cadi cadi, String url) {
+
+        if (repository.findByEmail(cadi.getEmail()) != null) {
+            throw new Exception.CreateUserFailed();
+        }
+
         cadi.setActive(false);
 
         List<Authorization> authorizations = new ArrayList<>();
