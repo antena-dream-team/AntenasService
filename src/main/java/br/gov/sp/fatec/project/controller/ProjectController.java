@@ -109,36 +109,36 @@ public class ProjectController {
         return service.findProjectByStudent(id);
     }
 
-    @PostMapping(value = "/deliver/{projectId}")
-    @JsonView(ProjectView.Project.class)
-    public Project deliverSolution(@PathVariable("projectId") Long projectId,
-                                   @RequestBody Deliver deliver) {
-        return service.setSolution(deliver, projectId);
-    }
+//    @PostMapping(value = "/deliver/{projectId}")
+//    @JsonView(ProjectView.Project.class)
+//    public Project deliverSolution(@PathVariable("projectId") Long projectId,
+//                                   @RequestBody Deliver deliver) {
+//        return service.setSolution(deliver, projectId);
+//    }
 
-    @GetMapping(value = "/list-by-entrepreneur/{entrepreneurId}")
-    @JsonView(ProjectView.Project.class)
-    public List<Project> getProjectByEntrepreneur(@PathVariable("id") Long id) {
-        return service.getProjectByEntrepreneur(id);
-    }
+//    @GetMapping(value = "/list-by-entrepreneur/{entrepreneurId}")
+//    @JsonView(ProjectView.Project.class)
+//    public List<Project> getProjectByEntrepreneur(@PathVariable("id") Long id) {
+//        return service.getProjectByEntrepreneur(id);
+//    }
 
-    @PostMapping(value = "/set-chosen-date/{projectId}/{dateId}")
-    @JsonView(ProjectView.Project.class)
-    public Project setMeetingChosenDate(@PathVariable("dateId") Long dateId,
-                                        @PathVariable("projectId") Long projectId) {
-        return service.setMeetingChosenDate(dateId, projectId);
-    }
-
-    @PostMapping(value = "/set-possible-date/{projectId}")
-    public Project setPossibleDate(@PathVariable("projectId") Long projectId,
-                                   @RequestBody List<Date> possibleDate) {
-        return service.setMeetingPossibleDate(possibleDate, projectId);
-    }
-
-    @PutMapping(value = "/set-teacher/{projectId}/{teacherId}")
-    @JsonView(ProjectView.Project.class)
-    public Project setTeacher(@PathVariable("teacherId") Long teacherId,
-                              @PathVariable("projectId") Long projectId) {
-        return service.setTeacher(teacherId, projectId);
-    }
+//    @PostMapping(value = "/set-chosen-date/{projectId}/{dateId}")
+//    @JsonView(ProjectView.Project.class)
+//    public Project setMeetingChosenDate(@PathVariable("dateId") Long dateId,
+//                                        @PathVariable("projectId") Long projectId) {
+//        return service.setMeetingChosenDate(dateId, projectId);
+//    }
+//
+//    @PostMapping(value = "/set-possible-date/{projectId}")
+//    public Project setPossibleDate(@PathVariable("projectId") Long projectId,
+//                                   @RequestBody List<Date> possibleDate) {
+//        return service.setMeetingPossibleDate(possibleDate, projectId);
+//    }
+//
+//    @PutMapping(value = "/set-teacher/{projectId}/{teacherId}")
+//    @JsonView(ProjectView.Project.class)
+//    public Project setTeacher(@PathVariable("teacherId") Long teacherId,
+//                              @PathVariable("projectId") Long projectId) {
+//        return service.setTeacher(teacherId, projectId);
+//    }
 }

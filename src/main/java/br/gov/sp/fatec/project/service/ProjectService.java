@@ -19,7 +19,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -273,6 +272,7 @@ public class ProjectService {
                 projectFound.setTitle(project.getTitle());
                 projectFound.setShortDescription(project.getShortDescription());
                 projectFound.setNotes(project.getNotes());
+                projectFound.getMeeting().setChosenDate(project.getMeeting().getChosenDate());
                 break;
             case "CADI":
                 projectFound.setMeeting(project.getMeeting());
@@ -300,7 +300,19 @@ public class ProjectService {
                 }
                 break;
             case "STUDENT":
+                for (Deliver deliver : project.getDeliver()) {
+                    Student studentResponsible = studentService.findById(deliver.getResponsible().getId());
+                    throwIfStudentIsNull(studentResponsible);
+                    deliver.setResponsible(studentResponsible);
+
+                    for (Student student : deliver.getStudents()) {
+                        Student studentFound = studentService.findById(student.getId());
+                        throwIfStudentIsNull(student);
+                        projectFound.getStudents().add(studentFound);
+                    }
+                }
                 projectFound.setDeliver(project.getDeliver());
+
                 break;
         }
 
@@ -386,12 +398,12 @@ public class ProjectService {
         Project project = findById(projectId);
         throwIfProjectIsNull(project);
 
-        if (!project.getStudentResponsible().getId().equals(deliver.getStudentResponsible().getId())) {
+        if (!project.getStudentResponsible().getId().equals(deliver.getResponsible().getId())) {
             throw new StudentException.PostSolutionFailedException();
         }
 
         deliver.setStudents(project.getStudents());
-        deliver.setStudentResponsible(project.getStudentResponsible());
+        deliver.setResponsible(project.getStudentResponsible());
         deliver.getProjects().add(project);
 
         Project returnProject = setSolution(projectId, deliver);;

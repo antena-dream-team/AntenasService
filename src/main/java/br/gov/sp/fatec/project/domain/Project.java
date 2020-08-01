@@ -6,6 +6,7 @@ import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.domain.Student;
 import br.gov.sp.fatec.student.view.StudentView;
 import br.gov.sp.fatec.teacher.domain.Teacher;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -73,6 +74,7 @@ public class Project {
     private Entrepreneur entrepreneur;
 
     @JsonView({ProjectView.Project.class})
+//    @JsonBackReference("projects")
     @ManyToMany
     @JoinTable(name = "project_student",
             joinColumns = @JoinColumn(name = "project_id"),
@@ -80,7 +82,7 @@ public class Project {
    private List<Student> students = new ArrayList<>();
 
     @JsonView({ProjectView.Project.class})
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "project_deliver",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "deliver_id"))
@@ -89,6 +91,7 @@ public class Project {
     @JsonView({ProjectView.Project.class})
     @ManyToOne
     @JoinColumn(name = "student_responsible_id", referencedColumnName = "id")
+//    @JsonBackReference("projects")
     private Student studentResponsible;
 
     @CreatedDate

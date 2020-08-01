@@ -59,11 +59,11 @@ public class ProjectFixture {
     public static Deliver newDeliver() {
         Deliver deliver = new Deliver();
         deliver.setId(ID);
-        deliver.setStudentResponsible(newStudent());
+        deliver.setResponsible(newStudent());
         deliver.setCloudLink(CLOUD_LINK);
         deliver.setStudents(getStudents());
         deliver.setComment(COMMENT);
-        deliver.setRepositoryLink(REPOSITORY_LINK);
+        deliver.setLink(REPOSITORY_LINK);
 
         return deliver;
     }
@@ -71,11 +71,11 @@ public class ProjectFixture {
     public static Deliver newDeliver(Long id) {
         Deliver deliver = new Deliver();
         deliver.setId(id);
-        deliver.setStudentResponsible(newStudentNoProject());
+        deliver.setResponsible(newStudentNoProject());
         deliver.setCloudLink(CLOUD_LINK);
         deliver.setStudents(getStudents());
         deliver.setComment(COMMENT);
-        deliver.setRepositoryLink(REPOSITORY_LINK);
+        deliver.setLink(REPOSITORY_LINK);
 
         return deliver;
     }

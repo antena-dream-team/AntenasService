@@ -2,9 +2,9 @@ package br.gov.sp.fatec.project.domain;
 
 import br.gov.sp.fatec.project.view.ProjectView;
 import br.gov.sp.fatec.student.domain.Student;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +26,8 @@ public class Deliver {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView({ProjectView.Project.class})
-    private String repositoryLink;
+    @Column(name = "repository_link")
+    private String link;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView({ProjectView.Project.class})
@@ -39,7 +40,9 @@ public class Deliver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView({ProjectView.Project.class})
     @OneToOne
-    private Student studentResponsible;
+    @JoinColumn(name = "student_responsible_id")
+//    @Column(name = "student_responsible")
+    private Student responsible;
 
     @JsonView({ProjectView.Project.class})
     @ManyToMany
@@ -48,7 +51,8 @@ public class Deliver {
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students = new ArrayList<>();
 
-    @JsonView({ProjectView.Project.class})
+//    @JsonView({ProjectView.Project.class})
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "project_deliver",
             joinColumns = @JoinColumn(name = "deliver_id"),
@@ -63,12 +67,12 @@ public class Deliver {
         this.id = id;
     }
 
-    public String getRepositoryLink() {
-        return repositoryLink;
+    public String getLink() {
+        return link;
     }
 
-    public void setRepositoryLink(String repositoryLink) {
-        this.repositoryLink = repositoryLink;
+    public void setLink(String repositoryLink) {
+        this.link = repositoryLink;
     }
 
     public String getCloudLink() {
@@ -87,12 +91,12 @@ public class Deliver {
         this.comment = comment;
     }
 
-    public Student getStudentResponsible() {
-        return studentResponsible;
+    public Student getResponsible() {
+        return responsible;
     }
 
-    public void setStudentResponsible(Student studentResponsible) {
-        this.studentResponsible = studentResponsible;
+    public void setResponsible(Student studentResponsible) {
+        this.responsible = studentResponsible;
     }
 
     public List<Student> getStudents() {

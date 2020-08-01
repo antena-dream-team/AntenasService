@@ -3,6 +3,8 @@ package br.gov.sp.fatec.student.domain;
 import br.gov.sp.fatec.user.domain.User;
 import br.gov.sp.fatec.project.domain.Project;
 import br.gov.sp.fatec.student.view.StudentView;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +24,7 @@ public class Student extends User {
 
     @JsonView({StudentView.Student.class})
     @ManyToMany(mappedBy = "students")
+//    @JsonBackReference(value = "students-studentResponsible")
     private List<Project> projects = new LinkedList<>();
 
     public List<Project> getProjects() {
